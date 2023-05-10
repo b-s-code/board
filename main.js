@@ -3,7 +3,7 @@
 * Cannot: access DOM here.
 */
 
-const {app /* controls app's event lifecycle*/, BrowserWindow /* manages app windows*/ } = require('electron');
+const {app /* controls app's event lifecycle*/, BrowserWindow /* manages app windows*/, ipcMain } = require('electron');
 const path = require('path');
 
 const createWindow = () =>
@@ -19,6 +19,9 @@ const createWindow = () =>
             preload: path.join(__dirname, 'preload.js'),
         },
     });
+
+    // ensure handler is ready by the time the webpage is loaded
+    ipcMain.handle('ping', () => 'pong');
 
     mainWindow.loadFile('index.html');
 }
