@@ -1,0 +1,22 @@
+{
+  "name": "board",
+  "version": "1.0.0",
+  "description": "a task board",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-s-code/board.git"
+  },
+  "author": "b-s-code",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b-s-code/board/issues"
+  },
+  "homepage": "https://github.com/b-s-code/board#readme",
+  "devDependencies": {
+    "electron": "^24.2.0"
+  }
+}
