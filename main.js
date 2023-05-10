@@ -1,3 +1,8 @@
+/*
+* Can: access node.js APIs here.
+* Cannot: access DOM here.
+*/
+
 const {app /* controls app's event lifecycle*/, BrowserWindow /* manages app windows*/ } = require('electron');
 const path = require('path');
 
