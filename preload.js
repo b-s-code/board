@@ -1,3 +1,8 @@
+/*
+* Used two set up IPC interfaces between 
+* main and renderer processes
+*/
+
 const {contextBridge, ipcRenderer} = require('electron');
 
 contextBridge.exposeInMainWorld('versions' /*global variable name*/,
