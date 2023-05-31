@@ -24,6 +24,9 @@ document.addEventListener(
         listContainer.innerHTML = '';
         listIds.forEach(id =>
         {
+            // TODO : I think this is kind of a dodgy way to do this...
+            // look othe ways of adding nodes e.g.
+            // https://www.w3schools.com/js/js_htmldom_nodes.asp 
             let listDivParts = ['<div class="userList">List ', id.toString(), '\n</br>'];
             listDivParts.push(userLists[id].name + '\n');
             
