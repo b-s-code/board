@@ -93,4 +93,5 @@ document.getElementById("downloadLink").addEventListener("click", (e) =>
     document.getElementById("modalDownloadContainer").style.display = "none";
 });
 
-// TODO : make lists display horizontally
+// TODO : make lists display horizontally such that num columns in listContainer is determined by number of lists
+// may consider using flexbox

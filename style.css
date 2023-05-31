@@ -1,19 +1,47 @@
+body
+{
+    background-color: rgb(255, 0, 0);
+}
+
+#baseContainer
+{
+    display: grid;
+    grid-template-rows: auto auto;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+}
+
 #topBarGridContainer
 {
-    background-color: aqua;
+    grid-template-columns: auto auto auto;
+    display: grid;
+}
+
+#topBarTitleDiv
+{
+    background-color: rgb(253, 255, 227);
+}
+
+.topBarGridItem
+{
+    text-align: center;
+    background-color: azure;
+    padding: 5px;
+}
+
+#listContainer
+{
+    background-color: rgb(0, 255, 85);
     grid-template-columns: auto auto auto;
     display: grid;
     column-gap: 50px;
 }
 
-.topBarGridItem
-{
-    background-color: azure;
-}
-
 .userList
 {
-    background-color: aqua;
+    background-color: rgb(218, 255, 229);
     margin: 5px;
     padding: 5px;
 }
