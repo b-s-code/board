@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Board</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+
+    <div id="topBarGridContainer">
+        <div class="topBarGridItem">
+            <h3>Load board data</h3>
+            <input type="file" id="fileInputControl">
+        </div>
+        <div class="topBarGridItem">
+            <h1 align="center">B . O . A . R . D</h1>
+        </div>
+        <div class="topBarGridItem" id="saveControls">
+            <h3>Save board data</h3>
+            <button id="fileExportControl">Export</button>
+        </div>
+    </div>
+
+    <div id="listContainer"></div>
+
+    <div id="modalDownloadContainer">
+        <div id="modalDownloadContent">
+            <span id="modalDownloadCloseButton">&times;</span>
+            <p>Your data is ready for download.</p>
+            <a id="downloadLink" download="myBoardData.json" href="">
+              <button id="modalDownloadDownloadButton">Click here</button>
+            </a>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+  </body>
+</html>
