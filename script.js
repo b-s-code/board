@@ -33,16 +33,22 @@ document.addEventListener(
 
         listIds.forEach(id =>
         {
-            // TODO : I think this is kind of a dodgy way to do this...
-            // look othe ways of adding nodes e.g.
-            // https://www.w3schools.com/js/js_htmldom_nodes.asp 
-            let listDivParts = ['<div class="userList">List ', id.toString(), '\n</br>'];
-            listDivParts.push(userLists[id].name + '\n');
+            // Get data needed to build the div for the new list. 
+            const newListDiv = document.createElement("div");
+            const theList = userLists[id];
+            const listTitle = document.createTextNode(id.toString() + " : " + theList.name);
+            const postitionProperty = document.createTextNode("position property : " +    theList.position.toString());
+            const br = document.createElement("br");
+
+            // Build the div required for the new list.
+            // TODO : add cards
+            newListDiv.className = "userList";
+            newListDiv.appendChild(listTitle);
+            newListDiv.appendChild(br);
+            newListDiv.appendChild(postitionProperty);
             
-            
-            console.log(typeof(listDivParts));
-            listDivParts.push('</div>');
-            listContainer.innerHTML += listDivParts.join('');
+            // Div is good to go.
+            listContainer.appendChild(newListDiv);
         });
     },
     false
