@@ -20,8 +20,17 @@ document.addEventListener(
         const userCards = boardData.cards;
         const listIds = Object.keys(userLists);
         
-        // Empty container before filling it. 
-        listContainer.innerHTML = '';
+        // Empty container before filling it.
+        // Intentionally working with DOM here instead of setting list container's
+        // inner HTML to empty string.  Assuming that this is better
+        // practice w.r.t. not messing up the DOM tree.
+        let listNodes = document.getElementsByClassName("userList");
+        const numUserLists = listNodes.length;
+        for (let i = 0; i < numUserLists; i++)
+        {
+            listNodes[0].remove();
+        }; 
+
         listIds.forEach(id =>
         {
             // TODO : I think this is kind of a dodgy way to do this...
