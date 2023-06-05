@@ -46,6 +46,13 @@ body
     padding: 5px;
 }
 
+.userCard
+{
+    background-color: rgb(240, 255, 240);
+    margin: 5px;
+    padding: 5px;
+}
+
 #modalDownloadContainer
 {
     display: none; /* until changed */

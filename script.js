@@ -41,13 +41,33 @@ document.addEventListener(
             const br = document.createElement("br");
 
             // Build the div required for the new list.
-            // TODO : add cards
             newListDiv.className = "userList";
             newListDiv.appendChild(listTitle);
             newListDiv.appendChild(br);
             newListDiv.appendChild(postitionProperty);
+
+            // Add each relevant card to the list.
+            cardsForThisList = userLists[id].cardIds.map(i => userCards[i]);
+            cardsForThisList.forEach(AddCardNode);
             
-            // Div is good to go.
+            // Helper function.
+            function AddCardNode(card)
+            {
+                // Get data needed to build the div for the new card.
+                const newCardDiv = document.createElement("div");
+                const cardTitle = document.createTextNode(card.title);
+                
+                // Build the div required for the new card.
+                newCardDiv.className = "userCard";
+                newCardDiv.appendChild(cardTitle);
+                
+                // TODO : add more than just title from each card
+
+                // Card div is good to go.
+                newListDiv.appendChild(newCardDiv);
+            }
+            
+            // List div is good to go.
             listContainer.appendChild(newListDiv);
         });
     },
