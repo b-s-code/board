@@ -1,6 +1,7 @@
 body
 {
     background-color: rgb(255, 0, 0);
+    font-family: monospace;
 }
 
 #baseContainer
@@ -22,6 +23,9 @@ body
 #topBarTitleDiv
 {
     background-color: rgb(253, 255, 227);
+    font-family: serif;
+    font-weight: bold;
+    font-size: 17pt;
 }
 
 .topBarGridItem
@@ -29,6 +33,26 @@ body
     text-align: center;
     background-color: azure;
     padding: 5px;
+}
+
+.topBarButton {
+    font-weight: bold;
+    background-color: #dddddd;
+    display: block;
+    width: 80%;
+    height: 55%; /* tuned to vertically center the text */
+    text-align: center;
+    padding: 5px 0px; /* tuned to vertically center the button */
+    margin: auto;
+    border: 2px solid black;
+    border-bottom-width: 2px;
+    border-bottom-width: 4px;
+    cursor: pointer;
+}
+
+input[type="file"]
+{
+    display: none;
 }
 
 #listContainer

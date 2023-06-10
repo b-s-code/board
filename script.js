@@ -4,7 +4,7 @@
 var boardData = '{}';
 
 const uiOutdatedEvent = new Event("uiNeedsUpdate");
-const fileSelector = document.getElementById("fileInputControl");
+const fileSelector = document.getElementById("fileInputControlHidden");
 const saveControls = document.getElementById("saveControls");
 const fileExportControl = document.getElementById("fileExportControl");
 const listContainer = document.getElementById("listContainer");
