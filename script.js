@@ -58,7 +58,7 @@ document.addEventListener(
                 const cardTitle = document.createTextNode(card.title);
                 
                 // Build the div required for the new card.
-                newCardDiv.className = "userCard";
+                newCardDiv.className = "userCard rectDropButton";
                 newCardDiv.appendChild(cardTitle);
                 
                 // TODO : add more than just title from each card

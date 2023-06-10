@@ -11,14 +11,15 @@
     <!-- holds both top bar and lists -->
     <div id="baseContainer">
       <div id="topBarGridContainer">
-          <div class="topBarGridItem">
+          <!-- TODO : fix issue where label is clickable but small and button rectangle is not clickable, but big -->
+          <div class="topBarGridItem rectDropButton">
               <label for="fileInputControlHidden" class="topBarButton">Import</label>
               <input type="file" id="fileInputControlHidden">
           </div>
-          <div id="topBarTitleDiv" class="topBarGridItem">
-              <span align="center">B . O . A . R . D</span>
+          <div id="titleDiv" class="topBarGridItem rectDropButton">
+              <span id="titleSpan" class="topBarButton">B . O . A . R . D</span>
           </div>
-          <div class="topBarGridItem" id="saveControls">
+          <div class="topBarGridItem rectDropButton" id="saveControls">
               <span id="fileExportControl" class="topBarButton">Save</span>
           </div>
       </div>

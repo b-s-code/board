@@ -1,6 +1,6 @@
 body
 {
-    background-color: rgb(255, 0, 0);
+    background-color: #cccccc;
     font-family: monospace;
 }
 
@@ -20,34 +20,46 @@ body
     display: grid;
 }
 
-#topBarTitleDiv
-{
-    background-color: rgb(253, 255, 227);
-    font-family: serif;
-    font-weight: bold;
-    font-size: 17pt;
-}
-
 .topBarGridItem
 {
     text-align: center;
-    background-color: azure;
     padding: 5px;
 }
 
 .topBarButton {
     font-weight: bold;
-    background-color: #dddddd;
     display: block;
     width: 80%;
     height: 55%; /* tuned to vertically center the text */
     text-align: center;
     padding: 5px 0px; /* tuned to vertically center the button */
     margin: auto;
-    border: 2px solid black;
-    border-bottom-width: 2px;
+}
+
+.rectDropButton
+{
+    background-color: #dddddd;
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid #222222;
     border-bottom-width: 4px;
     cursor: pointer;
+}
+
+.rectDropButton:hover
+{
+    background-color: #ffffff;
+}
+
+#titleSpan
+{
+    background-color: yellow;
+}
+
+#titleDiv
+{
+    background-color: yellow;
+    cursor: auto;
 }
 
 input[type="file"]
@@ -57,24 +69,25 @@ input[type="file"]
 
 #listContainer
 {
-    background-color: rgb(0, 255, 85);
     grid-template-columns: auto auto auto;
     display: grid;
-    column-gap: 50px;
 }
 
 .userList
 {
-    background-color: rgb(218, 255, 229);
+    background-color: #eeeeee;
     margin: 5px;
     padding: 5px;
 }
 
 .userCard
 {
-    background-color: rgb(240, 255, 240);
+    background-color: #dddddd;
     margin: 5px;
     padding: 5px;
+    border: 2px solid #222222;
+    border-bottom-width: 4px;
+    cursor: pointer;
 }
 
 #modalDownloadContainer
