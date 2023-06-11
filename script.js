@@ -25,8 +25,8 @@ document.addEventListener(
         // inner HTML to empty string.  Assuming that this is better
         // practice w.r.t. not messing up the DOM tree.
         let listNodes = document.getElementsByClassName("userList");
-        const numUserLists = listNodes.length;
-        for (let i = 0; i < numUserLists; i++)
+        const oldNumUserLists = listNodes.length;
+        for (let i = 0; i < oldNumUserLists; i++)
         {
             listNodes[0].remove();
         }; 
@@ -70,6 +70,12 @@ document.addEventListener(
             // List div is good to go.
             listContainer.appendChild(newListDiv);
         });
+
+        // Now must set number of visual columns in list container.
+        // Could add 1 if, for example, placing a "new list" button to the right of the rightmost user list.
+        const newNumCols = listIds.length;
+        listContainer.style.gridTemplateColumns = " auto ".repeat(newNumCols);
+
     },
     false
 );
@@ -130,6 +136,3 @@ document.getElementById("downloadLink").addEventListener("click", (e) =>
 {
     document.getElementById("modalDownloadContainer").style.display = "none";
 });
-
-// TODO : make lists display horizontally such that num columns in listContainer is determined by number of lists
-// may consider using flexbox

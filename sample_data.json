@@ -8,7 +8,7 @@
             ]
         },
         "1": {
-            "name": "middle list name",
+            "name": "middle left list name",
             "position": 1,
             "cardIds": [
                 0,
@@ -16,10 +16,17 @@
             ]
         },
         "2": {
-            "name": "RHS list name",
+            "name": "middle right list name",
             "position": 2,
             "cardIds": [
                 0,
+                1
+            ]
+        },
+        "4": {
+            "name": "RHS list name",
+            "position": 3,
+            "cardIds": [
                 1
             ]
         }
