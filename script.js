@@ -63,6 +63,7 @@ document.addEventListener(
                 newCardDiv.appendChild(cardTitle);
                 
                 // TODO : improve label style.
+                // Consider making a css class for labels.
                 cardLabels.forEach(label =>
                 {
                     const newLabelDiv = document.createElement("div");
@@ -73,7 +74,6 @@ document.addEventListener(
 
                     newCardDiv.appendChild(newLabelDiv);
                 });
-
 
                 // Card div is good to go.
                 newListDiv.appendChild(newCardDiv);
