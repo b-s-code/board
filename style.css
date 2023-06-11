@@ -34,6 +34,7 @@ body
     text-align: center;
     padding: 5px 0px; /* tuned to vertically center the button */
     margin: auto;
+    cursor: pointer;
 }
 
 .rectDropButton
