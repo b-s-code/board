@@ -56,12 +56,24 @@ document.addEventListener(
                 // Get data needed to build the div for the new card.
                 const newCardDiv = document.createElement("div");
                 const cardTitle = document.createTextNode(card.title);
+                const cardLabels = card.attributes.labels;
                 
                 // Build the div required for the new card.
                 newCardDiv.className = "userCard rectDropButton";
                 newCardDiv.appendChild(cardTitle);
                 
-                // TODO : add more than just title from each card
+                // TODO : improve label style.
+                cardLabels.forEach(label =>
+                {
+                    const newLabelDiv = document.createElement("div");
+                    const labelText = document.createTextNode(label);
+                    newLabelDiv.appendChild(labelText);
+                    newLabelDiv.style.fontStyle = "italic";
+                    newLabelDiv.style.fontSize = "8pt";
+
+                    newCardDiv.appendChild(newLabelDiv);
+                });
+
 
                 // Card div is good to go.
                 newListDiv.appendChild(newCardDiv);
@@ -118,6 +130,7 @@ fileExportControl.addEventListener("click", (e) =>
     const exportData = new Blob([JSON.stringify(boardData)], {type: 'application/json'});
     const downloadURL = window.URL.createObjectURL(exportData);
     document.getElementById("downloadLink").href = downloadURL;
+    // TODO : implement a similar modal for displaying a user-selected card.
     document.getElementById("modalDownloadContainer").style.display = "block";
 });
 
