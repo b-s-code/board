@@ -94,7 +94,18 @@ document.addEventListener(
         // Could add 1 if, for example, placing a "new list" button to the right of the rightmost user list.
         const newNumCols = listIds.length;
         listContainer.style.gridTemplateColumns = " auto ".repeat(newNumCols);
-
+        
+        // Each card needs an event listener to display the same (shared) modal when clicked.
+        // No need to clean these up manually at start of function, the listeners die
+        // when the card element gets garbage collected.
+        let cardNodes = document.getElementsByClassName("userCard");
+        for (let i = 0; i < cardNodes.length; i++)
+        {
+            cardNodes[i].addEventListener("click", (e) =>
+            {
+                document.getElementById("modalCardContainer").style.display = "block";
+            });
+        }; 
     },
     false
 );
@@ -142,17 +153,27 @@ fileExportControl.addEventListener("click", (e) =>
 });
 
 /*
-* A user might change their mind about downloading their data.
-*/
-document.getElementById("modalDownloadCloseButton").addEventListener("click", (e) =>
-{
-    document.getElementById("modalDownloadContainer").style.display = "none";
-});
-
-/*
 * Download controls not needed once download starts.
 */
 document.getElementById("downloadLink").addEventListener("click", (e) =>
 {
     document.getElementById("modalDownloadContainer").style.display = "none";
 });
+
+/*
+* User should be able to close any modal.
+*/
+let modalCloseButtons = document.getElementsByClassName("modalCloseButton");
+for (let i = 0; i < modalCloseButtons.length; i++)
+{
+    modalCloseButtons[i].addEventListener("click", (e) =>
+    {
+        // TODO : See if can clean this up by modifying a parent element.
+
+        // A user may change their mind about downloading their data.      
+        document.getElementById("modalDownloadContainer").style.display = "none";
+        
+        // A user may wish to navigate away from looking at the modal for a card.      
+        document.getElementById("modalCardContainer").style.display = "none";
+    });
+}

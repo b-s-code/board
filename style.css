@@ -110,7 +110,10 @@ input[type="file"]
     display: grid;
 }
 
-#modalDownloadContainer
+/*
+* Does double duty as both a container div, and a transparent background.
+*/
+.modalContainer
 {
     display: none; /* until changed */
     position: fixed;
@@ -122,7 +125,7 @@ input[type="file"]
     background-color: rgba(0,0,0,0.6);
 }
 
-#modalDownloadContent
+.modalContent
 {
     margin: 15% auto;
     padding: 5px;
@@ -130,7 +133,7 @@ input[type="file"]
     background-color: white;
 }
 
-#modalDownloadCloseButton
+.modalCloseButton
 {
     float: right;
 }

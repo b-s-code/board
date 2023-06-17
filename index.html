@@ -27,16 +27,23 @@
       <div id="listContainer"></div>
     </div>
 
-    <div id="modalDownloadContainer">
-        <div id="modalDownloadContent">
-            <span id="modalDownloadCloseButton">&times;</span>
+    <div class="modalContainer" id="modalDownloadContainer">
+        <div class="modalContent" id="modalDownloadContent">
+            <span class="modalCloseButton">&times;</span>
             <p>Your data is ready for download.</p>
             <a id="downloadLink" download="myBoardData.json" href="">
               <button id="modalDownloadDownloadButton">Click here</button>
             </a>
         </div>
     </div>
-    
+
+    <div class="modalContainer" id="modalCardContainer">
+        <div class="modalContent" id="modalCardContent">
+            <span class="modalCloseButton">&times;</span>
+            <p>A card was clicked.</p>
+        </div>
+    </div>
+
     <script src="./script.js"></script>
   </body>
 </html>
