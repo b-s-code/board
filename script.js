@@ -103,6 +103,7 @@ document.addEventListener(
         {
             cardNodes[i].addEventListener("click", (e) =>
             {
+                // TODO : deploy new contents to modal card content from this cardNode.
                 document.getElementById("modalCardContainer").style.display = "block";
             });
         }; 
@@ -148,7 +149,6 @@ fileExportControl.addEventListener("click", (e) =>
     const exportData = new Blob([JSON.stringify(boardData)], {type: 'application/json'});
     const downloadURL = window.URL.createObjectURL(exportData);
     document.getElementById("downloadLink").href = downloadURL;
-    // TODO : implement a similar modal for displaying a user-selected card.
     document.getElementById("modalDownloadContainer").style.display = "block";
 });
 
