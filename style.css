@@ -91,6 +91,25 @@ input[type="file"]
     cursor: pointer;
 }
 
+.label
+{
+    font-size: 0.85em;
+    text-align: center;
+    background-color: yellow;
+    color: #222222;
+    margin: auto;
+    width: 80%;
+    padding: 1px;
+    border-radius: 9px;
+}
+
+.labelContainer
+{
+    margin-top: 5px;
+    grid-template-columns: auto auto auto;
+    display: grid;
+}
+
 #modalDownloadContainer
 {
     display: none; /* until changed */

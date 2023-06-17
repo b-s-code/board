@@ -30,6 +30,11 @@ document.addEventListener(
         {
             listNodes[0].remove();
         }; 
+        
+        // TODO : change loop over id's because it doesn't respect position property
+        // instead, could have a dict of { position : id } and loop over keys, looking up id
+        // as needed to get data for that list.
+        // Alternatively, could still loop over id's, but do some positoning logic...
 
         listIds.forEach(id =>
         {
@@ -61,19 +66,21 @@ document.addEventListener(
                 // Build the div required for the new card.
                 newCardDiv.className = "userCard rectDropButton";
                 newCardDiv.appendChild(cardTitle);
-                
-                // TODO : improve label style.
-                // Consider making a css class for labels.
+               
+                // The card's labels need to be shown too.
+                const newLabelContainerDiv = document.createElement("div");
+                newLabelContainerDiv.className = "labelContainer";
+                newLabelContainerDiv.style.gridTemplateColumns = " auto ".repeat(cardLabels.length);
                 cardLabels.forEach(label =>
                 {
                     const newLabelDiv = document.createElement("div");
                     const labelText = document.createTextNode(label);
                     newLabelDiv.appendChild(labelText);
-                    newLabelDiv.style.fontStyle = "italic";
-                    newLabelDiv.style.fontSize = "8pt";
+                    newLabelDiv.className = "label";
 
-                    newCardDiv.appendChild(newLabelDiv);
+                    newLabelContainerDiv.appendChild(newLabelDiv);
                 });
+                newCardDiv.appendChild(newLabelContainerDiv);
 
                 // Card div is good to go.
                 newListDiv.appendChild(newCardDiv);
