@@ -162,18 +162,15 @@ document.getElementById("downloadLink").addEventListener("click", (e) =>
 
 /*
 * User should be able to close any modal.
+* Can get away with only running this once because all user cards share the same modal.
 */
-let modalCloseButtons = document.getElementsByClassName("modalCloseButton");
-for (let i = 0; i < modalCloseButtons.length; i++)
+const modalCloseButtons = document.getElementsByClassName("modalCloseButton");
+[...modalCloseButtons].forEach(closeBtn => 
 {
-    modalCloseButtons[i].addEventListener("click", (e) =>
+    closeBtn.addEventListener("click", function (e) 
     {
         // TODO : See if can clean this up by modifying a parent element.
-
-        // A user may change their mind about downloading their data.      
-        document.getElementById("modalDownloadContainer").style.display = "none";
-        
-        // A user may wish to navigate away from looking at the modal for a card.      
-        document.getElementById("modalCardContainer").style.display = "none";
+        // User may wish to navigate away from looking at the modal for a card.      
+        this.parentNode.parentNode.style.display = "none";
     });
-}
+});
