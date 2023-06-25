@@ -11,23 +11,22 @@
             "name": "middle left list name",
             "position": 1,
             "cardIds": [
-                0,
-                1
+                1,
+                2
             ]
         },
         "2": {
             "name": "middle right list name",
             "position": 2,
             "cardIds": [
-                0,
-                1
+                3
             ]
         },
         "4": {
             "name": "RHS list name",
             "position": 3,
             "cardIds": [
-                1
+                4
             ]
         }
     },
@@ -53,6 +52,37 @@
                 ]
             },
             "notes": "some long, winding details on the thing represented by the second card"
+        },
+        "2": {
+            "title": "third card",
+            "attributes": {
+                "labels": [
+                    "label1",
+                    "label2",
+                    "label3"
+                ]
+            },
+            "notes": "some long, winding details on the thing represented by the third card"
+        },
+        "3": {
+            "title": "fourth card",
+            "attributes": {
+                "labels": [
+                    "label1"
+                ]
+            },
+            "notes": "some long, winding details on the thing represented by the fourth card"
+        },
+        "4": {
+            "title": "fifth card",
+            "attributes": {
+                "labels": [
+                    "apple",
+                    "orange",
+                    "banana"
+                ]
+            },
+            "notes": "some long, winding details on the thing represented by the fifth card"
         }
     }
 }
