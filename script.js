@@ -8,6 +8,7 @@ const fileSelector = document.getElementById("fileInputControlHidden");
 const saveControls = document.getElementById("saveControls");
 const fileExportControl = document.getElementById("fileExportControl");
 const listContainer = document.getElementById("listContainer");
+const modalCloseButtons = document.getElementsByClassName("modalCloseButton");
 
 /*
 * Updates UI from global boardData state, which is assumed to be up to date.
@@ -21,9 +22,6 @@ document.addEventListener(
         const listIds = Object.keys(userLists);
         
         // Empty container before filling it.
-        // Intentionally working with DOM here instead of setting list container's
-        // inner HTML to empty string.  Assuming that this is better
-        // practice w.r.t. not messing up the DOM tree.
         let listNodes = document.getElementsByClassName("userList");
         const oldNumUserLists = listNodes.length;
         for (let i = 0; i < oldNumUserLists; i++)
@@ -31,7 +29,7 @@ document.addEventListener(
             listNodes[0].remove();
         }; 
         
-        // TODO : change loop over id's because it doesn't respect position property
+        // TODO : change loop over list id's because it doesn't respect position property
         // instead, could have a dict of { position : id } and loop over keys, looking up id
         // as needed to get data for that list.
         // Alternatively, could still loop over id's, but do some positoning logic...
@@ -51,20 +49,25 @@ document.addEventListener(
             newListDiv.appendChild(br);
             newListDiv.appendChild(postitionProperty);
 
-            // Add each relevant card to the list.
-            cardsForThisList = userLists[id].cardIds.map(i => userCards[i]);
-            cardsForThisList.forEach(AddCardNode);
+            // Add each relevant card to the list, along with its ID number.
+            arrCardsForThisList = userLists[id].cardIds.map(i => [i, userCards[i]]);
+            arrCardsForThisList.forEach(AddCardNode);
             
             // Helper function.
-            function AddCardNode(card)
+            function AddCardNode(cardParts)
             {
                 // Get data needed to build the div for the new card.
-                const newCardDiv = document.createElement("div");
+                // The index of this card in the global state's card array is used so that the div
+                // can know about its backing data structure.
+                const cardId = cardParts[0];
+                const card = cardParts[1];
                 const cardTitle = document.createTextNode(card.title);
                 const cardLabels = card.attributes.labels;
                 
                 // Build the div required for the new card.
+                const newCardDiv = document.createElement("div");
                 newCardDiv.className = "userCard rectDropButton";
+                newCardDiv.id = "cardNumber" + cardId.toString();
                 newCardDiv.appendChild(cardTitle);
                
                 // The card's labels need to be shown too.
@@ -82,6 +85,25 @@ document.addEventListener(
                 });
                 newCardDiv.appendChild(newLabelContainerDiv);
 
+                // Each card needs an event listener to display the same (shared) modal when clicked.
+                // No need to clean these up manually, the listeners die
+                // when the card element gets garbage collected.
+                newCardDiv.addEventListener("click", (e) =>
+                {
+                    // Modal should be shown to focus a card's details when a card is clicked.
+                    document.getElementById("modalCardContainer").style.display = "block";
+
+                    // Delete full card div if and only if one already exists.
+                    let fullCards = document.getElementsByClassName("fullCard");
+                    if (fullCards.length > 0)
+                    {
+                        fullCards[0].remove();
+                    }
+                    
+                    // Inject div for card that user has clicked.
+                    document.getElementById("modalCardContent").appendChild(FullCard(cardId));
+                });
+
                 // Card div is good to go.
                 newListDiv.appendChild(newCardDiv);
             }
@@ -94,19 +116,6 @@ document.addEventListener(
         // Could add 1 if, for example, placing a "new list" button to the right of the rightmost user list.
         const newNumCols = listIds.length;
         listContainer.style.gridTemplateColumns = " auto ".repeat(newNumCols);
-        
-        // Each card needs an event listener to display the same (shared) modal when clicked.
-        // No need to clean these up manually at start of function, the listeners die
-        // when the card element gets garbage collected.
-        let cardNodes = document.getElementsByClassName("userCard");
-        for (let i = 0; i < cardNodes.length; i++)
-        {
-            cardNodes[i].addEventListener("click", (e) =>
-            {
-                // TODO : deploy new contents to modal card content from this cardNode.
-                document.getElementById("modalCardContainer").style.display = "block";
-            });
-        }; 
     },
     false
 );
@@ -164,13 +173,27 @@ document.getElementById("downloadLink").addEventListener("click", (e) =>
 * User should be able to close any modal.
 * Can get away with only running this once because all user cards share the same modal.
 */
-const modalCloseButtons = document.getElementsByClassName("modalCloseButton");
 [...modalCloseButtons].forEach(closeBtn => 
 {
     closeBtn.addEventListener("click", function (e) 
     {
-        // TODO : See if can clean this up by modifying a parent element.
         // User may wish to navigate away from looking at the modal for a card.      
         this.parentNode.parentNode.style.display = "none";
     });
 });
+
+/*
+* Returns a div containing most of the data available about the card with
+* the supplied card ID.  Not just the summary information that will be 
+* displayed when the cards are viewed in aggregate.  But everything that 
+* should be shown when this card is in focus.
+*/
+function FullCard(cardId)
+{
+    let outputDiv = document.createElement("div");
+    outputDiv.className = "fullCard";
+    const titleText = document.createTextNode(boardData.cards[cardId].title);
+    outputDiv.appendChild(titleText);
+    // TODO : deploy more data from card to modal content.
+    return outputDiv; 
+}
