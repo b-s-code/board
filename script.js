@@ -62,7 +62,6 @@ document.addEventListener(
                 const cardId = cardParts[0];
                 const card = cardParts[1];
                 const cardTitle = document.createTextNode(card.title);
-                const cardLabels = card.attributes.labels;
                 
                 // Build the div required for the new card.
                 const newCardDiv = document.createElement("div");
@@ -71,19 +70,7 @@ document.addEventListener(
                 newCardDiv.appendChild(cardTitle);
                
                 // The card's labels need to be shown too.
-                const newLabelContainerDiv = document.createElement("div");
-                newLabelContainerDiv.className = "labelContainer";
-                newLabelContainerDiv.style.gridTemplateColumns = " auto ".repeat(cardLabels.length);
-                cardLabels.forEach(label =>
-                {
-                    const newLabelDiv = document.createElement("div");
-                    const labelText = document.createTextNode(label);
-                    newLabelDiv.appendChild(labelText);
-                    newLabelDiv.className = "label";
-
-                    newLabelContainerDiv.appendChild(newLabelDiv);
-                });
-                newCardDiv.appendChild(newLabelContainerDiv);
+                newCardDiv.appendChild(GetLabels(cardId));
 
                 // Each card needs an event listener to display the same (shared) modal when clicked.
                 // No need to clean these up manually, the listeners die
@@ -197,14 +184,42 @@ function FullCard(cardId)
     outputDiv.className = "fullCard";
     const titleDiv = document.createElement("div");
     const titleText = document.createTextNode(card.title);
+    const labelDiv = GetLabels(cardId);
     const notesText = document.createTextNode(card.notes);
     titleDiv.appendChild(titleText);
     titleDiv.style.fontSize = "1.5em";
     titleDiv.style.fontWeight = "bold";
-    titleDiv.style.paddingBottom = "5px";
+    titleDiv.style.padding = "5px 0px 5px 0";
+    outputDiv.appendChild(labelDiv);
     outputDiv.appendChild(titleDiv);
     outputDiv.appendChild(notesText);
     // TODO : deploy more data from card to modal content.
+    // TODO : make modal full card interative.
 
     return outputDiv; 
+}
+
+/*
+* Returns a div containing the rendered labels of the card with supplied id.
+*/
+function GetLabels(cardId)
+{
+
+    // The data source for building the labels.
+    const card = boardData.cards[cardId];
+    const cardLabels = card.attributes.labels;
+
+    const newLabelContainerDiv = document.createElement("div");
+    newLabelContainerDiv.className = "labelContainer";
+    newLabelContainerDiv.style.gridTemplateColumns = " auto ".repeat(cardLabels.length);
+    cardLabels.forEach(label =>
+    {
+        const newLabelDiv = document.createElement("div");
+        const labelText = document.createTextNode(label);
+        newLabelDiv.appendChild(labelText);
+        newLabelDiv.className = "label";
+    
+        newLabelContainerDiv.appendChild(newLabelDiv);
+    });
+    return newLabelContainerDiv;
 }
