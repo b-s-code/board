@@ -91,7 +91,7 @@ document.addEventListener(
                 newCardDiv.addEventListener("click", (e) =>
                 {
                     // Modal should be shown to focus a card's details when a card is clicked.
-                    document.getElementById("modalCardContainer").style.display = "block";
+                    document.getElementById("modalCardContainer").style.display = "flex";
 
                     // Delete full card div if and only if one already exists.
                     let fullCards = document.getElementsByClassName("fullCard");

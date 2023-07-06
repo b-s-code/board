@@ -141,6 +141,13 @@ input[type="file"]
     border-bottom-width: 4px;
 }
 
+#modalCardContent
+{
+    margin: auto auto;
+    width: 75%;
+    height: 75%;
+}
+
 .modalCloseButton
 {
     float: right;
