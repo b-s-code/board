@@ -190,10 +190,21 @@ document.getElementById("downloadLink").addEventListener("click", (e) =>
 */
 function FullCard(cardId)
 {
+    // The data source for building the GUI full card.
+    const card = boardData.cards[cardId];
+    
     let outputDiv = document.createElement("div");
     outputDiv.className = "fullCard";
-    const titleText = document.createTextNode(boardData.cards[cardId].title);
-    outputDiv.appendChild(titleText);
+    const titleDiv = document.createElement("div");
+    const titleText = document.createTextNode(card.title);
+    const notesText = document.createTextNode(card.notes);
+    titleDiv.appendChild(titleText);
+    titleDiv.style.fontSize = "1.5em";
+    titleDiv.style.fontWeight = "bold";
+    titleDiv.style.paddingBottom = "5px";
+    outputDiv.appendChild(titleDiv);
+    outputDiv.appendChild(notesText);
     // TODO : deploy more data from card to modal content.
+
     return outputDiv; 
 }
