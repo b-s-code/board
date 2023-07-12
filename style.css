@@ -109,6 +109,16 @@ input[type="file"]
     border-bottom-width: 2px;
 }
 
+.labelOnFocusedCard:hover
+{
+    background-color: #dd9999;
+}
+
+.addLabelControlOnFocusedCard:hover
+{
+    background-color: #99dd99;
+}
+
 .labelContainer
 {
     margin-top: 5px;

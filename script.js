@@ -70,7 +70,7 @@ document.addEventListener(
                 newCardDiv.appendChild(cardTitle);
                
                 // The card's labels need to be shown too.
-                newCardDiv.appendChild(GetLabels(cardId));
+                newCardDiv.appendChild(RenderedLabels(cardId));
 
                 // Each card needs an event listener to display the same (shared) modal when clicked.
                 // No need to clean these up manually, the listeners die
@@ -184,7 +184,7 @@ function FullCard(cardId)
     outputDiv.className = "fullCard";
     const titleDiv = document.createElement("div");
     const titleText = document.createTextNode(card.title);
-    const labelDiv = GetLabels(cardId);
+    const labelDiv = RenderedLabels(cardId, true);
     const notesText = document.createTextNode(card.notes);
     titleDiv.appendChild(titleText);
     titleDiv.style.fontSize = "1.5em";
@@ -201,25 +201,57 @@ function FullCard(cardId)
 
 /*
 * Returns a div containing the rendered labels of the card with supplied id.
+* Optionally styles label container div differently and add's ability for user
+* to add remove labels.  Pass true for isCardInFocus for this behaviour.
 */
-function GetLabels(cardId)
+function RenderedLabels(cardId, isCardInFocus = false)
 {
-
     // The data source for building the labels.
     const card = boardData.cards[cardId];
     const cardLabels = card.attributes.labels;
 
     const newLabelContainerDiv = document.createElement("div");
     newLabelContainerDiv.className = "labelContainer";
-    newLabelContainerDiv.style.gridTemplateColumns = " auto ".repeat(cardLabels.length);
-    cardLabels.forEach(label =>
+    newLabelContainerDiv.style.gridTemplateColumns = " auto ".repeat(cardLabels.length + isCardInFocus);
+
+    // Helper function.  If a user tries to make a label labelled "+",
+    // they will encounter confusing behaviour, this string is reserved
+    // for the UI control for adding new labels.
+    function MakeLabel(isCardInFocus, label)
     {
         const newLabelDiv = document.createElement("div");
-        const labelText = document.createTextNode(label);
-        newLabelDiv.appendChild(labelText);
-        newLabelDiv.className = "label";
+        newLabelDiv.appendChild(document.createTextNode(label));
+        newLabelDiv.classList.add("label");
+
+        // We don't want labels to be interactive when user is in
+        // aggregate view of all lists.
+        if (isCardInFocus)
+        {
+            // TODO : add actual interactivity for adding deleting labels,
+            // currently just have gui hover effect.
+            if (label != "+")
+            {
+                newLabelDiv.classList.add("labelOnFocusedCard");
+            }
+            else
+            {
+                newLabelDiv.classList.add("addLabelControlOnFocusedCard");
+            }
+        }
     
         newLabelContainerDiv.appendChild(newLabelDiv);
+    }
+
+    let labelArr = cardLabels;
+    // We don't want the control for adding labels in aggregate view.
+    if (isCardInFocus)
+    {
+        labelArr.push("+");
+    }
+    labelArr.forEach(label =>
+    {
+        MakeLabel(isCardInFocus, label)
     });
+
     return newLabelContainerDiv;
 }
