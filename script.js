@@ -11,9 +11,33 @@ var boardState = {};
 */
 var appState = {guiViewMode = "welcome", focusedCardId = 0};
 
-/* TODO : sketch out events, handlers, initialization function */
+/* TODO : consider how render functions should strip children
+            of <body>, avoiding removal of <script>, assuming
+            that's important. */
 
 /*
+* The only custom event.
+* Raisers of this event should make any necessary changes to:
+*   - board state
+*   - app sate
+* then return.  I.e. no code needing to be executed appear
+* in any block where this is called, following the event raise.
+*/
+const OutdatedGUI = new Event("OutdatedGUI");
+
+/*
+* Call once to start the application. 
+*/
+function InitializeApp()
+{
+    // Set app state.  Raise outdated GUI event.
+    // Then render function will take over.
+    // No need to set board state here.
+}
+
+/*
+* Handles the OutdatedGUI event.
+* Responds by calling the appropriate rendering function based on app state.
 * Caller should set guiViewMode, then call this, which will call other
 * rendering functions as needed.
 * Why not call them directly?  This function takes responsibility for 
@@ -30,7 +54,13 @@ function Render()
 */
 function RenderWelcome()
 {
-    //
+    // Make button to construct new default board.
+
+    // Event handler for user choosing to proceed with new board.
+
+    // Make button to load board state from user's local file.
+    
+    // Event handler for user choosing to proceed with loaded board.
 }
 
 /*
@@ -194,3 +224,6 @@ function f()
 {
     //
 }
+
+InitializeApp();
+document.addEventListener("OutdatedGUI", Render);

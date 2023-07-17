@@ -8,41 +8,8 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <!-- holds both top bar and lists -->
-    <div id="baseContainer">
-      <div id="topBarGridContainer">
-          <!-- TODO : fix issue where label is clickable but small and button rectangle is not clickable, but big -->
-          <div class="topBarGridItem rectDropButton">
-              <label for="fileInputControlHidden" class="topBarButton">Import</label>
-              <input type="file" id="fileInputControlHidden">
-          </div>
-          <div id="titleDiv" class="topBarGridItem rectDropButton">
-              <span id="titleSpan" class="topBarButton">B . O . A . R . D</span>
-          </div>
-          <div class="topBarGridItem rectDropButton" id="saveControls">
-              <span id="fileExportControl" class="topBarButton">Save</span>
-          </div>
-      </div>
-
-      <div id="listContainer"></div>
-    </div>
-
-    <div class="modalContainer" id="modalDownloadContainer">
-        <div class="modalContent" id="modalDownloadContent">
-            <span class="modalCloseButton">&times;</span>
-            <p>Your data is ready for download.</p>
-            <a id="downloadLink" download="myBoardData.json" href="">
-              <button id="modalDownloadDownloadButton" class="rectDropButton">Click here</button>
-            </a>
-        </div>
-    </div>
-
-    <div class="modalContainer" id="modalCardContainer">
-        <div class="modalContent" id="modalCardContent">
-            <span class="modalCloseButton">&times;</span>
-        </div>
-    </div>
-
+    <!-- Need to consider that script is a child of body when
+            deleting elements from body -->
     <script src="./script.js"></script>
   </body>
 </html>
