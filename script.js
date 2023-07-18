@@ -9,11 +9,9 @@ var boardState = {};
 * Will not be imported or exported.
 * Intended guiViewMode space is "welcome", "aggregate", "focused", "download".
 */
-var appState = {guiViewMode = "welcome", focusedCardId = 0};
+var appState = {guiViewMode: "welcome", focusedCardId: 0};
 
-/* TODO : consider how render functions should strip children
-            of <body>, avoiding removal of <script>, assuming
-            that's important. */
+/* TODO : consider implementing RenderWelcome, InitializeApp next */
 
 /*
 * The only custom event.
@@ -45,6 +43,8 @@ function InitializeApp()
 */
 function Render()
 {
+    // Call StripBody.
+
     // if guiViewMode is "focused card", the aggregate view needs
     // to be rendered first to ensure background is up to date
 }
@@ -54,6 +54,8 @@ function Render()
 */
 function RenderWelcome()
 {
+    // Call StripBody.  Arguably redundant, but if an option to restart the app is added, this call is required.
+
     // Make button to construct new default board.
 
     // Event handler for user choosing to proceed with new board.
@@ -69,10 +71,13 @@ function RenderWelcome()
 * Provides controls for saving boardData to file,
 * adding/deleting/repositioning cards/lists,
 * renaming lists,
-* bringing one card into focus.
+* bringing one card into focus,
+* preparing board state for download.
 */
 function RenderAggregate()
 {
+    // Call StripBody.
+
     //
 }
 
@@ -85,6 +90,27 @@ function RenderAggregate()
 function RenderFocus()
 {
     //
+}
+
+/*
+* Renders a view which contains a user control for downloading board state,
+* exported as a file.
+*/
+function RenderDownload()
+{
+    //
+}
+
+/*
+* Removes all child elements of the <body> element, except for <script>.
+* Implementation relies on <script> being 0th child of <body>.
+*/
+function StripBody()
+{
+    while (document.getElementsByTagName("body")[0].children.length > 1)
+    {
+        document.getElementsByTagName("body")[0].children[1].remove();
+    } 
 }
 
 /*

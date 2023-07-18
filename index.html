@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <!-- Need to consider that script is a child of body when
-            deleting elements from body -->
+    <!-- Must remain 0th child of body so StripBody doesn't remove script. -->
     <script src="./script.js"></script>
   </body>
 </html>
