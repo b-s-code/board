@@ -9,9 +9,7 @@ var boardState = {};
 * Will not be imported or exported.
 * Intended guiViewMode space is "welcome", "aggregate", "focused", "download".
 */
-var appState = {guiViewMode: "welcome", focusedCardId: 0};
-
-/* TODO : consider implementing RenderWelcome, InitializeApp next */
+var appState = {guiViewMode: "", focusedCardId: 0};
 
 /*
 * The only custom event.
@@ -31,22 +29,46 @@ function InitializeApp()
     // Set app state.  Raise outdated GUI event.
     // Then render function will take over.
     // No need to set board state here.
+
+    appState.guiViewMode = "welcome";
+    document.dispatchEvent(OutdatedGUI);
 }
 
 /*
 * Handles the OutdatedGUI event.
-* Responds by calling the appropriate rendering function based on app state.
-* Caller should set guiViewMode, then call this, which will call other
-* rendering functions as needed.
-* Why not call them directly?  This function takes responsibility for 
-* ensuring they're called in correct order.
+* Responds by cleaning part of the DOM then calling the appropriate
+* rendering function(s), in the appropriate order based on app state.
+* Caller should set guiViewMode beforehand.
 */
 function Render()
 {
-    // Call StripBody.
-
-    // if guiViewMode is "focused card", the aggregate view needs
-    // to be rendered first to ensure background is up to date
+    // Ensure that we're rendering on a blank slate.
+    // (Except for <script>.)
+    StripBody();
+    
+    const mode = appState.guiViewMode;
+    switch(mode)
+    {
+        case "welcome":
+            RenderWelcome();
+            break;
+        case "aggregate":
+            RenderAggregate();
+            break;
+        case "focused":
+            // The aggregate view needs to be rendered first,
+            // to ensure the GUI background is up to date.
+            // This is only relevant because the aggregate view
+            // is partially visible from the focused view.
+            RenderAggregate();
+            RenderFocus();
+            break;
+        case "download":
+            RenderDownload();
+            break;
+        default:
+            throw "Invalid view mode in app state.";
+    }
 }
 
 /*
@@ -54,15 +76,27 @@ function Render()
 */
 function RenderWelcome()
 {
-    // Call StripBody.  Arguably redundant, but if an option to restart the app is added, this call is required.
+    // TODO : add style
 
-    // Make button to construct new default board.
+    var newBtn = document.createElement("div");
+    newBtn.append("New board");
+    newBtn.addEventListener("click", (e) =>
+    {
+        boardState = CreateBoard();
+        appState.guiViewMode = "aggregate";
+        document.dispatchEvent(OutdatedGUI);
+    });
 
-    // Event handler for user choosing to proceed with new board.
-
-    // Make button to load board state from user's local file.
+    var loadBtn = document.createElement("div");
+    loadBtn.append("Load board");
+    loadBtn.addEventListener("click", (e) =>
+    {
+        boardState = LoadBoard();
+        appState.guiViewMode = "aggregate";
+        document.dispatchEvent(OutdatedGUI);
+    });
     
-    // Event handler for user choosing to proceed with loaded board.
+    document.getElementsByTagName("body")[0].append(newBtn, loadBtn);
 }
 
 /*
@@ -76,8 +110,6 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-    // Call StripBody.
-
     //
 }
 
@@ -123,11 +155,12 @@ function ExportBoard(boardData)
 }
 
 /*
+* Opens a file selector.  Returns a board state.
 * Called when user clicks button to load existing board data from file.
 */
 function LoadBoard()
 {
-    //
+    // TODO : implement
 }
 
 /*
@@ -136,7 +169,7 @@ function LoadBoard()
 */
 function CreateBoard()
 {
-    //
+    // TODO : implement
 }
 
 /*
@@ -251,5 +284,7 @@ function f()
     //
 }
 
-InitializeApp();
+// Render needs to be prepared to respond to this event before
+// InitializeApp raises it.
 document.addEventListener("OutdatedGUI", Render);
+InitializeApp();
