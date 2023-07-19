@@ -87,16 +87,60 @@ function RenderWelcome()
         document.dispatchEvent(OutdatedGUI);
     });
 
+    // Wraps div representing load button and an
+    // invisble file input control together.
+    var loadBtnWrapper = document.createElement("div");
+    
     var loadBtn = document.createElement("div");
-    loadBtn.append("Load board");
-    loadBtn.addEventListener("click", (e) =>
+    var fileInput = document.createElement("input");
+
+    loadBtn.append("Load Board");
+    fileInput.type = "file"
+    fileInput.style.display = "block";
+    fileInput.style.position = "absolute";
+    fileInput.style.top = "0";
+    fileInput.style.right = "0";
+    fileInput.style.opacity = "0";
+    // Dirty hack to solve previous issue where clickable area
+    // was smaller than desired.
+    // See https://stackoverflow.com/questions/21842274/cross-browser-custom-styling-for-file-upload-button/21842275#21842275
+    fileInput.style.fontSize = "100px";
+    fileInput.style.filter = "alpha(opacity=0)";
+    fileInput.style.cursor = "pointer";
+    loadBtnWrapper.style.position = "relative";
+    loadBtnWrapper.style.overflow = "hidden";
+    loadBtnWrapper.style.float = "left";
+    loadBtnWrapper.style.clear = "left";
+    loadBtnWrapper.append(loadBtn, fileInput);
+
+    fileInput.addEventListener("change", (e) =>
     {
-        boardState = LoadBoard();
+        const file = fileInput.files[0]
+        if (!file)
+        {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) =>
+        {
+            // e.target points to the reader
+            const fileContents = e.target.result;
+            boardState = JSON.parse(fileContents);
+        }
+        reader.onerror = (e) =>
+        {
+            const error = e.target.error;
+            // TODO : consider whether want to report this differently.
+            console.error(`Error occured while reading ${file.name}`, error);
+        }
+
+        reader.readAsText(file);
         appState.guiViewMode = "aggregate";
         document.dispatchEvent(OutdatedGUI);
     });
     
-    document.getElementsByTagName("body")[0].append(newBtn, loadBtn);
+    document.getElementsByTagName("body")[0].append(newBtn, loadBtnWrapper);
 }
 
 /*
@@ -152,15 +196,6 @@ function StripBody()
 function ExportBoard(boardData)
 {
     //
-}
-
-/*
-* Opens a file selector.  Returns a board state.
-* Called when user clicks button to load existing board data from file.
-*/
-function LoadBoard()
-{
-    // TODO : implement
 }
 
 /*
