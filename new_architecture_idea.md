@@ -24,6 +24,20 @@ struct BoardStateModel
 }
 ```
 
+```typescript
+interface BoardState
+{
+    cardsIds : number[],
+    cardsTitles : string[],
+    cardsNotes : string[],
+    cardsLables : string[][],
+    listsIds : number[],
+    listsTitles : string[],
+    listsCards : number[][],
+    listsPositions : number[]
+}
+```
+
 ```pseudocode
 struct AppStateModel
 {
