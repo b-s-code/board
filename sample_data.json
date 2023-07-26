@@ -42,7 +42,7 @@
             "non-barking"
         ]
     ],
-    "listsId" : [0, 1, 2, 3],
+    "listsIds" : [0, 1, 2, 3],
     "listsTitles" : ["Left", "L Mid", "R Mid", "Right"],
     "listsCards" :
     [

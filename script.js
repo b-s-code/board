@@ -311,14 +311,6 @@ function ChangeCardNotes(board, cardId, newNotes)
     //
 }
 
-/*
-*
-*/
-function f()
-{
-    //
-}
-
 // Render needs to be prepared to respond to this event before
 // InitializeApp raises it.
 document.addEventListener("OutdatedGUI", Render);
