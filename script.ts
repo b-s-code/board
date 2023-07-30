@@ -1,9 +1,82 @@
+interface BoardState
+{
+    cardsIds : number[],
+    cardsTitles : string[],
+    cardsNotes : string[],
+    cardsLabels : string[][],
+    listsIds : number[],
+    listsTitles : string[],
+    listsCards : number[][],
+    listsPositions : number[]
+}
+
+/*
+* Don't need to have a class and constructor because this can be used
+* for default construction.
+*/
+const DefaultBoardState: BoardState =
+{
+    cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
+    cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
+    cardsLabels :
+    [
+        [
+            "red",
+            "crunchy"
+        ],
+        [
+            "orange",
+            "citrus"
+        ],
+        [
+            "yellow",
+            "brown",
+            "green"
+        ],
+        [
+            "green",
+            "crunchy"
+        ],
+        [
+            "soft",
+            "warm coloured"
+        ],
+        [
+            "green",
+            "crunchy"
+        ],
+        [
+            "barking animal",
+            "likable"
+        ],
+        [
+            "non-barking",
+            "unable to fly"
+        ],
+        [
+            "capable of flight",
+            "non-barking"
+        ]
+    ],
+    listsIds : [0, 1, 2, 3],
+    listsTitles : ["Left", "L Mid", "R Mid", "Right"],
+    listsCards :
+    [
+        [0, 1],
+        [2],
+        [3, 4],
+        [5, 6, 7]
+    ],
+    listsPositions : [0, 1, 2, 3]
+}
+
 /*
 * Holds state of the user's board.
 * Can be imported and exported as file.
 * Can be auto-populated as a blank canvas for  new board.
 */
-var boardState = {};
+var boardState: BoardState = DefaultBoardState;
 
 /*
 * Will not be imported or exported.
@@ -115,7 +188,15 @@ function RenderWelcome()
 
     fileInput.addEventListener("change", (e) =>
     {
+        // null check
+        if  (!(fileInput.files))
+        {
+            return;
+        }
+
         const file = fileInput.files[0]
+        
+        // null check
         if (!file)
         {
             return;
@@ -125,11 +206,23 @@ function RenderWelcome()
         reader.onload = (e) =>
         {
             // e.target points to the reader
-            const fileContents = e.target.result;
+            
+            // null check
+            if  (!(e.target))
+            {
+                return;
+            }
+            const fileContents: any = e.target.result;
             boardState = JSON.parse(fileContents);
         }
         reader.onerror = (e) =>
         {
+            // null check
+            if (!(e.target))
+            {
+                return;
+            }
+            
             const error = e.target.error;
             // TODO : consider whether want to report this differently.
             console.error(`Error occured while reading ${file.name}`, error);
@@ -193,7 +286,7 @@ function StripBody()
 * Called when user clicks button to download their board data.
 * Serializes boardData to a JSON text file and initiates download.
 */
-function ExportBoard(boardData)
+function ExportBoard(board: BoardState)
 {
     //
 }
@@ -202,9 +295,13 @@ function ExportBoard(boardData)
 * Returns a relatively empty board data object which can be assigned to boardData.
 * Called when user clicks button to create a new board.
 */
-function CreateBoard()
+function CreateBoard(): BoardState
 {
     // TODO : implement
+
+    // TODO : remove this dummy return value which is preventing a
+    // compiler warning
+    return DefaultBoardState
 }
 
 /*
@@ -214,7 +311,7 @@ function CreateBoard()
 * given card's current position.
 * dir can be "up", "down", "left", or "right".
 */
-function MoveCard(board, cardId, dir)
+function MoveCard(board: BoardState, cardId: number, dir: string)
 {
     //
 }
@@ -226,7 +323,7 @@ function MoveCard(board, cardId, dir)
 * given list's current position.
 * dir can be "left" or "right".
 */
-function MoveList(board, listId, dir)
+function MoveList(board: BoardState, listId: number, dir: string)
 {
     //
 }
@@ -236,7 +333,7 @@ function MoveList(board, listId, dir)
 * Returns a new board, with one new card at the end of the list with given listId.
 * Chooses default values for the card's properties.
 */
-function AddCard(board, listId)
+function AddCard(board: BoardState, listId: number)
 {
     //
 }
@@ -246,7 +343,7 @@ function AddCard(board, listId)
 * Returns a new board, with one new list in rightmost position.
 * Chooses default values for the card's properties.
 */
-function AddList(board)
+function AddList(board: BoardState)
 {
     //
 }
@@ -255,7 +352,7 @@ function AddList(board)
 * Pure function.
 * Returns a new board, with the card with given cardId removed.
 */
-function DeleteCard(board, cardId)
+function DeleteCard(board: BoardState, cardId: number)
 {
     //
 }
@@ -264,7 +361,7 @@ function DeleteCard(board, cardId)
 * Pure function.
 * Returns a new board, with the list with given listId removed.
 */
-function DeleteList(board, listId)
+function DeleteList(board: BoardState, listId: number)
 {
     //
 }
@@ -274,7 +371,7 @@ function DeleteList(board, listId)
 * Returns a new board, where the card with supplied cardId is assigned
 * the new title newTitle.
 */
-function RenameCard(board, cardId, newTitle)
+function RenameCard(board: BoardState, cardId: number, newTitle: string)
 {
     //
 }
@@ -284,7 +381,7 @@ function RenameCard(board, cardId, newTitle)
 * Returns a new board, where the list with supplied listId is assigned
 * the new title newTitle.
 */
-function RenameList(board, listId, newTitle)
+function RenameList(board: BoardState, listId: number, newTitle: string)
 {
     //
 }
@@ -296,7 +393,7 @@ function RenameList(board, listId, newTitle)
 * Can be used for adding/deleting/renaming a label.
 * Chooses a default name for new labels.
 */
-function ChangeCardLabels(board, cardId, newLabels)
+function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
     //
 }
@@ -306,7 +403,7 @@ function ChangeCardLabels(board, cardId, newLabels)
 * Returns a new board, where the card with supplied cardId is assigned
 * the new notes string newNote.
 */
-function ChangeCardNotes(board, cardId, newNotes)
+function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
 {
     //
 }
