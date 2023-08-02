@@ -1,6 +1,18 @@
 # Board
 A task board.
 
+### Building
+
+#### Setting up build environment
+
+- Have node, npm and installed.
+- Run `npm install`.
+
+#### Actually building
+
+Run the typsecript compiler from root of repo; `tsc`.
+
+
 ### Running the app
 
 `$ ./run.sh`

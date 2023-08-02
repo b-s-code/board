@@ -14,7 +14,47 @@ interface BoardState
 * Don't need to have a class and constructor because this can be used
 * for default construction.
 */
-const DefaultBoardState: BoardState =
+const EmptyBoard: BoardState =
+{
+    cardsIds : [],
+    cardsTitles : [],
+    cardsNotes : [],
+    cardsLabels : [],
+    listsIds : [],
+    listsTitles : [],
+    listsCards : [],
+    listsPositions : []
+}
+
+/*
+* The non-empty template board that will be used when user
+* creates a new board.
+*/
+const BlankCanvasBoard: BoardState =
+{
+    cardsIds : [0],
+    cardsTitles : ["..."],
+    cardsNotes : ["..."],
+    cardsLabels :
+    [
+        [
+            "..."
+        ]
+    ],
+    listsIds : [0, 1],
+    listsTitles : ["...", "..."],
+    listsCards :
+    [
+        [0],
+        []
+    ],
+    listsPositions : [0, 1]
+}
+
+/*
+* For tests.
+*/
+const SampleBoardState: BoardState =
 {
     cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
     cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
@@ -76,7 +116,7 @@ const DefaultBoardState: BoardState =
 * Can be imported and exported as file.
 * Can be auto-populated as a blank canvas for  new board.
 */
-var boardState: BoardState = DefaultBoardState;
+var boardState: BoardState = EmptyBoard;
 
 /*
 * Will not be imported or exported.
@@ -99,11 +139,13 @@ const OutdatedGUI = new Event("OutdatedGUI");
 */
 function InitializeApp()
 {
-    // Set app state.  Raise outdated GUI event.
+    // Set app state.
+    // Raise outdated GUI event.
     // Then render function will take over.
     // No need to set board state here.
 
     appState.guiViewMode = "welcome";
+
     document.dispatchEvent(OutdatedGUI);
 }
 
@@ -155,7 +197,7 @@ function RenderWelcome()
     newBtn.append("New board");
     newBtn.addEventListener("click", (e) =>
     {
-        boardState = CreateBoard();
+        boardState = BlankCanvasBoard;
         appState.guiViewMode = "aggregate";
         document.dispatchEvent(OutdatedGUI);
     });
@@ -188,15 +230,12 @@ function RenderWelcome()
 
     fileInput.addEventListener("change", (e) =>
     {
-        // null check
         if  (!(fileInput.files))
         {
             return;
         }
 
         const file = fileInput.files[0]
-        
-        // null check
         if (!file)
         {
             return;
@@ -206,26 +245,19 @@ function RenderWelcome()
         reader.onload = (e) =>
         {
             // e.target points to the reader
-            
-            // null check
-            if  (!(e.target))
+            if  (e.target)
             {
-                return;
+                const fileContents: any = e.target.result;
+                boardState = JSON.parse(fileContents);
             }
-            const fileContents: any = e.target.result;
-            boardState = JSON.parse(fileContents);
         }
         reader.onerror = (e) =>
         {
-            // null check
-            if (!(e.target))
+            if (e.target)
             {
-                return;
+                const error = e.target.error;
+                console.error(`Error occured while reading ${file.name}`, error);
             }
-            
-            const error = e.target.error;
-            // TODO : consider whether want to report this differently.
-            console.error(`Error occured while reading ${file.name}`, error);
         }
 
         reader.readAsText(file);
@@ -272,13 +304,16 @@ function RenderDownload()
 
 /*
 * Removes all child elements of the <body> element, except for <script>.
-* Implementation relies on <script> being 0th child of <body>.
+* Implementation relies on <script>s preceding all other children of <body>.
 */
 function StripBody()
 {
-    while (document.getElementsByTagName("body")[0].children.length > 1)
+    // Count up scripts in the DOM so they don't get removed.
+    let numScripts = document.getElementsByTagName("script").length;
+    
+    while (document.getElementsByTagName("body")[0].children.length > numScripts)
     {
-        document.getElementsByTagName("body")[0].children[1].remove();
+        document.getElementsByTagName("body")[0].children[numScripts].remove();
     } 
 }
 
@@ -289,19 +324,6 @@ function StripBody()
 function ExportBoard(board: BoardState)
 {
     //
-}
-
-/*
-* Returns a relatively empty board data object which can be assigned to boardData.
-* Called when user clicks button to create a new board.
-*/
-function CreateBoard(): BoardState
-{
-    // TODO : implement
-
-    // TODO : remove this dummy return value which is preventing a
-    // compiler warning
-    return DefaultBoardState
 }
 
 /*
