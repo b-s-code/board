@@ -19,5 +19,11 @@ Run the typsecript compiler from root of repo; `tsc`.
 ### Running the app
 
 `$ ./run.sh`
-
 May need to customize to use your browser, or a preferred port.
+
+To kill server afterwards:
+
+- Run `lsof -i :8000`.
+- Identify PID of server.
+- Kill the relevant process.
+
