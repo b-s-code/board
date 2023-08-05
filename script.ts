@@ -1,4 +1,4 @@
-interface BoardState
+export interface BoardState
 {
     cardsIds : number[],
     cardsTitles : string[],
@@ -309,6 +309,8 @@ function RenderDownload()
 function StripBody()
 {
     // Count up scripts in the DOM so they don't get removed.
+    // Better than maintaining a magic number in code each time the
+    // number of <script> tags in the HTML changes.
     let numScripts = document.getElementsByTagName("script").length;
     
     while (document.getElementsByTagName("body")[0].children.length > numScripts)
