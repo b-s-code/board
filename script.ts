@@ -8,7 +8,7 @@ export interface BoardState
     listsTitles : string[],
     listsCards : number[][],
     listsPositions : number[]
-}
+};
 
 /*
 * Don't need to have a class and constructor because this can be used
@@ -24,7 +24,7 @@ const EmptyBoard: BoardState =
     listsTitles : [],
     listsCards : [],
     listsPositions : []
-}
+};
 
 /*
 * The non-empty template board that will be used when user
@@ -49,12 +49,12 @@ const BlankCanvasBoard: BoardState =
         []
     ],
     listsPositions : [0, 1]
-}
+};
 
 /*
 * For tests.
 */
-const SampleBoardState: BoardState =
+export const SampleBoardState: BoardState =
 {
     cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
     cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
@@ -109,7 +109,7 @@ const SampleBoardState: BoardState =
         [5, 6, 7]
     ],
     listsPositions : [0, 1, 2, 3]
-}
+};
 
 /*
 * Holds state of the user's board.
@@ -335,9 +335,10 @@ function ExportBoard(board: BoardState)
 * given card's current position.
 * dir can be "up", "down", "left", or "right".
 */
-function MoveCard(board: BoardState, cardId: number, dir: string)
+export function MoveCard(board: BoardState, cardId: number, dir: string): BoardState
 {
-    //
+    // TODO : Write tests for and implement this function.
+    return board;
 }
 
 /*
