@@ -3,15 +3,18 @@ A task board.
 
 ### Building
 
-#### Setting up build environment
+#### Setting up dev environment
 
-- Have node, npm and installed.
+- Have node, npm and typescript compiler installed.
 - Run `npm install`.
 
 #### Actually building
 
 Run the typsecript compiler from root of repo; `tsc`.
 
+#### Running tests
+
+`npm test`
 
 ### Running the app
 
