@@ -13,7 +13,8 @@ describe('Card movement', () =>
 {
   test('Invalid movement does no harm', () => 
   {
-    expect(MoveCard(SampleBoardState, 0, "up")).toEqual(SampleBoardState);
+    var expectedOutput: BoardState = {...SampleBoardState};
+    expect(MoveCard(SampleBoardState, 0, "up")).toEqual(expectedOutput);
   });
   test('Move left', () => 
   {
