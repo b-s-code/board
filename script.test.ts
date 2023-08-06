@@ -13,62 +13,23 @@ describe('Card movement', () =>
 {
   test('Invalid movement does no harm', () => 
   {
-    const expectedOutput: BoardState = 
-    {
-        cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
-        cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
-        cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
-        cardsLabels :
-        [
-            [
-                "red",
-                "crunchy"
-            ],
-            [
-                "orange",
-                "citrus"
-            ],
-            [
-                "yellow",
-                "brown",
-                "green"
-            ],
-            [
-                "green",
-                "crunchy"
-            ],
-            [
-                "soft",
-                "warm coloured"
-            ],
-            [
-                "green",
-                "crunchy"
-            ],
-            [
-                "barking animal",
-                "likable"
-            ],
-            [
-                "non-barking",
-                "unable to fly"
-            ],
-            [
-                "capable of flight",
-                "non-barking"
-            ]
-        ],
-        listsIds : [0, 1, 2, 3],
-        listsTitles : ["Left", "L Mid", "R Mid", "Right"],
-        listsCards :
-        [
-            [0, 1],
-            [2],
-            [3, 4],
-            [5, 6, 7]
-        ],
-        listsPositions : [0, 1, 2, 3]
-    };
-    expect(MoveCard(SampleBoardState, 0, "up")).toEqual(expectedOutput);
+    expect(MoveCard(SampleBoardState, 0, "up")).toEqual(SampleBoardState);
+  });
+  test('Move left', () => 
+  {
+    // Need to use spread operator to get a copy of
+    // SampleBoardState, else it's vulnerable to
+    // mutation since objects are references in JS.
+    var expectedOutput: BoardState = {...SampleBoardState};
+    expectedOutput.listsCards = 
+    [
+        [0, 1],
+        [2, 3], /* Have decided when a card is moved
+                   to a new list, it should be made
+                   the final card. */
+        [4],
+        [5, 6, 7]
+    ];
+    expect(MoveCard(SampleBoardState, 3, "left")).toEqual(expectedOutput);
   });
 });
