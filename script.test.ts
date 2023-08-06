@@ -16,11 +16,13 @@ describe('Card movement', () =>
     const expectedOutput: BoardState = {...SampleBoardState};
     expect(MoveCard(SampleBoardState, 0, "left")).toEqual(expectedOutput);
   });
+  
   test('Invalid vert. movement does no harm', () => 
   {
     const expectedOutput: BoardState = {...SampleBoardState};
     expect(MoveCard(SampleBoardState, 0, "up")).toEqual(expectedOutput);
   });
+  
   test('Move left', () => 
   {
     // Need to use spread operator to get a copy of
@@ -43,6 +45,7 @@ describe('Card movement', () =>
     ];
     expect(MoveCard(SampleBoardState, 6, "left")).toEqual(expectedOutput);
   });
+  
   test('Move right', () => 
   {
     var expectedOutput: BoardState = {...SampleBoardState};
@@ -58,5 +61,31 @@ describe('Card movement', () =>
         [5, 6, 7]
     ];
     expect(MoveCard(SampleBoardState, 1, "right")).toEqual(expectedOutput);
+  });
+  
+  test('Move up', () => 
+  {
+    var expectedOutput: BoardState = {...SampleBoardState};
+    expectedOutput.listsCards = 
+    [
+        [0, 1],
+        [2],
+        [4, 3],
+        [6, 5, 7]
+    ];
+    expect(MoveCard(SampleBoardState, 6, "up")).toEqual(expectedOutput);
+  });
+  
+  test('Move down', () => 
+  {
+    var expectedOutput: BoardState = {...SampleBoardState};
+    expectedOutput.listsCards = 
+    [
+        [0, 1],
+        [2],
+        [4, 3],
+        [5, 7, 6]
+    ];
+    expect(MoveCard(SampleBoardState, 6, "down")).toEqual(expectedOutput);
   });
 });
