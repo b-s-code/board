@@ -75,7 +75,7 @@ describe('Card movement', () =>
     [
         [0, 1],
         [2],
-        [4, 3],
+        [3, 4],
         [6, 5, 7]
     ];
     expect(MoveCard(SampleBoardState, 6, "up")).toEqual(expectedOutput);
@@ -88,7 +88,7 @@ describe('Card movement', () =>
     [
         [0, 1],
         [2],
-        [4, 3],
+        [3, 4],
         [5, 7, 6]
     ];
     expect(MoveCard(SampleBoardState, 6, "down")).toEqual(expectedOutput);
