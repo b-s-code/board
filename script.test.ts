@@ -15,12 +15,14 @@ describe('Card movement', () =>
   {
     const expectedOutput: BoardState = {...SampleBoardState};
     expect(MoveCard(SampleBoardState, 0, "left")).toEqual(expectedOutput);
+    expect(MoveCard(SampleBoardState, 5, "right")).toEqual(expectedOutput);
   });
   
   test('Invalid vert. movement does no harm', () => 
   {
     const expectedOutput: BoardState = {...SampleBoardState};
     expect(MoveCard(SampleBoardState, 0, "up")).toEqual(expectedOutput);
+    expect(MoveCard(SampleBoardState, 1, "down")).toEqual(expectedOutput);
   });
   
   test('Move left', () => 
@@ -35,11 +37,14 @@ describe('Card movement', () =>
     // sequnce as the value of listPositions...
     expectedOutput.listsCards = 
     [
+        /*
+        * When a card is moved
+        * to a new list, it should be moved
+        * to same vert. pos. if possible, else
+        * made the final card.
+        */
         [0, 1],
-        [2], /* Have decided when a card is moved
-                   to a new list, it should be moved
-                   to same vert. pos. if possible, else
-                   made the final card. */
+        [2], 
         [3, 6, 4],
         [5, 7]
     ];
