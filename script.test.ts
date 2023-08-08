@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import {describe, expect, test} from '@jest/globals';
+var cloneDeep = require('lodash.clonedeep');
 import
 {
     BoardState,

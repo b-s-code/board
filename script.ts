@@ -1,3 +1,5 @@
+var cloneDeep = require('lodash.clonedeep');
+
 export interface BoardState
 {
     cardsIds : number[],
@@ -343,7 +345,7 @@ function ExportBoard(board: BoardState)
 */
 export function MoveCard(board: BoardState, cardId: number, dir: string): BoardState
 {
-    const boardCopy: BoardState = {...board};
+    const boardCopy: BoardState = cloneDeep(board);
     // Need some details about the list that the card comes from.
     const sourceListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsCards[listId].includes(cardId))[0];
     const sourceListCards: number[] = boardCopy.listsCards[sourceListId];
@@ -395,7 +397,7 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
     }
 
     // Assume now that move is indeed possible.
-    var resultBoard: BoardState = {...boardCopy};
+    const resultBoard: BoardState = cloneDeep(boardCopy);
     switch (dir)
     {
         // Source list === destination list when moving vertically.
