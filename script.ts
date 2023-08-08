@@ -471,10 +471,50 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
 */
 export function MoveList(board: BoardState, listId: number, dir: string): BoardState
 {
-    // TODO : implement this, get tests passing.
+    const resultBoard: BoardState = cloneDeep(board);
+    const origPos: number = board.listsPositions[listId];
 
-    // Dummy return value to make tsc happy.
-    return EmptyBoard;
+    // Don't modify board state if rightmost list is being moved right.
+    const rightmost: number = Math.max(...board.listsPositions);
+    if (dir === "right" && origPos === rightmost)
+    {
+        return resultBoard;
+    }
+    
+    // Don't modify board state if leftmost list is being moved left.
+    const leftmost: number = Math.min(...board.listsPositions);
+    if (dir === "left" && origPos === leftmost)
+    {
+        return resultBoard;
+    }
+
+    // Can assume now that a valid movement has been specified.
+    switch (dir)
+    {
+        case "left":
+            {
+                // Prepare for swap.
+                const otherSwappeeOrigPos: number = origPos - 1;  
+                const otherSwappeeId: number = board.listsIds.filter((id) => board.listsPositions[id] === otherSwappeeOrigPos)[0];
+                
+                // Execute swap.
+                resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
+                resultBoard.listsPositions[otherSwappeeId] = origPos;
+            }
+            break;
+        case "right":
+            {
+                // Prepare for swap.
+                const otherSwappeeOrigPos: number = origPos + 1;  
+                const otherSwappeeId: number = board.listsIds.filter((id) => board.listsPositions[id] === otherSwappeeOrigPos)[0];
+                
+                // Execute swap.
+                resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
+                resultBoard.listsPositions[otherSwappeeId] = origPos;
+            }
+            break;
+    }
+    return resultBoard;
 }
 
 /*
