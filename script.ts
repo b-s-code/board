@@ -346,6 +346,7 @@ function ExportBoard(board: BoardState)
 export function MoveCard(board: BoardState, cardId: number, dir: string): BoardState
 {
     const boardCopy: BoardState = cloneDeep(board);
+
     // Need some details about the list that the card comes from.
     const sourceListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsCards[listId].includes(cardId))[0];
     const sourceListCards: number[] = boardCopy.listsCards[sourceListId];
@@ -403,7 +404,7 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
         // Source list === destination list when moving vertically.
 
         case "up":
-            {
+            { // Scopes used so sourcePos, destPos can be redefined.
                 const sourcePos: number = cardPosInSourceList;
                 const destPos: number = cardPosInSourceList - 1;
 
@@ -440,7 +441,6 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
                 // Insert supplied card id into destination list.
                 const destPos: number = Math.min(boardCopy.listsCards[destListId].length, cardPosInSourceList);
                 resultBoard.listsCards[destListId].splice(destPos, 0, cardId);
-    return resultBoard;
             }
             break;
         case "right":
@@ -455,7 +455,6 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
                 // Insert supplied card id into destination list.
                 const destPos: number = Math.min(boardCopy.listsCards[destListId].length, cardPosInSourceList);
                 resultBoard.listsCards[destListId].splice(destPos, 0, cardId);
-    return resultBoard;
             }
             break;
     }
