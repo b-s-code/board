@@ -62,7 +62,7 @@ describe('Card movement', () =>
     [
         [0],
         [2, 1],
-        [4, 3],
+        [3, 4],
         [5, 6, 7]
     ];
     expect(MoveCard(SampleBoardState, 1, "right")).toEqual(expectedOutput);
