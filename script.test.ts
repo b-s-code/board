@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import {describe, expect, test} from '@jest/globals';
-var cloneDeep = require('lodash.clonedeep');
+const cloneDeep = require('lodash.clonedeep');
 import
 {
     BoardState,
@@ -28,7 +28,7 @@ describe('Card movement', () =>
   
   test('Move left', () => 
   {
-    var expectedOutput: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
 
     // This approach is only valid because
     // SampleBoardState has an ascending
@@ -52,7 +52,7 @@ describe('Card movement', () =>
   
   test('Move right', () => 
   {
-    var expectedOutput: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
     expectedOutput.listsCards = 
     [
         [0],
@@ -66,7 +66,7 @@ describe('Card movement', () =>
   
   test('Move up', () => 
   {
-    var expectedOutput: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
     expectedOutput.listsCards = 
     [
         [0, 1],
@@ -80,7 +80,7 @@ describe('Card movement', () =>
   
   test('Move down', () => 
   {
-    var expectedOutput: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
     expectedOutput.listsCards = 
     [
         [0, 1],
@@ -90,5 +90,19 @@ describe('Card movement', () =>
     ];
     const actualOutput: BoardState = MoveCard(SampleBoardState(), 6, "down");
     expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  test('No mutation', () => 
+  {
+    const bs: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
+
+    // MoveCard should be pure.
+    // So we expect this will not affect bs.
+    MoveCard(bs, 6, "down");
+    MoveCard(bs, 6, "left");
+    MoveCard(bs, 6, "left");
+    
+    expect(bs).toEqual(expectedOutput);
   });
 });

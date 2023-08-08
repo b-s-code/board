@@ -1,4 +1,4 @@
-var cloneDeep = require('lodash.clonedeep');
+const cloneDeep = require('lodash.clonedeep');
 
 export interface BoardState
 {
