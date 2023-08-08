@@ -13,24 +13,24 @@ describe('Card movement', () =>
 {
   test('Invalid horiz. movement does no harm', () => 
   {
-    const expectedOutput: BoardState = {...SampleBoardState};
-    expect(MoveCard(SampleBoardState, 0, "left")).toEqual(expectedOutput);
-    expect(MoveCard(SampleBoardState, 5, "right")).toEqual(expectedOutput);
+    const expectedOutput: BoardState = SampleBoardState();
+    expect(MoveCard(SampleBoardState(), 0, "left")).toEqual(expectedOutput);
+    expect(MoveCard(SampleBoardState(), 5, "right")).toEqual(expectedOutput);
   });
   
   test('Invalid vert. movement does no harm', () => 
   {
-    const expectedOutput: BoardState = {...SampleBoardState};
-    expect(MoveCard(SampleBoardState, 0, "up")).toEqual(expectedOutput);
-    expect(MoveCard(SampleBoardState, 1, "down")).toEqual(expectedOutput);
+    const expectedOutput: BoardState = SampleBoardState();
+    expect(MoveCard(SampleBoardState(), 0, "up")).toEqual(expectedOutput);
+    expect(MoveCard(SampleBoardState(), 1, "down")).toEqual(expectedOutput);
   });
   
   test('Move left', () => 
   {
-    // Need to use spread operator to get a copy of
-    // SampleBoardState, else it's vulnerable to
+    // Need to deep copy
+    // SampleBoardState(), else it's vulnerable to
     // mutation since objects are reference types in JS.
-    var expectedOutput: BoardState = {...SampleBoardState};
+    var expectedOutput: BoardState = SampleBoardState();
 
     // This approach is only valid because
     // SampleBoardState has an ascending
@@ -48,12 +48,13 @@ describe('Card movement', () =>
         [3, 6, 4],
         [5, 7]
     ];
-    expect(MoveCard(SampleBoardState, 6, "left")).toEqual(expectedOutput);
+    const actualOutput: BoardState = MoveCard(SampleBoardState(), 6, "left");
+    expect(actualOutput).toEqual(expectedOutput);
   });
   
   test('Move right', () => 
   {
-    var expectedOutput: BoardState = {...SampleBoardState};
+    var expectedOutput: BoardState = SampleBoardState();
 
     // This approach is only valid because
     // SampleBoardState has an ascending
@@ -65,12 +66,13 @@ describe('Card movement', () =>
         [3, 4],
         [5, 6, 7]
     ];
-    expect(MoveCard(SampleBoardState, 1, "right")).toEqual(expectedOutput);
+    const actualOutput: BoardState = MoveCard(SampleBoardState(), 1, "right");
+    expect(actualOutput).toEqual(expectedOutput);
   });
   
   test('Move up', () => 
   {
-    var expectedOutput: BoardState = {...SampleBoardState};
+    var expectedOutput: BoardState = SampleBoardState();
     expectedOutput.listsCards = 
     [
         [0, 1],
@@ -78,12 +80,13 @@ describe('Card movement', () =>
         [3, 4],
         [6, 5, 7]
     ];
-    expect(MoveCard(SampleBoardState, 6, "up")).toEqual(expectedOutput);
+    const actualOutput: BoardState = MoveCard(SampleBoardState(), 6, "up");
+    expect(actualOutput).toEqual(expectedOutput);
   });
   
   test('Move down', () => 
   {
-    var expectedOutput: BoardState = {...SampleBoardState};
+    var expectedOutput: BoardState = SampleBoardState();
     expectedOutput.listsCards = 
     [
         [0, 1],
@@ -91,6 +94,7 @@ describe('Card movement', () =>
         [3, 4],
         [5, 7, 6]
     ];
-    expect(MoveCard(SampleBoardState, 6, "down")).toEqual(expectedOutput);
+    const actualOutput: BoardState = MoveCard(SampleBoardState(), 6, "down");
+    expect(actualOutput).toEqual(expectedOutput);
   });
 });

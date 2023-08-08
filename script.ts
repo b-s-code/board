@@ -53,62 +53,68 @@ const BlankCanvasBoard: BoardState =
 
 /*
 * For tests.
+* The object is wrapped in a function as a simple
+* way of preventing mutation.
 */
-export const SampleBoardState: BoardState =
+export function SampleBoardState(): BoardState
 {
-    cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
-    cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
-    cardsLabels :
-    [
+    const state: BoardState =
+    {
+        cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
+        cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
+        cardsLabels :
         [
-            "red",
-            "crunchy"
+            [
+                "red",
+                "crunchy"
+            ],
+            [
+                "orange",
+                "citrus"
+            ],
+            [
+                "yellow",
+                "brown",
+                "green"
+            ],
+            [
+                "green",
+                "crunchy"
+            ],
+            [
+                "soft",
+                "warm coloured"
+            ],
+            [
+                "green",
+                "crunchy"
+            ],
+            [
+                "barking animal",
+                "likable"
+            ],
+            [
+                "non-barking",
+                "unable to fly"
+            ],
+            [
+                "capable of flight",
+                "non-barking"
+            ]
         ],
+        listsIds : [0, 1, 2, 3],
+        listsTitles : ["Left", "L Mid", "R Mid", "Right"],
+        listsCards :
         [
-            "orange",
-            "citrus"
+            [0, 1],
+            [2],
+            [3, 4],
+            [5, 6, 7]
         ],
-        [
-            "yellow",
-            "brown",
-            "green"
-        ],
-        [
-            "green",
-            "crunchy"
-        ],
-        [
-            "soft",
-            "warm coloured"
-        ],
-        [
-            "green",
-            "crunchy"
-        ],
-        [
-            "barking animal",
-            "likable"
-        ],
-        [
-            "non-barking",
-            "unable to fly"
-        ],
-        [
-            "capable of flight",
-            "non-barking"
-        ]
-    ],
-    listsIds : [0, 1, 2, 3],
-    listsTitles : ["Left", "L Mid", "R Mid", "Right"],
-    listsCards :
-    [
-        [0, 1],
-        [2],
-        [3, 4],
-        [5, 6, 7]
-    ],
-    listsPositions : [0, 1, 2, 3]
+        listsPositions : [0, 1, 2, 3]
+    };
+    return state;
 };
 
 /*
@@ -333,12 +339,126 @@ function ExportBoard(board: BoardState)
 * Returns a new board, with card moved one unit in direction dir.
 * Return input board if dir is not possible direction movement,
 * given card's current position.
-* dir can be "up", "down", "left", or "right".
+* dir can be "up", "down", "left", or "right". // TODO : consider making this a type
 */
 export function MoveCard(board: BoardState, cardId: number, dir: string): BoardState
 {
-    // TODO : Write tests for and implement this function.
-    return board;
+    const boardCopy: BoardState = {...board};
+    // Need some details about the list that the card comes from.
+    const sourceListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsCards[listId].includes(cardId))[0];
+    const sourceListCards: number[] = boardCopy.listsCards[sourceListId];
+    const sourceListPosOnBoard: number = boardCopy.listsPositions[sourceListId];
+    
+    // Need to know where the card is in its original list.
+    const cardPosInSourceList: number = boardCopy.listsCards[sourceListId].indexOf(cardId);
+    
+    // First check move is possible.
+    // If not, just return the supplied board.
+    var isPoss: boolean = true;
+    switch (dir)
+    {
+        case "up":
+            if (cardPosInSourceList === 0)
+            {
+                // Then card is already at top of its list.
+                isPoss = false;
+            }
+            break;
+        case "down":
+            const bottom: number = boardCopy.listsCards[sourceListId].length - 1;
+            if (cardPosInSourceList === bottom)
+            {
+                // Then card is already at bottom of its list.
+                isPoss = false;
+            }
+            break;
+        case "left":
+            const leftmostListPosition: number = Math.min(...boardCopy.listsPositions);
+            if (sourceListPosOnBoard === leftmostListPosition)
+            {
+                // Then card is already in leftmost list.
+                isPoss = false;
+            }
+            break;
+        case "right":
+            const rightmostListPosition: number = Math.max(...boardCopy.listsPositions);
+            if (sourceListPosOnBoard === rightmostListPosition)
+            {
+                // Then card is already in rightmost list.
+                isPoss = false;
+            }
+            break;
+    }
+    if (!isPoss)
+    {
+        return board;
+    }
+
+    // Assume now that move is indeed possible.
+    var resultBoard: BoardState = {...boardCopy};
+    switch (dir)
+    {
+        // Source list === destination list when moving vertically.
+
+        case "up":
+            {
+                const sourcePos: number = cardPosInSourceList;
+                const destPos: number = cardPosInSourceList - 1;
+
+                // Swap card with supplied id with the card above it.
+                const tempCardId: number = resultBoard.listsCards[sourceListId][destPos];
+                resultBoard.listsCards[sourceListId][destPos] = cardId;
+                resultBoard.listsCards[sourceListId][sourcePos] = tempCardId;
+            }
+            break;
+
+        case "down":
+            {
+                const sourcePos: number = cardPosInSourceList;
+                const destPos: number = cardPosInSourceList + 1;
+
+                // Swap card with supplied id with the card above it.
+                const tempCardId: number = resultBoard.listsCards[sourceListId][destPos];
+                resultBoard.listsCards[sourceListId][destPos] = cardId;
+                resultBoard.listsCards[sourceListId][sourcePos] = tempCardId;
+            }
+            break;
+        
+        // Source list !== destination list when moving horizontally.
+    
+         case "left":
+            {
+                // Need to determine id of destination list.
+                const destListPos: number = sourceListPosOnBoard - 1;
+                const destListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsPositions[listId] === destListPos)[0];
+                
+                // Remove supplied card id from source list.
+                resultBoard.listsCards[sourceListId].splice(cardPosInSourceList, 1);
+
+                // Insert supplied card id into destination list.
+                const destPos: number = Math.min(boardCopy.listsCards[destListId].length, cardPosInSourceList);
+                resultBoard.listsCards[destListId].splice(destPos, 0, cardId);
+    return resultBoard;
+            }
+            break;
+        case "right":
+            {
+                // Need to determine id of destination list.
+                const destListPos = sourceListPosOnBoard + 1;
+                const destListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsPositions[listId] === destListPos)[0];
+                
+                // Remove supplied card id from source list.
+                resultBoard.listsCards[sourceListId].splice(cardPosInSourceList, 1);
+
+                // Insert supplied card id into destination list.
+                const destPos: number = Math.min(boardCopy.listsCards[destListId].length, cardPosInSourceList);
+                resultBoard.listsCards[destListId].splice(destPos, 0, cardId);
+    return resultBoard;
+            }
+            break;
+    }
+
+    return resultBoard;
 }
 
 /*
