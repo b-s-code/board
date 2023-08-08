@@ -469,9 +469,12 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
 * given list's current position.
 * dir can be "left" or "right".
 */
-function MoveList(board: BoardState, listId: number, dir: string)
+export function MoveList(board: BoardState, listId: number, dir: string): BoardState
 {
-    //
+    // TODO : implement this, get tests passing.
+
+    // Dummy return value to make tsc happy.
+    return EmptyBoard;
 }
 
 /*

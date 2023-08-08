@@ -7,7 +7,8 @@ import
 {
     BoardState,
     SampleBoardState,
-    MoveCard 
+    MoveCard,
+    MoveList
 } from './script';
 
 describe('Card movement', () => 
@@ -102,6 +103,52 @@ describe('Card movement', () =>
     MoveCard(bs, 6, "down");
     MoveCard(bs, 6, "left");
     MoveCard(bs, 6, "left");
+    
+    expect(bs).toEqual(expectedOutput);
+  });
+});
+
+describe('List movement', () => 
+{
+  test('Invalid left list move does no harm', () => 
+  {
+    const expectedOutput: BoardState = SampleBoardState();
+    const actualOutput: BoardState = MoveList(SampleBoardState(), 0, 'left');
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  test('Invalid right list move does no harm', () => 
+  {
+    const expectedOutput: BoardState = SampleBoardState();
+    const actualOutput: BoardState = MoveList(SampleBoardState(), 3, 'right');
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  test('Move list left', () => 
+  {
+    const expectedOutput: BoardState = SampleBoardState();
+    expectedOutput.listsPositions = [0 ,1, 3, 2];
+    const actualOutput: BoardState = MoveList(SampleBoardState(), 3, 'left');
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+  
+  test('Move list right', () => 
+  {
+    const expectedOutput: BoardState = SampleBoardState();
+    expectedOutput.listsPositions = [0 ,1, 3, 2];
+    const actualOutput: BoardState = MoveList(SampleBoardState(), 2, 'right');
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+  
+  test('No mutation', () => 
+  {
+    const bs: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
+
+    // MoveList should be pure.
+    // So we expect this will not affect bs.
+    MoveCard(bs, 3, "left");
+    MoveCard(bs, 1, "right");
     
     expect(bs).toEqual(expectedOutput);
   });
