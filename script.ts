@@ -341,7 +341,7 @@ function ExportBoard(board: BoardState)
 * Returns a new board, with card moved one unit in direction dir.
 * Return input board if dir is not possible direction movement,
 * given card's current position.
-* dir can be "up", "down", "left", or "right". // TODO : consider making this a type
+* dir can be "up", "down", "left", or "right".
 */
 export function MoveCard(board: BoardState, cardId: number, dir: string): BoardState
 {
