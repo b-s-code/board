@@ -13,6 +13,11 @@ export interface BoardState
 };
 
 /*
+* Used by regular code and test code.
+*/
+export const fillerStr = "...";
+
+/*
 * Don't need to have a class and constructor because this can be used
 * for default construction.
 */
@@ -35,16 +40,16 @@ const EmptyBoard: BoardState =
 const BlankCanvasBoard: BoardState =
 {
     cardsIds : [0],
-    cardsTitles : ["..."],
-    cardsNotes : ["..."],
+    cardsTitles : [fillerStr],
+    cardsNotes : [fillerStr],
     cardsLabels :
     [
         [
-            "..."
+            fillerStr
         ]
     ],
     listsIds : [0, 1],
-    listsTitles : ["...", "..."],
+    listsTitles : [fillerStr, fillerStr],
     listsCards :
     [
         [0],
@@ -522,9 +527,13 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
 * Returns a new board, with one new card at the end of the list with given listId.
 * Chooses default values for the card's properties.
 */
-function AddCard(board: BoardState, listId: number)
+export function AddCard(board: BoardState, listId: number): BoardState
 {
-    //
+    // TODO : replace with non-dummy implementation and get tests passing.
+
+    // TODO : if there are any unused card ids which lie between the min
+    // id and the max id, then reuse that id when adding new card.
+    return EmptyBoard;
 }
 
 /*
@@ -541,9 +550,13 @@ function AddList(board: BoardState)
 * Pure function.
 * Returns a new board, with the card with given cardId removed.
 */
-function DeleteCard(board: BoardState, cardId: number)
+export function DeleteCard(board: BoardState, cardId: number): BoardState
 {
-    //
+    // TODO : replace with non-dummy implementation and get tests passing.
+
+    // TODO : don't worry about gaps left by deleting a card.
+    // Reusing gap ids can be dealt by AddCard.
+    return EmptyBoard;
 }
 
 /*
