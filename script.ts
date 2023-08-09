@@ -525,15 +525,42 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
 /*
 * Pure function.
 * Returns a new board, with one new card at the end of the list with given listId.
-* Chooses default values for the card's properties.
+* Sets filler values for the card's properties.
 */
 export function AddCard(board: BoardState, listId: number): BoardState
 {
-    // TODO : replace with non-dummy implementation and get tests passing.
+    // If there are any unused card ids which lie between the min
+    // id and the max id, then we reuse that id when adding new card.
 
-    // TODO : if there are any unused card ids which lie between the min
-    // id and the max id, then reuse that id when adding new card.
-    return EmptyBoard;
+    const resultBoard: BoardState = cloneDeep(board);
+    const origCardIds: number[] = cloneDeep(board.cardsIds);
+    const smallest: number = Math.min(...origCardIds);
+    const largest: number = Math.max(...origCardIds);
+    
+    var idForNewCard: number = largest + 1;
+    const canReuseSomeId: boolean = largest - smallest > origCardIds.length - 1;
+    if (canReuseSomeId)
+    { // Then we shall find the smallest such id.
+        for (let i: number = smallest + 1; i < largest; i++)
+        {
+            if (!(origCardIds.includes(i)))
+            {
+                idForNewCard = i;
+                break;
+            }
+        }
+    }
+    resultBoard.cardsIds.push(idForNewCard);
+    resultBoard.cardsIds.sort();
+
+    const indexForNewCard: number = resultBoard.cardsIds.indexOf(idForNewCard);
+   
+    resultBoard.cardsTitles.splice(indexForNewCard, 0, fillerStr);
+    resultBoard.cardsNotes.splice(indexForNewCard, 0, fillerStr);
+    resultBoard.cardsLabels.splice(indexForNewCard, 0, [fillerStr]);
+    resultBoard.listsCards[listId].push(idForNewCard);
+
+    return resultBoard;
 }
 
 /*
@@ -552,11 +579,29 @@ function AddList(board: BoardState)
 */
 export function DeleteCard(board: BoardState, cardId: number): BoardState
 {
-    // TODO : replace with non-dummy implementation and get tests passing.
+    // Find index of deletee (it's the same across many arrays).
+    const resultBoard: BoardState = cloneDeep(board);
+    const indexOfDeletee: number = resultBoard.cardsIds.indexOf(cardId);
 
-    // TODO : don't worry about gaps left by deleting a card.
-    // Reusing gap ids can be dealt by AddCard.
-    return EmptyBoard;
+    if (indexOfDeletee === -1)
+    { // Then no card with supplied id exists.
+        return resultBoard;
+    }
+
+    // Exploit knowledge of deletee's index.
+    resultBoard.cardsIds.splice(indexOfDeletee, 1); 
+    resultBoard.cardsTitles.splice(indexOfDeletee, 1); 
+    resultBoard.cardsNotes.splice(indexOfDeletee, 1); 
+    resultBoard.cardsLabels.splice(indexOfDeletee, 1); 
+
+    // Other cleanup (from list).  Brute force removal...
+    // we don't try to find out which list the card is in.
+    resultBoard.listsCards.forEach((elt, i) =>
+    {
+        resultBoard.listsCards[i] = elt.filter((id) => id !== cardId);
+    });
+
+    return resultBoard;
 }
 
 /*

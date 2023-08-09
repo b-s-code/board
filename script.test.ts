@@ -203,18 +203,16 @@ describe('Card creation/destruction', () =>
 
   test('Deleting a non-existent card changes nothing', () => 
   {
-    const expectedOutput: BoardState = SampleBoardState();
-
     // Check id bigger than those existing.
-    var nonExistentCardId = Math.max(...expectedOutput.cardsIds) + 1;
+    var nonExistentCardId = Math.max(...SampleBoardState().cardsIds) + 1;
     const actualOutput1: BoardState = DeleteCard(SampleBoardState(), nonExistentCardId);
 
     // Check id smaller than those existing.
     nonExistentCardId = Math.min(...SampleBoardState().cardsIds) - 1;
     const actualOutput2: BoardState = DeleteCard(SampleBoardState(), nonExistentCardId);
 
-    expect(actualOutput1).toEqual(expectedOutput);
-    expect(actualOutput2).toEqual(expectedOutput);
+    expect(actualOutput1).toEqual(SampleBoardState());
+    expect(actualOutput2).toEqual(SampleBoardState());
   });
 
   /*
@@ -235,7 +233,19 @@ describe('Card creation/destruction', () =>
 
     const actualOutput = AddCard(DeleteCard(SampleBoardState(), targetCardId), targetListId);
 
-    expect(actualOutput).toEqual(expectedOutput);
+    expect(actualOutput.cardsIds).toEqual(expectedOutput.cardsIds);
+    expect(actualOutput.cardsTitles).toEqual(expectedOutput.cardsTitles);
+    expect(actualOutput.cardsNotes).toEqual(expectedOutput.cardsNotes);
+    expect(actualOutput.cardsLabels).toEqual(expectedOutput.cardsLabels);
+    expect(actualOutput.listsIds).toEqual(expectedOutput.listsIds);
+    expect(actualOutput.listsTitles).toEqual(expectedOutput.listsTitles);
+    expect(actualOutput.listsPositions).toEqual(expectedOutput.listsPositions);
+
+    // Whilst card id should be re-used, this does not imply the same
+    // position in the list should necessarily be re-used.
+    const actualOutputListsCardsSet: Set<number> = new Set(...actualOutput.listsCards);
+    const expectedOutputListsCardsSet: Set<number> = new Set(...expectedOutput.listsCards);
+    expect(actualOutputListsCardsSet).toEqual(expectedOutputListsCardsSet);
   });
   
   test('No mutation from adding/deleting cards', () => 
