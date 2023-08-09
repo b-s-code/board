@@ -147,8 +147,8 @@ describe('List movement', () =>
 
     // MoveList should be pure.
     // So we expect this will not affect bs.
-    MoveCard(bs, 3, "left");
-    MoveCard(bs, 1, "right");
+    MoveList(bs, 3, "left");
+    MoveList(bs, 1, "right");
     
     expect(bs).toEqual(expectedOutput);
   });
