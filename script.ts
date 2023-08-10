@@ -566,11 +566,27 @@ export function AddCard(board: BoardState, listId: number): BoardState
 /*
 * Pure function.
 * Returns a new board, with one new list in rightmost position.
-* Chooses default values for the card's properties.
+* Sets filler values for the card's properties.
 */
-function AddList(board: BoardState)
+export function AddList(board: BoardState): BoardState
 {
-    //
+    // TODO
+    
+    // If there are any unused list ids which lie between the min
+    // id and the max id, then we reuse that id when adding new list.
+        
+    // Will need to sort listsIds if an old id is re-used.
+    // Then will need to shuffle elements of parallel arrays
+    // appropriately.  These are:
+    //  - listsTitles
+    //  - listsCards
+    //  - listsPositions
+    // Should consider whether it's simpler to insert stuff
+    // at the correct position to begin with, or to jush push
+    // onto each array then re-jig.  Probably the former...
+
+    // TODO : remove dummy return value.
+    return EmptyBoard;
 }
 
 /*
@@ -608,9 +624,12 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 * Pure function.
 * Returns a new board, with the list with given listId removed.
 */
-function DeleteList(board: BoardState, listId: number)
+export function DeleteList(board: BoardState, listId: number): BoardState
 {
     //
+
+    // TODO : remove dummy return value.
+    return EmptyBoard;
 }
 
 /*

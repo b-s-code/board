@@ -11,6 +11,8 @@ import
     MoveList,
     AddCard,
     DeleteCard,
+    AddList,
+    DeleteList,
     fillerStr
 } from './script';
 
@@ -262,25 +264,56 @@ describe('Card creation/destruction', () =>
   });
 });
 
-// describe('List creation/destruction', () => 
-// {
-//   test('Adding a list works', () => 
-//   {
-//     // TODO
-//   });
-//   
-//   test('Deleting a list works', () => 
-//   {
-//     // TODO
-//   });
-// 
-//   test('Deleting a non-existent list changes nothing', () => 
-//   {
-//     // TODO
-//   });
-// 
-//   test('No mutation from adding/deleting lists', () => 
-//   {
-//     // TODO
-//   });
-// });
+describe('List creation/destruction', () => 
+{
+  test('Adding a list works', () => 
+  {
+    // Somewhat trivial test case because everything just 
+    // gets appended.  This is contingent on SampleBoardState()
+    // returning a sample board with no gaps in lists' ids.
+    // Thus we have another separate test for list id re-use.
+    const expectedOutput = SampleBoardState();
+
+    // New list should come with a filler card.
+    expectedOutput.cardsIds.push(9);
+    expectedOutput.cardsTitles.push(fillerStr);
+    expectedOutput.cardsNotes.push(fillerStr);
+    expectedOutput.cardsLabels.push([fillerStr]);
+
+    expectedOutput.listsIds.push(4);
+    expectedOutput.listsTitles.push(fillerStr);
+    expectedOutput.listsPositions.push(4);
+    
+    const actualOutput = AddList(SampleBoardState());
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+  
+//  test('Deleting a list works', () => 
+//  {
+//    // TODO
+//  });
+//
+//  test('Deleting a non-existent list changes nothing', () => 
+//  {
+//    // TODO
+//  });
+//
+//  /*
+//  * We don't expect to a user to ever have so many lists at once
+//  * that ids overflow.
+//  * But we do expect many lists to be deleted and added over time.
+//  * This should be handled gracefully.
+//  */
+//  test('Deleting then adding a list re-uses id of deleted', () => 
+//  {
+//    // TODO
+//    
+//    // Whilst list id should be re-used, this does not imply the same
+//    // position on the board should necessarily be re-used.
+//  });
+//
+//  test('No mutation from adding/deleting lists', () => 
+//  {
+//    // TODO
+//  });
+});
