@@ -289,6 +289,8 @@ function RenderWelcome()
 * renaming lists,
 * bringing one card into focus,
 * preparing board state for download.
+* Does not assume list/card ids and positions
+* are gapless sequences.
 */
 function RenderAggregate()
 {
@@ -626,10 +628,29 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 */
 export function DeleteList(board: BoardState, listId: number): BoardState
 {
-    //
+    var resultBoard: BoardState = cloneDeep(board);
 
-    // TODO : remove dummy return value.
-    return EmptyBoard;
+    // Find all cards belonging to the list.
+    // Delete each.
+    const idsOfCardsToDelete: number[] = [...resultBoard.listsCards[listId]];
+    idsOfCardsToDelete.forEach((id) =>
+    {
+        resultBoard = DeleteCard(resultBoard, id);
+    });
+
+    // Now we're ready to get rid of the list itself.
+    resultBoard.listsIds.splice(listId, 1);
+    resultBoard.listsTitles.splice(listId, 1);
+    resultBoard.listsCards.splice(listId, 1);
+
+    // We leave listsPositions in a state where
+    // it's elements may not be a consecutive
+    // increasing sequence.  I.e. there may be gaps.
+    // The responsibility of gap filling is left
+    // with the list addition function.
+    resultBoard.listsPositions.splice(listId, 1);
+
+    return resultBoard;
 }
 
 /*

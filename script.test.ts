@@ -244,7 +244,7 @@ describe('Card creation/destruction', () =>
     expect(actualOutput.listsPositions).toEqual(expectedOutput.listsPositions);
 
     // Whilst card id should be re-used, this does not imply the same
-    // position in the list should necessarily be re-used.
+    // position in the list should not necessarily be re-used.
     const actualOutputListsCardsSet: Set<number> = new Set(...actualOutput.listsCards);
     const expectedOutputListsCardsSet: Set<number> = new Set(...expectedOutput.listsCards);
     expect(actualOutputListsCardsSet).toEqual(expectedOutputListsCardsSet);
@@ -287,12 +287,37 @@ describe('List creation/destruction', () =>
     const actualOutput = AddList(SampleBoardState());
     expect(actualOutput).toEqual(expectedOutput);
   });
-  
-//  test('Deleting a list works', () => 
-//  {
-//    // TODO
-//  });
-//
+ 
+  /*
+  * Note that we don't expect list deletion
+  * to fix up gaps in list positions array.
+  * This has the effect that clients of list
+  * addition and deletion functions will
+  * need to be more careful if rendering to DOM.
+  */
+  test('Deleting a list works', () => 
+  {
+    const listIdToTest: number = 2;
+    const expectedOutput: BoardState = SampleBoardState();
+    const deleteeCardsIds: number[] = [...expectedOutput.listsCards[listIdToTest]];
+    
+    // Set expectation for cards.
+    // Value used here are dependent on value of sample board.
+    expectedOutput.cardsIds = [0, 1, 2, 5, 6, 7, 8];
+    expectedOutput.cardsTitles = ["apple", "orange", "banana", "apple", "dog", "cat", "bird"];
+    expectedOutput.cardsNotes = ["apple tasty", "orange tasty", "banana tasty", "apple gross", "dog fun", "cat ugly", "bird elegant"];
+    expectedOutput.cardsLabels = expectedOutput.cardsLabels.filter((elt, i) => !(deleteeCardsIds.includes(i)));
+
+    // Set expectation for lists.
+    expectedOutput.listsIds = expectedOutput.listsIds.filter((elt) => elt !== listIdToTest);
+    expectedOutput.listsTitles = expectedOutput.listsTitles.filter((elt, i) => i !== listIdToTest);
+    expectedOutput.listsCards = expectedOutput.listsCards.filter((elt, i) => i !== listIdToTest);
+    expectedOutput.listsPositions = expectedOutput.listsPositions.filter((elt, i) => i !== listIdToTest);
+
+    const actualOutput = DeleteList(SampleBoardState(), 2);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
 //  test('Deleting a non-existent list changes nothing', () => 
 //  {
 //    // TODO
@@ -309,7 +334,7 @@ describe('List creation/destruction', () =>
 //    // TODO
 //    
 //    // Whilst list id should be re-used, this does not imply the same
-//    // position on the board should necessarily be re-used.
+//    // position on the board should not necessarily be re-used.
 //  });
 //
 //  test('No mutation from adding/deleting lists', () => 
