@@ -594,35 +594,47 @@ export function AddList(board: BoardState): BoardState
 /*
 * Pure function.
 * Returns a new board, with the card with given cardId removed.
+* Expects no gaps in card ids in input board.
 * Leaves no gaps in card ids in output board.
 */
 export function DeleteCard(board: BoardState, cardId: number): BoardState
 {
-    // TODO : update implementation to satisfy new contract.
-    // I.e. must leave no gaps in card id array, and have its
-    // entries accurately represent indexes of each respective
-    // card into the other card arrays.
-
-    // Find index of deletee (it's the same across many arrays).
     const resultBoard: BoardState = cloneDeep(board);
-    const indexOfDeletee: number = resultBoard.cardsIds.indexOf(cardId);
 
-    if (indexOfDeletee === -1)
+    const cardFound: boolean = resultBoard.cardsIds.indexOf(cardId) !== -1;
+    if (!cardFound)
     { // Then no card with supplied id exists.
         return resultBoard;
     }
 
-    // Exploit knowledge of deletee's index.
-    resultBoard.cardsIds.splice(indexOfDeletee, 1); 
-    resultBoard.cardsTitles.splice(indexOfDeletee, 1); 
-    resultBoard.cardsNotes.splice(indexOfDeletee, 1); 
-    resultBoard.cardsLabels.splice(indexOfDeletee, 1); 
+    // Use index of deletee to clean up parallel card data arrays.
+    resultBoard.cardsTitles.splice(cardId, 1); 
+    resultBoard.cardsNotes.splice(cardId, 1); 
+    resultBoard.cardsLabels.splice(cardId, 1); 
+    
+    // Rest of card ids should be shuffled down.
+    resultBoard.cardsIds.pop(); 
 
-    // Other cleanup (from list).  Brute force removal...
-    // we don't try to find out which list the card is in.
+    // Remove card from its list.  Brute force to find it...
     resultBoard.listsCards.forEach((elt, i) =>
     {
         resultBoard.listsCards[i] = elt.filter((id) => id !== cardId);
+    });
+
+    // Decrement required lists' pointers to some cards, as required.
+    resultBoard.listsCards.forEach((elt, i) =>
+    {
+        resultBoard.listsCards[i] = elt.map((id) =>
+        {
+            if (id < cardId)
+            {
+                return id;
+            }
+            else
+            {
+                return id - 1;
+            }
+        });
     });
 
     return resultBoard;
