@@ -161,6 +161,8 @@ describe('List movement', () =>
 
 describe('Card creation/destruction', () => 
 {
+  // TODO : Update test w.r.t. new contract. 
+  // I.e. no gaps should exist in input boards list id array.
   test('Adding a card works', () => 
   {
     const listIdToTest: number = 2;
@@ -176,7 +178,9 @@ describe('Card creation/destruction', () =>
     const actualOutput: BoardState = AddCard(SampleBoardState(), listIdToTest);
     expect(actualOutput).toEqual(expectedOutput);
   });
-  
+
+  // TODO : Update test to check that new DeleteCard contract
+  // is upheld.  I.e. no gaps are left in card id array.
   test('Deleting a card works', () => 
   {
     const targetCardId: number = 3;
@@ -216,39 +220,6 @@ describe('Card creation/destruction', () =>
     expect(actualOutput1).toEqual(SampleBoardState());
     expect(actualOutput2).toEqual(SampleBoardState());
   });
-
-  /*
-  * We don't expect to a user to ever have so many cards at once
-  * that ids overflow.
-  * But we do expect many cards to be deleted and added over time.
-  * This should be handled gracefully.
-  */
-  test('Deleting then adding a card re-uses id of deleted', () => 
-  {
-    const targetListId = 3;
-    const targetCardId = 6;
-
-    const expectedOutput = SampleBoardState();
-    expectedOutput.cardsTitles[targetCardId] = fillerStr;
-    expectedOutput.cardsNotes[targetCardId] = fillerStr;
-    expectedOutput.cardsLabels[targetCardId] = [fillerStr];
-
-    const actualOutput = AddCard(DeleteCard(SampleBoardState(), targetCardId), targetListId);
-
-    expect(actualOutput.cardsIds).toEqual(expectedOutput.cardsIds);
-    expect(actualOutput.cardsTitles).toEqual(expectedOutput.cardsTitles);
-    expect(actualOutput.cardsNotes).toEqual(expectedOutput.cardsNotes);
-    expect(actualOutput.cardsLabels).toEqual(expectedOutput.cardsLabels);
-    expect(actualOutput.listsIds).toEqual(expectedOutput.listsIds);
-    expect(actualOutput.listsTitles).toEqual(expectedOutput.listsTitles);
-    expect(actualOutput.listsPositions).toEqual(expectedOutput.listsPositions);
-
-    // Whilst card id should be re-used, this does not imply the same
-    // position in the list should not necessarily be re-used.
-    const actualOutputListsCardsSet: Set<number> = new Set(...actualOutput.listsCards);
-    const expectedOutputListsCardsSet: Set<number> = new Set(...expectedOutput.listsCards);
-    expect(actualOutputListsCardsSet).toEqual(expectedOutputListsCardsSet);
-  });
   
   test('No mutation from adding/deleting cards', () => 
   {
@@ -266,6 +237,8 @@ describe('Card creation/destruction', () =>
 
 describe('List creation/destruction', () => 
 {
+  // TODO : Update test w.r.t. new contract. 
+  // I.e. no gaps should exist in input boards list id array.
   test('Adding a list works', () => 
   {
     // Somewhat trivial test case because everything just 
@@ -288,13 +261,8 @@ describe('List creation/destruction', () =>
     expect(actualOutput).toEqual(expectedOutput);
   });
  
-  /*
-  * Note that we don't expect list deletion
-  * to fix up gaps in list positions array.
-  * This has the effect that clients of list
-  * addition and deletion functions will
-  * need to be more careful if rendering to DOM.
-  */
+  // TODO : Update test to check that new DeleteCard contract
+  // is upheld.  I.e. no gaps are left in card id array.
   test('Deleting a list works', () => 
   {
     const listIdToTest: number = 2;
@@ -321,20 +289,6 @@ describe('List creation/destruction', () =>
 //  test('Deleting a non-existent list changes nothing', () => 
 //  {
 //    // TODO
-//  });
-//
-//  /*
-//  * We don't expect to a user to ever have so many lists at once
-//  * that ids overflow.
-//  * But we do expect many lists to be deleted and added over time.
-//  * This should be handled gracefully.
-//  */
-//  test('Deleting then adding a list re-uses id of deleted', () => 
-//  {
-//    // TODO
-//    
-//    // Whilst list id should be re-used, this does not imply the same
-//    // position on the board should not necessarily be re-used.
 //  });
 //
 //  test('No mutation from adding/deleting lists', () => 

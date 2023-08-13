@@ -2,14 +2,27 @@ const cloneDeep = require('lodash.clonedeep');
 
 export interface BoardState
 {
+    // Elts are indices of respective cards details
+    // into the card arrays below.
     cardsIds : number[],
-    cardsTitles : string[],
-    cardsNotes : string[],
-    cardsLabels : string[][],
+
+        cardsTitles : string[],
+        cardsNotes  : string[],
+        cardsLabels : string[][],
+    
+    // Elts are indices of respective lists details
+    // into the list arrays below.
     listsIds : number[],
-    listsTitles : string[],
-    listsCards : number[][],
-    listsPositions : number[]
+    
+        listsTitles    : string[],
+
+        // One array of card ids (which are indices
+        // into other card arrays, and need to be
+        // created/deleted/updated here as cards are
+        // added/removed/moved between lists) per list.
+        listsCards     : number[][],
+        
+        listsPositions : number[]
 };
 
 /*
@@ -528,9 +541,17 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
 * Pure function.
 * Returns a new board, with one new card at the end of the list with given listId.
 * Sets filler values for the card's properties.
+* Expects no gaps in card ids in input board.
 */
 export function AddCard(board: BoardState, listId: number): BoardState
 {
+    // TODO : update implementation of this function:
+    //        original contract of this function was that
+    //        card ids may have gaps
+    //        new contract is no gaps
+    //        may simplify implementation
+
+
     // If there are any unused card ids which lie between the min
     // id and the max id, then we reuse that id when adding new card.
 
@@ -568,25 +589,13 @@ export function AddCard(board: BoardState, listId: number): BoardState
 /*
 * Pure function.
 * Returns a new board, with one new list in rightmost position.
-* Sets filler values for the card's properties.
+* New board contains one filler card, with filler values for its properties.
+* Expects no gaps in list ids in input board.
 */
 export function AddList(board: BoardState): BoardState
 {
-    // TODO
+    // TODO : implement this function.
     
-    // If there are any unused list ids which lie between the min
-    // id and the max id, then we reuse that id when adding new list.
-        
-    // Will need to sort listsIds if an old id is re-used.
-    // Then will need to shuffle elements of parallel arrays
-    // appropriately.  These are:
-    //  - listsTitles
-    //  - listsCards
-    //  - listsPositions
-    // Should consider whether it's simpler to insert stuff
-    // at the correct position to begin with, or to jush push
-    // onto each array then re-jig.  Probably the former...
-
     // TODO : remove dummy return value.
     return EmptyBoard;
 }
@@ -594,9 +603,15 @@ export function AddList(board: BoardState): BoardState
 /*
 * Pure function.
 * Returns a new board, with the card with given cardId removed.
+* Leaves no gaps in card ids in output board.
 */
 export function DeleteCard(board: BoardState, cardId: number): BoardState
 {
+    // TODO : update implementation to satisfy new contract.
+    // I.e. must leave no gaps in card id array, and have its
+    // entries accurately represent indexes of each respective
+    // card into the other card arrays.
+
     // Find index of deletee (it's the same across many arrays).
     const resultBoard: BoardState = cloneDeep(board);
     const indexOfDeletee: number = resultBoard.cardsIds.indexOf(cardId);
@@ -625,6 +640,7 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 /*
 * Pure function.
 * Returns a new board, with the list with given listId removed.
+* Leaves no gaps in list ids in output board.
 */
 export function DeleteList(board: BoardState, listId: number): BoardState
 {
@@ -642,6 +658,13 @@ export function DeleteList(board: BoardState, listId: number): BoardState
     resultBoard.listsIds.splice(listId, 1);
     resultBoard.listsTitles.splice(listId, 1);
     resultBoard.listsCards.splice(listId, 1);
+
+
+    // TODO : update implementation to satisfy new contract.
+    // I.e. must leave no gaps in list id array, and have its
+    // entries accurately represent indexes of each respective
+    // list into the other list arrays.
+
 
     // We leave listsPositions in a state where
     // it's elements may not be a consecutive
