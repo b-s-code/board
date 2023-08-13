@@ -618,38 +618,45 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 * Pure function.
 * Returns a new board, with the list with given listId removed.
 * Cards belonging to that list also get removed from board.
-* Leaves no gaps in list ids  or card ids in output board.
+* Responsible for leaving no gaps in list ids.
 */
 export function DeleteList(board: BoardState, listId: number): BoardState
 {
     var resultBoard: BoardState = cloneDeep(board);
 
-    // Find all cards belonging to the list.
-    // Delete each.
-    const idsOfCardsToDelete: number[] = [...resultBoard.listsCards[listId]];
-    idsOfCardsToDelete.forEach((id) =>
+    // Find all cards belonging to the list.  Delete each.
+    // We iterate backwards to avoid a card deletion
+    // interfering with subsequent card deletions.
+    var idsOfCardsToDelete: number[] = [...resultBoard.listsCards[listId]];
+    idsOfCardsToDelete.sort();
+    var i: number = idsOfCardsToDelete.length - 1;
+    for (; i > -1; i--)
     {
-        resultBoard = DeleteCard(resultBoard, id);
-    });
+        const deleteeCardId: number = idsOfCardsToDelete[i];
+        resultBoard = DeleteCard(resultBoard, deleteeCardId);
+    }
 
+    // Rest of list ids should be shuffled down.
+    resultBoard.listsIds.pop();
+    
     // Now we're ready to get rid of the list itself.
-    resultBoard.listsIds.splice(listId, 1);
     resultBoard.listsTitles.splice(listId, 1);
     resultBoard.listsCards.splice(listId, 1);
 
-
-    // TODO : update implementation to satisfy new contract.
-    // I.e. must leave no gaps in list id array, and have its
-    // entries accurately represent indexes of each respective
-    // list into the other list arrays.
-
-
-    // We leave listsPositions in a state where
-    // it's elements may not be a consecutive
-    // increasing sequence.  I.e. there may be gaps.
-    // The responsibility of gap filling is left
-    // with the list addition function.
+    // Shuffle list positions down too.
+    const removedPos = resultBoard.listsPositions[listId];
     resultBoard.listsPositions.splice(listId, 1);
+    resultBoard.listsPositions = resultBoard.listsPositions.map((pos) =>
+    {
+        if (pos < removedPos)
+        {
+            return pos;
+        }
+        else
+        {
+            return pos - 1;
+        }
+    });
 
     return resultBoard;
 }
