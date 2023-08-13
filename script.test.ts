@@ -161,8 +161,6 @@ describe('List movement', () =>
 
 describe('Card creation/destruction', () => 
 {
-  // TODO : Update test w.r.t. new contract. 
-  // I.e. no gaps should exist in input boards list id array.
   test('Adding a card works', () => 
   {
     const listIdToTest: number = 2;
@@ -179,28 +177,27 @@ describe('Card creation/destruction', () =>
     expect(actualOutput).toEqual(expectedOutput);
   });
 
-  // TODO : Update test to check that new DeleteCard contract
-  // is upheld.  I.e. no gaps are left in card id array.
   test('Deleting a card works', () => 
   {
     const targetCardId: number = 3;
 
     const expectedOutput: BoardState = SampleBoardState();
-    expectedOutput.cardsIds = expectedOutput.cardsIds.filter((x) => x !== targetCardId);
+    expectedOutput.cardsIds = [0, 1, 2, 3, 4, 5, 6, 7];
     expectedOutput.cardsTitles = ["apple", "orange", "banana", "peach", "apple", "dog", "cat", "bird"];
     expectedOutput.cardsNotes = ["apple tasty", "orange tasty", "banana tasty", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"];
-    
-    // filter() uses a shallow copy and here,
-    // we're dealing with nested arrays.
-    const origLabels: string[][] = cloneDeep(SampleBoardState().cardsLabels);
+
+    // Remove target label array by filtering instead of having 
+    // a huge verbatim value cluttering this test code.
+    const origLabels: string[][] = cloneDeep(expectedOutput.cardsLabels);
     expectedOutput.cardsLabels = origLabels.filter((elt, i) => i !== targetCardId);
     
+    // Cards ids bigger than the deletee's should each be decremented by 1.
     expectedOutput.listsCards =        
     [
         [0, 1],
         [2],
-        [4],
-        [5, 6, 7]
+        [3],
+        [4, 5, 6]
     ];
 
     const actualOutput: BoardState = DeleteCard(SampleBoardState(), targetCardId);
@@ -237,32 +234,28 @@ describe('Card creation/destruction', () =>
 
 describe('List creation/destruction', () => 
 {
-  // TODO : Update test w.r.t. new contract. 
-  // I.e. no gaps should exist in input boards list id array.
   test('Adding a list works', () => 
   {
-    // Somewhat trivial test case because everything just 
-    // gets appended.  This is contingent on SampleBoardState()
-    // returning a sample board with no gaps in lists' ids.
-    // Thus we have another separate test for list id re-use.
     const expectedOutput = SampleBoardState();
 
+    // Contingent on value of sample board state.
+    const nextListId: number = 4;
+    const nextCardId: number = 9;
+
     // New list should come with a filler card.
-    expectedOutput.cardsIds.push(9);
+    expectedOutput.cardsIds.push(nextCardId);
     expectedOutput.cardsTitles.push(fillerStr);
     expectedOutput.cardsNotes.push(fillerStr);
     expectedOutput.cardsLabels.push([fillerStr]);
 
-    expectedOutput.listsIds.push(4);
+    expectedOutput.listsIds.push(nextListId);
     expectedOutput.listsTitles.push(fillerStr);
-    expectedOutput.listsPositions.push(4);
+    expectedOutput.listsPositions.push(nextListId);
     
     const actualOutput = AddList(SampleBoardState());
     expect(actualOutput).toEqual(expectedOutput);
   });
  
-  // TODO : Update test to check that new DeleteCard contract
-  // is upheld.  I.e. no gaps are left in card id array.
   test('Deleting a list works', () => 
   {
     const listIdToTest: number = 2;
@@ -271,18 +264,24 @@ describe('List creation/destruction', () =>
     
     // Set expectation for cards.
     // Value used here are dependent on value of sample board.
-    expectedOutput.cardsIds = [0, 1, 2, 5, 6, 7, 8];
+    expectedOutput.cardsIds = [0, 1, 2, 3, 4, 5, 6]; // No gaps.
     expectedOutput.cardsTitles = ["apple", "orange", "banana", "apple", "dog", "cat", "bird"];
     expectedOutput.cardsNotes = ["apple tasty", "orange tasty", "banana tasty", "apple gross", "dog fun", "cat ugly", "bird elegant"];
     expectedOutput.cardsLabels = expectedOutput.cardsLabels.filter((elt, i) => !(deleteeCardsIds.includes(i)));
 
     // Set expectation for lists.
-    expectedOutput.listsIds = expectedOutput.listsIds.filter((elt) => elt !== listIdToTest);
-    expectedOutput.listsTitles = expectedOutput.listsTitles.filter((elt, i) => i !== listIdToTest);
-    expectedOutput.listsCards = expectedOutput.listsCards.filter((elt, i) => i !== listIdToTest);
-    expectedOutput.listsPositions = expectedOutput.listsPositions.filter((elt, i) => i !== listIdToTest);
+    // Value used here are dependent on value of sample board.
+    expectedOutput.listsIds = [0, 1, 2]; // No gaps.
+    expectedOutput.listsTitles = ["Left", "L Mid", "Right"];
+    expectedOutput.listsCards = 
+    [
+        [0, 1],
+        [2],
+        [3, 4, 5]
+    ],;
+    expectedOutput.listsPositions = [0, 1, 2];
 
-    const actualOutput = DeleteList(SampleBoardState(), 2);
+    const actualOutput = DeleteList(SampleBoardState(), listIdToTest);
     expect(actualOutput).toEqual(expectedOutput);
   });
 

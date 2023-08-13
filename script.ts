@@ -52,22 +52,13 @@ const EmptyBoard: BoardState =
 */
 const BlankCanvasBoard: BoardState =
 {
-    cardsIds : [0],
-    cardsTitles : [fillerStr],
-    cardsNotes : [fillerStr],
-    cardsLabels :
-    [
-        [
-            fillerStr
-        ]
-    ],
-    listsIds : [0, 1],
-    listsTitles : [fillerStr, fillerStr],
-    listsCards :
-    [
-        [0],
-        []
-    ],
+    cardsIds       : [0],
+    cardsTitles    : [fillerStr],
+    cardsNotes     : [fillerStr],
+    cardsLabels    : [[fillerStr]],
+    listsIds       : [0, 1],
+    listsTitles    : [fillerStr, fillerStr],
+    listsCards     : [[0], []],
     listsPositions : [0, 1]
 };
 
@@ -339,7 +330,7 @@ function StripBody()
     // Count up scripts in the DOM so they don't get removed.
     // Better than maintaining a magic number in code each time the
     // number of <script> tags in the HTML changes.
-    let numScripts = document.getElementsByTagName("script").length;
+    const numScripts = document.getElementsByTagName("script").length;
     
     while (document.getElementsByTagName("body")[0].children.length > numScripts)
     {
@@ -640,7 +631,8 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 /*
 * Pure function.
 * Returns a new board, with the list with given listId removed.
-* Leaves no gaps in list ids in output board.
+* Cards belonging to that list also get removed from board.
+* Leaves no gaps in list ids  or card ids in output board.
 */
 export function DeleteList(board: BoardState, listId: number): BoardState
 {
