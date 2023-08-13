@@ -536,43 +536,15 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
 */
 export function AddCard(board: BoardState, listId: number): BoardState
 {
-    // TODO : update implementation of this function:
-    //        original contract of this function was that
-    //        card ids may have gaps
-    //        new contract is no gaps
-    //        may simplify implementation
-
-
-    // If there are any unused card ids which lie between the min
-    // id and the max id, then we reuse that id when adding new card.
-
     const resultBoard: BoardState = cloneDeep(board);
-    const origCardIds: number[] = cloneDeep(board.cardsIds);
-    const smallest: number = Math.min(...origCardIds);
-    const largest: number = Math.max(...origCardIds);
     
-    var idForNewCard: number = largest + 1;
-    const canReuseSomeId: boolean = largest - smallest > origCardIds.length - 1;
-    if (canReuseSomeId)
-    { // Then we shall find the smallest such id.
-        for (let i: number = smallest + 1; i < largest; i++)
-        {
-            if (!(origCardIds.includes(i)))
-            {
-                idForNewCard = i;
-                break;
-            }
-        }
-    }
-    resultBoard.cardsIds.push(idForNewCard);
-    resultBoard.cardsIds.sort();
+    const indexForNewCard: number = Math.max(...resultBoard.cardsIds) + 1;
+    resultBoard.cardsIds.push(indexForNewCard);
 
-    const indexForNewCard: number = resultBoard.cardsIds.indexOf(idForNewCard);
-   
-    resultBoard.cardsTitles.splice(indexForNewCard, 0, fillerStr);
-    resultBoard.cardsNotes.splice(indexForNewCard, 0, fillerStr);
-    resultBoard.cardsLabels.splice(indexForNewCard, 0, [fillerStr]);
-    resultBoard.listsCards[listId].push(idForNewCard);
+    resultBoard.cardsTitles.push(fillerStr);
+    resultBoard.cardsNotes.push(fillerStr);
+    resultBoard.cardsLabels.push([fillerStr]);
+    resultBoard.listsCards[listId].push(indexForNewCard);
 
     return resultBoard;
 }
