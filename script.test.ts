@@ -298,9 +298,17 @@ describe('List creation/destruction', () =>
     expect(actualOutput1).toEqual(SampleBoardState());
     expect(actualOutput2).toEqual(SampleBoardState());
   });
-//
-//  test('No mutation from adding/deleting lists', () => 
-//  {
-//    // TODO
-//  });
+
+  test('No mutation from adding/deleting lists', () => 
+  {
+    const bs: BoardState = SampleBoardState();
+    const expectedOutput: BoardState = SampleBoardState();
+
+    // Both these functions should be pure.
+    // So we expect this will not affect bs.
+    AddList(bs);
+    DeleteList(bs, 2);
+    
+    expect(bs).toEqual(expectedOutput);
+  });
 });
