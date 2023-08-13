@@ -278,7 +278,7 @@ describe('List creation/destruction', () =>
         [0, 1],
         [2],
         [3, 4, 5]
-    ],;
+    ];
     expectedOutput.listsPositions = [0, 1, 2];
 
     const actualOutput = DeleteList(SampleBoardState(), listIdToTest);
