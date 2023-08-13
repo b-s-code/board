@@ -559,10 +559,24 @@ export function AddCard(board: BoardState, listId: number): BoardState
 */
 export function AddList(board: BoardState): BoardState
 {
-    // TODO : implement this function.
+    const resultBoard: BoardState = cloneDeep(board);
+
+    const newCardId: number = resultBoard.cardsIds.length;
+    const newListId: number = resultBoard.listsIds.length;
+    const newListPos: number = resultBoard.listsPositions.length;
     
-    // TODO : remove dummy return value.
-    return EmptyBoard;
+    // New list should come with a filler card.
+    resultBoard.cardsIds.push(newCardId);
+    resultBoard.cardsTitles.push(fillerStr);
+    resultBoard.cardsNotes.push(fillerStr);
+    resultBoard.cardsLabels.push([fillerStr]);
+    
+    resultBoard.listsIds.push(newListId);
+    resultBoard.listsTitles.push(fillerStr);
+    resultBoard.listsCards.push([newCardId]);
+    resultBoard.listsPositions.push(newListPos);
+    
+    return resultBoard;
 }
 
 /*

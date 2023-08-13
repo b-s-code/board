@@ -250,6 +250,7 @@ describe('List creation/destruction', () =>
 
     expectedOutput.listsIds.push(nextListId);
     expectedOutput.listsTitles.push(fillerStr);
+    expectedOutput.listsCards.push([nextCardId]);
     expectedOutput.listsPositions.push(nextListId);
     
     const actualOutput = AddList(SampleBoardState());
