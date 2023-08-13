@@ -3,7 +3,8 @@ const cloneDeep = require('lodash.clonedeep');
 export interface BoardState
 {
     // Elts are indices of respective cards details
-    // into the card arrays below.
+    // into the card arrays below.  So this array must 
+    // rep. an increasing consecutive sequence starting at 0.
     cardsIds : number[],
 
         cardsTitles : string[],
@@ -11,7 +12,8 @@ export interface BoardState
         cardsLabels : string[][],
     
     // Elts are indices of respective lists details
-    // into the list arrays below.
+    // into the list arrays below.  So this array must 
+    // rep. an increasing consecutive sequence starting at 0.
     listsIds : number[],
     
         listsTitles    : string[],
