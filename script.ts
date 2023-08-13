@@ -624,6 +624,12 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 {
     var resultBoard: BoardState = cloneDeep(board);
 
+    const listFound: boolean = resultBoard.listsIds.indexOf(listId) !== -1;
+    if (!listFound)
+    { // Then no list with supplied id exists.
+        return resultBoard;
+    }
+
     // Find all cards belonging to the list.  Delete each.
     // We iterate backwards to avoid a card deletion
     // interfering with subsequent card deletions.

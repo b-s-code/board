@@ -285,10 +285,19 @@ describe('List creation/destruction', () =>
     expect(actualOutput).toEqual(expectedOutput);
   });
 
-//  test('Deleting a non-existent list changes nothing', () => 
-//  {
-//    // TODO
-//  });
+  test('Deleting a non-existent list changes nothing', () => 
+  {
+    // Check id bigger than those existing.
+    var nonExistentListId = Math.max(...SampleBoardState().listsIds) + 1;
+    const actualOutput1: BoardState = DeleteList(SampleBoardState(), nonExistentListId);
+
+    // Check id smaller than those existing.
+    nonExistentListId = Math.min(...SampleBoardState().listsIds) - 1;
+    const actualOutput2: BoardState = DeleteCard(SampleBoardState(), nonExistentListId);
+
+    expect(actualOutput1).toEqual(SampleBoardState());
+    expect(actualOutput2).toEqual(SampleBoardState());
+  });
 //
 //  test('No mutation from adding/deleting lists', () => 
 //  {
