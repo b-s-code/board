@@ -688,7 +688,7 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 */
 function RenameCard(board: BoardState, cardId: number, newTitle: string)
 {
-    //
+    // TODO (and add test)
 }
 
 /*
@@ -698,7 +698,7 @@ function RenameCard(board: BoardState, cardId: number, newTitle: string)
 */
 function RenameList(board: BoardState, listId: number, newTitle: string)
 {
-    //
+    // TODO (and add test)
 }
 
 /*
@@ -710,7 +710,7 @@ function RenameList(board: BoardState, listId: number, newTitle: string)
 */
 function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
-    //
+    // TODO (and add test)
 }
 
 /*
@@ -720,7 +720,7 @@ function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[]
 */
 function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
 {
-    //
+    // TODO (and add test)
 }
 
 // Render needs to be prepared to respond to this event before
