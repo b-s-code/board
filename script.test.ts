@@ -6,7 +6,6 @@ const cloneDeep = require('lodash.clonedeep');
 import
 {
     BoardState,
-    SampleBoardState,
     MoveCard,
     MoveList,
     AddCard,
@@ -15,6 +14,43 @@ import
     DeleteList,
     fillerStr
 } from './script';
+
+/*
+* The object is wrapped in a function as a simple
+* way of preventing mutation.
+*/
+function SampleBoardState(): BoardState
+{
+    const state: BoardState =
+    {
+        cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
+        cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
+        cardsLabels :
+        [
+            ["red","crunchy"],
+            ["orange","citrus"],
+            ["yellow","brown","green"],
+            ["green","crunchy"],
+            ["soft","warm coloured"],
+            ["green","crunchy"],
+            ["barking animal","likable"],
+            ["non-barking","unable to fly"],
+            ["capable of flight","non-barking"]
+        ],
+        listsIds : [0, 1, 2, 3],
+        listsTitles : ["Left", "L Mid", "R Mid", "Right"],
+        listsCards :
+        [
+            [0, 1],
+            [2],
+            [3, 4],
+            [5, 6, 7]
+        ],
+        listsPositions : [0, 1, 2, 3]
+    };
+    return state;
+};
 
 describe('Card movement', () => 
 {
