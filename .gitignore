@@ -1,3 +1,4 @@
 node_modules/
 script.js
 script.test.js
+bundle.js
