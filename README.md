@@ -7,10 +7,11 @@ A task board.
 
 - Have node, npm and typescript compiler installed.
 - Run `npm install`.
+- Install Browserify `npm install -g browserify`.
 
 #### Actually building
 
-Run the typsecript compiler from root of repo; `tsc`.
+`npm run build`
 
 #### Running tests
 

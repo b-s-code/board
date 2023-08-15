@@ -13,7 +13,8 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "test": "jest",
-    "verb": "jest --verbose"
+    "test": "jest *.test.ts --verbose",
+    "compile": "tsc",
+    "build": "tsc && browserify script.js -o bundle.js"
   }
 }
