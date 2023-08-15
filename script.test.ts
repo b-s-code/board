@@ -28,15 +28,15 @@ function SampleBoardState(): BoardState
         cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
         cardsLabels :
         [
-            ["red","crunchy"],
-            ["orange","citrus"],
-            ["yellow","brown","green"],
-            ["green","crunchy"],
-            ["soft","warm coloured"],
-            ["green","crunchy"],
-            ["barking animal","likable"],
-            ["non-barking","unable to fly"],
-            ["capable of flight","non-barking"]
+            ["red", "crunchy"],
+            ["orange", "citrus"],
+            ["yellow", "brown", "green"],
+            ["green", "crunchy"],
+            ["soft", "warm coloured"],
+            ["green", "crunchy"],
+            ["barking animal", "likable"],
+            ["non-barking", "unable to fly"],
+            ["capable of flight", "non-barking"]
         ],
         listsIds : [0, 1, 2, 3],
         listsTitles : ["Left", "L Mid", "R Mid", "Right"],
