@@ -1,3 +1,5 @@
+// Can use require() despite targeting browser,
+// only since Browserify is used to build.
 const cloneDeep = require('lodash.clonedeep');
 
 export interface BoardState
@@ -38,13 +40,13 @@ export const fillerStr = "...";
 */
 const EmptyBoard: BoardState =
 {
-    cardsIds : [],
-    cardsTitles : [],
-    cardsNotes : [],
-    cardsLabels : [],
-    listsIds : [],
-    listsTitles : [],
-    listsCards : [],
+    cardsIds       : [],
+    cardsTitles    : [],
+    cardsNotes     : [],
+    cardsLabels    : [[]],
+    listsIds       : [],
+    listsTitles    : [],
+    listsCards     : [[]],
     listsPositions : []
 };
 
@@ -78,43 +80,15 @@ export function SampleBoardState(): BoardState
         cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
         cardsLabels :
         [
-            [
-                "red",
-                "crunchy"
-            ],
-            [
-                "orange",
-                "citrus"
-            ],
-            [
-                "yellow",
-                "brown",
-                "green"
-            ],
-            [
-                "green",
-                "crunchy"
-            ],
-            [
-                "soft",
-                "warm coloured"
-            ],
-            [
-                "green",
-                "crunchy"
-            ],
-            [
-                "barking animal",
-                "likable"
-            ],
-            [
-                "non-barking",
-                "unable to fly"
-            ],
-            [
-                "capable of flight",
-                "non-barking"
-            ]
+            ["red","crunchy"],
+            ["orange","citrus"],
+            ["yellow","brown","green"],
+            ["green","crunchy"],
+            ["soft","warm coloured"],
+            ["green","crunchy"],
+            ["barking animal","likable"],
+            ["non-barking","unable to fly"],
+            ["capable of flight","non-barking"]
         ],
         listsIds : [0, 1, 2, 3],
         listsTitles : ["Left", "L Mid", "R Mid", "Right"],
@@ -612,17 +586,7 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
     // Decrement required lists' pointers to some cards, as required.
     resultBoard.listsCards.forEach((elt, i) =>
     {
-        resultBoard.listsCards[i] = elt.map((id) =>
-        {
-            if (id < cardId)
-            {
-                return id;
-            }
-            else
-            {
-                return id - 1;
-            }
-        });
+        resultBoard.listsCards[i] = elt.map((id) => id < cardId ? id : id - 1);
     });
 
     return resultBoard;
@@ -666,17 +630,7 @@ export function DeleteList(board: BoardState, listId: number): BoardState
     // Shuffle list positions down too.
     const removedPos = resultBoard.listsPositions[listId];
     resultBoard.listsPositions.splice(listId, 1);
-    resultBoard.listsPositions = resultBoard.listsPositions.map((pos) =>
-    {
-        if (pos < removedPos)
-        {
-            return pos;
-        }
-        else
-        {
-            return pos - 1;
-        }
-    });
+    resultBoard.listsPositions = resultBoard.listsPositions.map((pos) => pos < removedPos ? pos : pos - 1);
 
     return resultBoard;
 }
