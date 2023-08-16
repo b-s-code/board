@@ -420,10 +420,10 @@ describe('Rename/change tests', () =>
     const dummyArr: string[] = [dummyStr, dummyStr];
 
     var actualOutput: BoardState = SampleBoardState();
-    actualOutput = RenameCard(actualOutput, arbitraryCardId, dummyStr);
-    actualOutput = RenameList(actualOutput, arbitraryListId, dummyStr);
-    actualOutput = ChangeCardLabels(actualOutput, arbitraryCardId, dummyArr);
-    actualOutput = ChangeCardNotes(actualOutput, arbitraryCardId, dummyStr);
+    RenameCard(actualOutput, arbitraryCardId, dummyStr);
+    RenameList(actualOutput, arbitraryListId, dummyStr);
+    ChangeCardLabels(actualOutput, arbitraryCardId, dummyArr);
+    ChangeCardNotes(actualOutput, arbitraryCardId, dummyStr);
     
     expect(actualOutput).toEqual(SampleBoardState());
   });
