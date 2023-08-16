@@ -1,4 +1,9 @@
 /*
+* For each board, the user's data is stored in a JSON file.
+* The file just stores one object, satisfying this interface.
+*/
+
+/*
 * Two collections of parallel arrays.  One for cards' properties.
 * One for lists' properties.
 */
@@ -26,6 +31,5 @@ export default interface BoardState
     // created/deleted/updated here as cards are
     // added/removed/moved between lists) per list.
     listsCards     : number[][],
-    
     listsPositions : number[]
 };

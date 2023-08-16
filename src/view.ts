@@ -199,7 +199,7 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-    //
+    // TODO
 }
 
 /*
@@ -210,7 +210,7 @@ function RenderAggregate()
 */
 function RenderFocus()
 {
-    //
+    // TODO
 }
 
 /*
@@ -219,7 +219,7 @@ function RenderFocus()
 */
 function RenderDownload()
 {
-    //
+    // TODO
 }
 
 /*
@@ -245,7 +245,7 @@ function StripBody()
 */
 function ExportBoard(board: BoardState)
 {
-    //
+    // TODO
 }
 
 // Render needs to be prepared to respond to this event before
