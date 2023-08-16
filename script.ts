@@ -633,8 +633,7 @@ export function RenameList(board: BoardState, listId: number, newTitle: string)
 * Pure function.
 * Returns a new board, where the card with supplied cardId is assigned
 * the new string array of labels newLabels.
-* Can be used for adding/deleting/renaming a label.
-* Chooses a default name for new labels.
+* Can be used for (manually) adding/deleting/renaming a label.
 */
 export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
