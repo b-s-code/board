@@ -1,8 +1,2 @@
 node_modules/
-
-view.js
-model.js
-controller.js
-controller.test.js
-
-bundle.js
+build/

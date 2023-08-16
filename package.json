@@ -13,8 +13,8 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "test": "jest *.test.ts --verbose",
-    "compile": "tsc",
-    "build": "tsc && browserify view.js -o bundle.js"
+    "test": "jest --verbose",
+    "compile": "tsc ./src/*.ts --outDir ./build",
+    "build": "npm run compile && mkdir -p ./build/release && browserify ./build/view.js -o ./build/release/bundle.js && cp ./src/*.html ./src/*.css ./build/release/"
   }
 }

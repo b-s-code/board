@@ -3,7 +3,7 @@
  */
 import {describe, expect, test} from '@jest/globals';
 const cloneDeep = require('lodash.clonedeep');
-import BoardState from './model';
+import BoardState from '../src/model';
 import
 {
     MoveCard,
@@ -17,7 +17,7 @@ import
     ChangeCardLabels,
     ChangeCardNotes,
     fillerStr
-} from './controller';
+} from '../src/controller';
 
 /*
 * The object is wrapped in a function as a simple

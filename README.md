@@ -13,6 +13,8 @@ A task board.
 
 `npm run build`
 
+The built app is located in `build/release/`.
+
 #### Running tests
 
 `npm test`
