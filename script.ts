@@ -602,9 +602,12 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 * Returns a new board, where the card with supplied cardId is assigned
 * the new title newTitle.
 */
-function RenameCard(board: BoardState, cardId: number, newTitle: string)
+export function RenameCard(board: BoardState, cardId: number, newTitle: string)
 {
     // TODO (and add test)
+
+    // TODO : remove dummy return value
+    return EmptyBoard;
 }
 
 /*
@@ -612,9 +615,12 @@ function RenameCard(board: BoardState, cardId: number, newTitle: string)
 * Returns a new board, where the list with supplied listId is assigned
 * the new title newTitle.
 */
-function RenameList(board: BoardState, listId: number, newTitle: string)
+export function RenameList(board: BoardState, listId: number, newTitle: string)
 {
     // TODO (and add test)
+
+    // TODO : remove dummy return value
+    return EmptyBoard;
 }
 
 /*
@@ -624,9 +630,12 @@ function RenameList(board: BoardState, listId: number, newTitle: string)
 * Can be used for adding/deleting/renaming a label.
 * Chooses a default name for new labels.
 */
-function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
+export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
     // TODO (and add test)
+
+    // TODO : remove dummy return value
+    return EmptyBoard;
 }
 
 /*
@@ -634,9 +643,12 @@ function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[]
 * Returns a new board, where the card with supplied cardId is assigned
 * the new notes string newNote.
 */
-function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
+export function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
 {
     // TODO (and add test)
+
+    // TODO : remove dummy return value
+    return EmptyBoard;
 }
 
 // Render needs to be prepared to respond to this event before

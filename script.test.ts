@@ -12,6 +12,10 @@ import
     DeleteCard,
     AddList,
     DeleteList,
+    RenameCard,
+    RenameList,
+    ChangeCardLabels,
+    ChangeCardNotes,
     fillerStr
 } from './script';
 
@@ -347,5 +351,62 @@ describe('List creation/destruction', () =>
     DeleteList(bs, 2);
     
     expect(bs).toEqual(expectedOutput);
+  });
+});
+
+describe('Rename/change tests', () => 
+{
+  // test('Card renaming', () => 
+  // {
+  //   const expectedOutput = SampleBoardState();
+  //   // TODO
+  //   expect(actualOutput).toEqual(expectedOutput);
+  // });
+
+  // test('List renaming', () => 
+  // {
+  //   const expectedOutput = SampleBoardState();
+  //   // TODO
+  //   expect(actualOutput).toEqual(expectedOutput);
+  // });
+
+  // test('Card label change', () => 
+  // {
+  //   const expectedOutput = SampleBoardState();
+  //   // TODO
+  //   expect(actualOutput).toEqual(expectedOutput);
+  // });
+
+  // test('Card note change', () => 
+  // {
+  //   const expectedOutput = SampleBoardState();
+  //   // TODO
+  //   expect(actualOutput).toEqual(expectedOutput);
+  // });
+  // 
+  // test('No mutation', () => 
+  // {
+  //   const expectedOutput = SampleBoardState();
+  //   // TODO
+  //   expect(actualOutput).toEqual(expectedOutput);
+  // });
+  
+  test('Rename/change on invalid card/list', () => 
+  {
+    const nonExistentCardId: number = 9;
+    const nonExistentListId: number = 4;
+    const dummyStr: string = "hello";
+    const dummyArr: string[] = [dummyStr, dummyStr];
+
+    const expectedOutput: BoardState = SampleBoardState();
+    const actualOutput1: BoardState = RenameCard(SampleBoardState(), nonExistentCardId, dummyStr);
+    const actualOutput2: BoardState = RenameList(SampleBoardState(), nonExistentListId, dummyStr);
+    const actualOutput3: BoardState = ChangeCardLabels(SampleBoardState(), nonExistentCardId, dummyArr);
+    const actualOutput4: BoardState = ChangeCardNotes(SampleBoardState(), nonExistentCardId, dummyStr);
+    
+    expect(actualOutput1).toEqual(SampleBoardState());
+    expect(actualOutput2).toEqual(SampleBoardState());
+    expect(actualOutput3).toEqual(SampleBoardState());
+    expect(actualOutput4).toEqual(SampleBoardState());
   });
 });
