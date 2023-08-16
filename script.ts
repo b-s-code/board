@@ -604,10 +604,13 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 */
 export function RenameCard(board: BoardState, cardId: number, newTitle: string)
 {
-    // TODO (and add test)
-
-    // TODO : remove dummy return value
-    return EmptyBoard;
+    const boardCopy: BoardState = cloneDeep(board);
+    if(!(boardCopy.cardsIds.includes(cardId)))
+    {
+        return boardCopy;
+    }
+    boardCopy.cardsTitles[cardId] = newTitle;
+    return boardCopy;
 }
 
 /*
@@ -617,10 +620,13 @@ export function RenameCard(board: BoardState, cardId: number, newTitle: string)
 */
 export function RenameList(board: BoardState, listId: number, newTitle: string)
 {
-    // TODO (and add test)
-
-    // TODO : remove dummy return value
-    return EmptyBoard;
+    const boardCopy: BoardState = cloneDeep(board);
+    if(!(boardCopy.listsIds.includes(listId)))
+    {
+        return boardCopy;
+    }
+    boardCopy.listsTitles[listId] = newTitle;
+    return boardCopy;
 }
 
 /*
@@ -632,10 +638,13 @@ export function RenameList(board: BoardState, listId: number, newTitle: string)
 */
 export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
-    // TODO (and add test)
-
-    // TODO : remove dummy return value
-    return EmptyBoard;
+    const boardCopy: BoardState = cloneDeep(board);
+    if(!(boardCopy.cardsIds.includes(cardId)))
+    {
+        return boardCopy;
+    }
+    boardCopy.cardsLabels[cardId] = newLabels;
+    return boardCopy;
 }
 
 /*
@@ -645,10 +654,13 @@ export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: s
 */
 export function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
 {
-    // TODO (and add test)
-
-    // TODO : remove dummy return value
-    return EmptyBoard;
+    const boardCopy: BoardState = cloneDeep(board);
+    if(!(boardCopy.cardsIds.includes(cardId)))
+    {
+        return boardCopy;
+    }
+    boardCopy.cardsNotes[cardId] = newNotes;
+    return boardCopy;
 }
 
 // Render needs to be prepared to respond to this event before
