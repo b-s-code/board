@@ -9,7 +9,6 @@
     "jest-environment-jsdom": "^29.6.2",
     "lodash.clonedeep": "^4.5.0",
     "ts-node": "^10.9.1",
-    "tsc": "^2.0.4",
     "typescript": "^5.1.6"
   },
   "scripts": {
