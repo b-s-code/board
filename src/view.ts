@@ -1,14 +1,5 @@
-interface BoardState
-{
-    cardsIds : number[],
-    cardsTitles : string[],
-    cardsNotes : string[],
-    cardsLabels : string[][],
-    listsIds : number[],
-    listsTitles : string[],
-    listsCards : number[][],
-    listsPositions : number[]
-}
+import BoardState from "./model";
+import { fillerStr } from "./controller";
 
 /*
 * Don't need to have a class and constructor because this can be used
@@ -16,15 +7,13 @@ interface BoardState
 */
 const EmptyBoard: BoardState =
 {
-    cardsIds : [],
-    cardsTitles : [],
-    cardsNotes : [],
-    cardsLabels : [],
-    listsIds : [],
-    listsTitles : [],
-    listsCards : [],
+    cardsTitles    : [],
+    cardsNotes     : [],
+    cardsLabels    : [[]],
+    listsTitles    : [],
+    listsCards     : [[]],
     listsPositions : []
-}
+};
 
 /*
 * The non-empty template board that will be used when user
@@ -32,84 +21,13 @@ const EmptyBoard: BoardState =
 */
 const BlankCanvasBoard: BoardState =
 {
-    cardsIds : [0],
-    cardsTitles : ["..."],
-    cardsNotes : ["..."],
-    cardsLabels :
-    [
-        [
-            "..."
-        ]
-    ],
-    listsIds : [0, 1],
-    listsTitles : ["...", "..."],
-    listsCards :
-    [
-        [0],
-        []
-    ],
+    cardsTitles    : [fillerStr],
+    cardsNotes     : [fillerStr],
+    cardsLabels    : [[fillerStr]],
+    listsTitles    : [fillerStr, fillerStr],
+    listsCards     : [[0], []],
     listsPositions : [0, 1]
-}
-
-/*
-* For tests.
-*/
-const SampleBoardState: BoardState =
-{
-    cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
-    cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
-    cardsLabels :
-    [
-        [
-            "red",
-            "crunchy"
-        ],
-        [
-            "orange",
-            "citrus"
-        ],
-        [
-            "yellow",
-            "brown",
-            "green"
-        ],
-        [
-            "green",
-            "crunchy"
-        ],
-        [
-            "soft",
-            "warm coloured"
-        ],
-        [
-            "green",
-            "crunchy"
-        ],
-        [
-            "barking animal",
-            "likable"
-        ],
-        [
-            "non-barking",
-            "unable to fly"
-        ],
-        [
-            "capable of flight",
-            "non-barking"
-        ]
-    ],
-    listsIds : [0, 1, 2, 3],
-    listsTitles : ["Left", "L Mid", "R Mid", "Right"],
-    listsCards :
-    [
-        [0, 1],
-        [2],
-        [3, 4],
-        [5, 6, 7]
-    ],
-    listsPositions : [0, 1, 2, 3]
-}
+};
 
 /*
 * Holds state of the user's board.
@@ -276,10 +194,12 @@ function RenderWelcome()
 * renaming lists,
 * bringing one card into focus,
 * preparing board state for download.
+* Does not assume list/card ids and positions
+* are gapless sequences.
 */
 function RenderAggregate()
 {
-    //
+    // TODO
 }
 
 /*
@@ -290,7 +210,7 @@ function RenderAggregate()
 */
 function RenderFocus()
 {
-    //
+    // TODO
 }
 
 /*
@@ -299,7 +219,7 @@ function RenderFocus()
 */
 function RenderDownload()
 {
-    //
+    // TODO
 }
 
 /*
@@ -309,7 +229,9 @@ function RenderDownload()
 function StripBody()
 {
     // Count up scripts in the DOM so they don't get removed.
-    let numScripts = document.getElementsByTagName("script").length;
+    // Better than maintaining a magic number in code each time the
+    // number of <script> tags in the HTML changes.
+    const numScripts = document.getElementsByTagName("script").length;
     
     while (document.getElementsByTagName("body")[0].children.length > numScripts)
     {
@@ -323,111 +245,7 @@ function StripBody()
 */
 function ExportBoard(board: BoardState)
 {
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with card moved one unit in direction dir.
-* Return input board if dir is not possible direction movement,
-* given card's current position.
-* dir can be "up", "down", "left", or "right".
-*/
-function MoveCard(board: BoardState, cardId: number, dir: string)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with list moved one unit in direction dir.
-* Return input board if dir is not possible direction movement,
-* given list's current position.
-* dir can be "left" or "right".
-*/
-function MoveList(board: BoardState, listId: number, dir: string)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with one new card at the end of the list with given listId.
-* Chooses default values for the card's properties.
-*/
-function AddCard(board: BoardState, listId: number)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with one new list in rightmost position.
-* Chooses default values for the card's properties.
-*/
-function AddList(board: BoardState)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with the card with given cardId removed.
-*/
-function DeleteCard(board: BoardState, cardId: number)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, with the list with given listId removed.
-*/
-function DeleteList(board: BoardState, listId: number)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, where the card with supplied cardId is assigned
-* the new title newTitle.
-*/
-function RenameCard(board: BoardState, cardId: number, newTitle: string)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, where the list with supplied listId is assigned
-* the new title newTitle.
-*/
-function RenameList(board: BoardState, listId: number, newTitle: string)
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, where the card with supplied cardId is assigned
-* the new string array of labels newLabels.
-* Can be used for adding/deleting/renaming a label.
-* Chooses a default name for new labels.
-*/
-function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
-{
-    //
-}
-
-/*
-* Pure function.
-* Returns a new board, where the card with supplied cardId is assigned
-* the new notes string newNote.
-*/
-function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
-{
-    //
+    // TODO
 }
 
 // Render needs to be prepared to respond to this event before
