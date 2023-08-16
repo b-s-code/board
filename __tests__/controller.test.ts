@@ -41,7 +41,6 @@ function SampleBoardState(): BoardState
             ["non-barking", "unable to fly"],
             ["capable of flight", "non-barking"]
         ],
-        listsIds : [0, 1, 2, 3],
         listsTitles : ["Left", "L Mid", "R Mid", "Right"],
         listsCards :
         [
@@ -284,7 +283,6 @@ describe('List creation/destruction', () =>
     expectedOutput.cardsNotes.push(fillerStr);
     expectedOutput.cardsLabels.push([fillerStr]);
 
-    expectedOutput.listsIds.push(nextListId);
     expectedOutput.listsTitles.push(fillerStr);
     expectedOutput.listsCards.push([nextCardId]);
     expectedOutput.listsPositions.push(nextListId);
@@ -307,7 +305,6 @@ describe('List creation/destruction', () =>
 
     // Set expectation for lists.
     // Value used here are dependent on value of sample board.
-    expectedOutput.listsIds = [0, 1, 2]; // No gaps.
     expectedOutput.listsTitles = ["Left", "L Mid", "Right"];
     expectedOutput.listsCards = 
     [
@@ -324,11 +321,11 @@ describe('List creation/destruction', () =>
   test('Deleting a non-existent list changes nothing', () => 
   {
     // Check id bigger than those existing.
-    var nonExistentListId = Math.max(...SampleBoardState().listsIds) + 1;
+    var nonExistentListId = SampleBoardState().listsTitles.length;
     const actualOutput1: BoardState = DeleteList(SampleBoardState(), nonExistentListId);
 
     // Check id smaller than those existing.
-    nonExistentListId = Math.min(...SampleBoardState().listsIds) - 1;
+    nonExistentListId = -1;
     const actualOutput2: BoardState = DeleteCard(SampleBoardState(), nonExistentListId);
 
     expect(actualOutput1).toEqual(SampleBoardState());

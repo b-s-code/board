@@ -229,7 +229,6 @@ export function AddList(board: BoardState): BoardState
     resultBoard.cardsNotes.push(fillerStr);
     resultBoard.cardsLabels.push([fillerStr]);
     
-    resultBoard.listsIds.push(newListId);
     resultBoard.listsTitles.push(fillerStr);
     resultBoard.listsCards.push([newCardId]);
     resultBoard.listsPositions.push(newListPos);
@@ -300,9 +299,6 @@ export function DeleteList(board: BoardState, listId: number): BoardState
         const deleteeCardId: number = idsOfCardsToDelete[i];
         resultBoard = DeleteCard(resultBoard, deleteeCardId);
     }
-
-    // Rest of list ids should be shuffled down.
-    resultBoard.listsIds.pop();
     
     // Now we're ready to get rid of the list itself.
     resultBoard.listsTitles.splice(listId, 1);

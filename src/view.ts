@@ -10,7 +10,6 @@ const EmptyBoard: BoardState =
     cardsTitles    : [],
     cardsNotes     : [],
     cardsLabels    : [[]],
-    listsIds       : [],
     listsTitles    : [],
     listsCards     : [[]],
     listsPositions : []
@@ -25,7 +24,6 @@ const BlankCanvasBoard: BoardState =
     cardsTitles    : [fillerStr],
     cardsNotes     : [fillerStr],
     cardsLabels    : [[fillerStr]],
-    listsIds       : [0, 1],
     listsTitles    : [fillerStr, fillerStr],
     listsCards     : [[0], []],
     listsPositions : [0, 1]
