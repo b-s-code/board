@@ -17,7 +17,7 @@ struct BoardStateModel
     (string[])[]    cardsLabels  
 
     /* LISTS */
-    uint[]          listsIds            // Used when anything needs a reference to a list.  Allows duplicate list titles.
+    // Index into these parallel arrays is used when anything needs a reference to a list.
     string[]        listTitles
     (uint[])[]      listsCards          // Tracks the card-list relation.  Order of cardIds within an arr elt specifies top-to-bottom order in GUI.
     uint[]          listsPositions      // From LHS.  Parallel to listIds.
@@ -30,7 +30,6 @@ interface BoardState
     cardsTitles : string[],
     cardsNotes : string[],
     cardsLables : string[][],
-    listsIds : number[],
     listsTitles : string[],
     listsCards : number[][],
     listsPositions : number[]
