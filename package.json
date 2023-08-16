@@ -15,6 +15,6 @@
   "scripts": {
     "test": "jest *.test.ts --verbose",
     "compile": "tsc",
-    "build": "tsc && browserify script.js -o bundle.js"
+    "build": "tsc && browserify view.js -o bundle.js"
   }
 }

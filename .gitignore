@@ -1,4 +1,8 @@
 node_modules/
-script.js
-script.test.js
+
+view.js
+model.js
+controller.js
+controller.test.js
+
 bundle.js
