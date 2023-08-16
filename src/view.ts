@@ -7,7 +7,6 @@ import { fillerStr } from "./controller";
 */
 const EmptyBoard: BoardState =
 {
-    cardsIds       : [],
     cardsTitles    : [],
     cardsNotes     : [],
     cardsLabels    : [[]],
@@ -23,7 +22,6 @@ const EmptyBoard: BoardState =
 */
 const BlankCanvasBoard: BoardState =
 {
-    cardsIds       : [0],
     cardsTitles    : [fillerStr],
     cardsNotes     : [fillerStr],
     cardsLabels    : [[fillerStr]],

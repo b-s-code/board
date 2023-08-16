@@ -27,7 +27,6 @@ function SampleBoardState(): BoardState
 {
     const state: BoardState =
     {
-        cardsIds : [0, 1, 2, 3, 4, 5, 6, 7, 8],
         cardsTitles : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
         cardsNotes : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
         cardsLabels :
@@ -207,7 +206,6 @@ describe('Card creation/destruction', () =>
     const nextCardId: number = 9;
 
     const expectedOutput: BoardState = SampleBoardState();
-    expectedOutput.cardsIds.push(nextCardId);
     expectedOutput.cardsTitles.push(fillerStr);
     expectedOutput.cardsNotes.push(fillerStr);
     expectedOutput.cardsLabels.push([fillerStr]);
@@ -222,7 +220,6 @@ describe('Card creation/destruction', () =>
     const targetCardId: number = 3;
 
     const expectedOutput: BoardState = SampleBoardState();
-    expectedOutput.cardsIds = [0, 1, 2, 3, 4, 5, 6, 7];
     expectedOutput.cardsTitles = ["apple", "orange", "banana", "peach", "apple", "dog", "cat", "bird"];
     expectedOutput.cardsNotes = ["apple tasty", "orange tasty", "banana tasty", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"];
 
@@ -247,11 +244,11 @@ describe('Card creation/destruction', () =>
   test('Deleting a non-existent card changes nothing', () => 
   {
     // Check id bigger than those existing.
-    var nonExistentCardId = Math.max(...SampleBoardState().cardsIds) + 1;
+    var nonExistentCardId: number = SampleBoardState().cardsTitles.length;
     const actualOutput1: BoardState = DeleteCard(SampleBoardState(), nonExistentCardId);
 
     // Check id smaller than those existing.
-    nonExistentCardId = Math.min(...SampleBoardState().cardsIds) - 1;
+    nonExistentCardId = -1;
     const actualOutput2: BoardState = DeleteCard(SampleBoardState(), nonExistentCardId);
 
     expect(actualOutput1).toEqual(SampleBoardState());
@@ -283,7 +280,6 @@ describe('List creation/destruction', () =>
     const nextCardId: number = 9;
 
     // New list should come with a filler card.
-    expectedOutput.cardsIds.push(nextCardId);
     expectedOutput.cardsTitles.push(fillerStr);
     expectedOutput.cardsNotes.push(fillerStr);
     expectedOutput.cardsLabels.push([fillerStr]);
@@ -301,14 +297,13 @@ describe('List creation/destruction', () =>
   {
     const listIdToTest: number = 2;
     const expectedOutput: BoardState = SampleBoardState();
-    const deleteeCardsIds: number[] = [...expectedOutput.listsCards[listIdToTest]];
+    const deleteeCardsIndices: number[] = [...expectedOutput.listsCards[listIdToTest]];
     
     // Set expectation for cards.
     // Value used here are dependent on value of sample board.
-    expectedOutput.cardsIds = [0, 1, 2, 3, 4, 5, 6]; // No gaps.
     expectedOutput.cardsTitles = ["apple", "orange", "banana", "apple", "dog", "cat", "bird"];
     expectedOutput.cardsNotes = ["apple tasty", "orange tasty", "banana tasty", "apple gross", "dog fun", "cat ugly", "bird elegant"];
-    expectedOutput.cardsLabels = expectedOutput.cardsLabels.filter((elt, i) => !(deleteeCardsIds.includes(i)));
+    expectedOutput.cardsLabels = expectedOutput.cardsLabels.filter((elt, i) => !(deleteeCardsIndices.includes(i)));
 
     // Set expectation for lists.
     // Value used here are dependent on value of sample board.

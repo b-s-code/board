@@ -11,7 +11,7 @@ struct BoardStateModel
     /* CARDS */
     // Do not have a reference to the list they belong to.
     // Instead can loop over listsCards to find owning list of card of interest.
-    uint[]          cardsIds            // Used when anything needs a reference to a card.
+    // Index into these parallel arrays is used when anything needs a reference to a card.
     string[]        cardsTitles  
     string[]        cardsNotes
     (string[])[]    cardsLabels  
@@ -27,7 +27,6 @@ struct BoardStateModel
 ```typescript
 interface BoardState
 {
-    cardsIds : number[],
     cardsTitles : string[],
     cardsNotes : string[],
     cardsLables : string[][],

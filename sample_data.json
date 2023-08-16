@@ -1,5 +1,4 @@
 {
-    "cardsIds" : [0, 1, 2, 3, 4, 5, 6, 7, 8],
     "cardsTitles" : ["apple", "orange", "banana", "pear", "peach", "apple", "dog", "cat", "bird"],
     "cardsNotes" : ["apple tasty", "orange tasty", "banana tasty", "pear ugh", "peach hairy", "apple gross", "dog fun", "cat ugly", "bird elegant"],
     "cardsLabels" :

@@ -199,8 +199,7 @@ export function AddCard(board: BoardState, listId: number): BoardState
 {
     const resultBoard: BoardState = cloneDeep(board);
     
-    const indexForNewCard: number = Math.max(...resultBoard.cardsIds) + 1;
-    resultBoard.cardsIds.push(indexForNewCard);
+    const indexForNewCard: number = resultBoard.cardsTitles.length;
 
     resultBoard.cardsTitles.push(fillerStr);
     resultBoard.cardsNotes.push(fillerStr);
@@ -220,12 +219,11 @@ export function AddList(board: BoardState): BoardState
 {
     const resultBoard: BoardState = cloneDeep(board);
 
-    const newCardId: number = resultBoard.cardsIds.length;
+    const newCardId: number = resultBoard.cardsTitles.length;
     const newListId: number = resultBoard.listsIds.length;
     const newListPos: number = resultBoard.listsPositions.length;
     
     // New list should come with a filler card.
-    resultBoard.cardsIds.push(newCardId);
     resultBoard.cardsTitles.push(fillerStr);
     resultBoard.cardsNotes.push(fillerStr);
     resultBoard.cardsLabels.push([fillerStr]);
@@ -248,7 +246,7 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
 {
     const resultBoard: BoardState = cloneDeep(board);
 
-    const cardFound: boolean = resultBoard.cardsIds.indexOf(cardId) !== -1;
+    const cardFound: boolean = IsBetween(cardId, 0, resultBoard.cardsTitles.length - 1);
     if (!cardFound)
     { // Then no card with supplied id exists.
         return resultBoard;
@@ -259,9 +257,6 @@ export function DeleteCard(board: BoardState, cardId: number): BoardState
     resultBoard.cardsNotes.splice(cardId, 1); 
     resultBoard.cardsLabels.splice(cardId, 1); 
     
-    // Rest of card ids should be shuffled down.
-    resultBoard.cardsIds.pop(); 
-
     // Remove card from its list.  Brute force to find it...
     resultBoard.listsCards.forEach((elt, i) =>
     {
@@ -328,7 +323,8 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 export function RenameCard(board: BoardState, cardId: number, newTitle: string)
 {
     const boardCopy: BoardState = cloneDeep(board);
-    if(!(boardCopy.cardsIds.includes(cardId)))
+    const cardFound: boolean = IsBetween(cardId, 0, boardCopy.cardsTitles.length - 1);
+    if (!cardFound)
     {
         return boardCopy;
     }
@@ -361,7 +357,8 @@ export function RenameList(board: BoardState, listId: number, newTitle: string)
 export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: string[])
 {
     const boardCopy: BoardState = cloneDeep(board);
-    if(!(boardCopy.cardsIds.includes(cardId)))
+    const cardFound: boolean = IsBetween(cardId, 0, boardCopy.cardsTitles.length - 1);
+    if (!cardFound)
     {
         return boardCopy;
     }
@@ -377,10 +374,24 @@ export function ChangeCardLabels(board: BoardState, cardId: number, newLabels: s
 export function ChangeCardNotes(board: BoardState, cardId: number, newNotes: string)
 {
     const boardCopy: BoardState = cloneDeep(board);
-    if(!(boardCopy.cardsIds.includes(cardId)))
+    const cardFound: boolean = IsBetween(cardId, 0, boardCopy.cardsTitles.length - 1);
+    if (!cardFound)
     {
         return boardCopy;
     }
     boardCopy.cardsNotes[cardId] = newNotes;
     return boardCopy;
 }
+
+/*
+* Helper function to check whether a given number reprensents an integer
+* in a given closed interval.
+*/
+function IsBetween(numToCheck: number, lowerBound: number, upperBound: number): boolean
+{
+    if (!Number.isInteger(numToCheck))
+    {
+        return false;
+    }
+    return (numToCheck >= lowerBound) && (numToCheck <= upperBound);
+} 

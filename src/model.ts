@@ -1,13 +1,15 @@
 export default interface BoardState
 {
-    // Elts are indices of respective cards details
-    // into the card arrays below.  So this array must 
-    // rep. an increasing consecutive sequence starting at 0.
-    cardsIds : number[],
-
-        cardsTitles : string[],
-        cardsNotes  : string[],
-        cardsLabels : string[][],
+    // Parallel arrays.
+    // Elts are respective cards details.
+    // Clients of this interface requiring a reference
+    // to a "card" just need the index of said card in
+    // these arrays.
+    // Parallelness of these arrays must be maintained 
+    // by any functions which modify them.
+    cardsTitles : string[],
+    cardsNotes  : string[],
+    cardsLabels : string[][],
     
     // Elts are indices of respective lists details
     // into the list arrays below.  So this array must 
