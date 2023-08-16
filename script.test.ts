@@ -356,33 +356,61 @@ describe('List creation/destruction', () =>
 
 describe('Rename/change tests', () => 
 {
-  // test('Card renaming', () => 
-  // {
-  //   const expectedOutput = SampleBoardState();
-  //   // TODO
-  //   expect(actualOutput).toEqual(expectedOutput);
-  // });
+  test('Card renaming', () => 
+  {
+    const expectedOutput = SampleBoardState();
 
-  // test('List renaming', () => 
-  // {
-  //   const expectedOutput = SampleBoardState();
-  //   // TODO
-  //   expect(actualOutput).toEqual(expectedOutput);
-  // });
+    // Arbitrary.
+    const targetCardId: number = 4;
+    const newTitle: string = "My New Card Title";
 
-  // test('Card label change', () => 
-  // {
-  //   const expectedOutput = SampleBoardState();
-  //   // TODO
-  //   expect(actualOutput).toEqual(expectedOutput);
-  // });
+    expectedOutput.cardsTitles[targetCardId] = newTitle;
+    
+    const actualOutput = RenameCard(SampleBoardState(), targetCardId, newTitle);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
 
-  // test('Card note change', () => 
-  // {
-  //   const expectedOutput = SampleBoardState();
-  //   // TODO
-  //   expect(actualOutput).toEqual(expectedOutput);
-  // });
+  test('List renaming', () => 
+  {
+    const expectedOutput = SampleBoardState();
+
+    // Arbitrary.
+    const targetListId: number = 2;
+    const newTitle: string = "My New List Title";
+
+    expectedOutput.listsTitles[targetListId] = newTitle;
+    
+    const actualOutput = RenameList(SampleBoardState(), targetListId, newTitle);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  test('Card label change', () => 
+  {
+    const expectedOutput = SampleBoardState();
+
+    // Arbitrary.
+    const targetCardId: number = 4;
+    const newLabels: string[] = ["first new label", "second new label"];
+
+    expectedOutput.cardsLabels[targetCardId] = newLabels;
+    
+    const actualOutput = ChangeCardLabels(SampleBoardState(), targetCardId, newLabels);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  test('Card note change', () => 
+  {
+    const expectedOutput = SampleBoardState();
+
+    // Arbitrary.
+    const targetCardId: number = 4;
+    const newNote: string = "hello world, this is a new note";
+    
+    expectedOutput.cardsNotes[targetCardId] = newNote;
+    
+    const actualOutput = ChangeCardNotes(SampleBoardState(), targetCardId, newNote);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
   
   test('No mutation', () => 
   {
