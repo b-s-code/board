@@ -383,13 +383,22 @@ describe('Rename/change tests', () =>
   //   // TODO
   //   expect(actualOutput).toEqual(expectedOutput);
   // });
-  // 
-  // test('No mutation', () => 
-  // {
-  //   const expectedOutput = SampleBoardState();
-  //   // TODO
-  //   expect(actualOutput).toEqual(expectedOutput);
-  // });
+  
+  test('No mutation', () => 
+  {
+    const arbitraryCardId: number = 4;
+    const arbitraryListId: number = 2;
+    const dummyStr: string = "hello";
+    const dummyArr: string[] = [dummyStr, dummyStr];
+
+    var actualOutput: BoardState = SampleBoardState();
+    actualOutput = RenameCard(actualOutput, arbitraryCardId, dummyStr);
+    actualOutput = RenameList(actualOutput, arbitraryListId, dummyStr);
+    actualOutput = ChangeCardLabels(actualOutput, arbitraryCardId, dummyArr);
+    actualOutput = ChangeCardNotes(actualOutput, arbitraryCardId, dummyStr);
+    
+    expect(actualOutput).toEqual(SampleBoardState());
+  });
   
   test('Rename/change on invalid card/list', () => 
   {
@@ -398,7 +407,6 @@ describe('Rename/change tests', () =>
     const dummyStr: string = "hello";
     const dummyArr: string[] = [dummyStr, dummyStr];
 
-    const expectedOutput: BoardState = SampleBoardState();
     const actualOutput1: BoardState = RenameCard(SampleBoardState(), nonExistentCardId, dummyStr);
     const actualOutput2: BoardState = RenameList(SampleBoardState(), nonExistentListId, dummyStr);
     const actualOutput3: BoardState = ChangeCardLabels(SampleBoardState(), nonExistentCardId, dummyArr);
