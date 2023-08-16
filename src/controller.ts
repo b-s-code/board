@@ -20,7 +20,8 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
     const boardCopy: BoardState = cloneDeep(board);
 
     // Need some details about the list that the card comes from.
-    const sourceListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsCards[listId].includes(cardId))[0];
+    const parentListsCards: number[] = boardCopy.listsCards.filter((listCards, i) => listCards.includes(cardId))[0];
+    const sourceListId: number = boardCopy.listsCards.indexOf(parentListsCards);
     const sourceListCards: number[] = boardCopy.listsCards[sourceListId];
     const sourceListPosOnBoard: number = boardCopy.listsPositions[sourceListId];
     
@@ -105,7 +106,7 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
             {
                 // Need to determine id of destination list.
                 const destListPos: number = sourceListPosOnBoard - 1;
-                const destListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsPositions[listId] === destListPos)[0];
+                const destListId: number = boardCopy.listsPositions.indexOf(destListPos);
                 
                 // Remove supplied card id from source list.
                 resultBoard.listsCards[sourceListId].splice(cardPosInSourceList, 1);
@@ -119,7 +120,7 @@ export function MoveCard(board: BoardState, cardId: number, dir: string): BoardS
             {
                 // Need to determine id of destination list.
                 const destListPos = sourceListPosOnBoard + 1;
-                const destListId: number = boardCopy.listsIds.filter((listId) => boardCopy.listsPositions[listId] === destListPos)[0];
+                const destListId: number = boardCopy.listsPositions.indexOf(destListPos);
                 
                 // Remove supplied card id from source list.
                 resultBoard.listsCards[sourceListId].splice(cardPosInSourceList, 1);
@@ -167,7 +168,7 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
             {
                 // Prepare for swap.
                 const otherSwappeeOrigPos: number = origPos - 1;  
-                const otherSwappeeId: number = board.listsIds.filter((id) => board.listsPositions[id] === otherSwappeeOrigPos)[0];
+                const otherSwappeeId: number = board.listsPositions.indexOf(otherSwappeeOrigPos);
                 
                 // Execute swap.
                 resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
@@ -178,7 +179,7 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
             {
                 // Prepare for swap.
                 const otherSwappeeOrigPos: number = origPos + 1;  
-                const otherSwappeeId: number = board.listsIds.filter((id) => board.listsPositions[id] === otherSwappeeOrigPos)[0];
+                const otherSwappeeId: number = board.listsPositions.indexOf(otherSwappeeOrigPos);
                 
                 // Execute swap.
                 resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
@@ -220,7 +221,7 @@ export function AddList(board: BoardState): BoardState
     const resultBoard: BoardState = cloneDeep(board);
 
     const newCardId: number = resultBoard.cardsTitles.length;
-    const newListId: number = resultBoard.listsIds.length;
+    const newListId: number = resultBoard.listsTitles.length;
     const newListPos: number = resultBoard.listsPositions.length;
     
     // New list should come with a filler card.
@@ -282,7 +283,7 @@ export function DeleteList(board: BoardState, listId: number): BoardState
 {
     var resultBoard: BoardState = cloneDeep(board);
 
-    const listFound: boolean = resultBoard.listsIds.indexOf(listId) !== -1;
+    const listFound: boolean = IsBetween(listId, 0, resultBoard.listsTitles.length - 1);
     if (!listFound)
     { // Then no list with supplied id exists.
         return resultBoard;
@@ -340,7 +341,8 @@ export function RenameCard(board: BoardState, cardId: number, newTitle: string)
 export function RenameList(board: BoardState, listId: number, newTitle: string)
 {
     const boardCopy: BoardState = cloneDeep(board);
-    if(!(boardCopy.listsIds.includes(listId)))
+    const listFound: boolean = IsBetween(listId, 0, boardCopy.listsTitles.length - 1);
+    if (!listFound)
     {
         return boardCopy;
     }
