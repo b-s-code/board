@@ -129,7 +129,7 @@ function RenderWelcome()
 
     loadBtn.append("Load Board");
     fileInput.type = "file"
-    fileInput.style.display = "block";
+    fileInput.style.display = "none";
     fileInput.style.position = "absolute";
     fileInput.style.top = "0";
     fileInput.style.right = "0";
