@@ -160,13 +160,15 @@ function RenderWelcome()
         }
 
         const reader = new FileReader();
-        reader.onload = (e) =>
+        reader.onloadend = (e) =>
         {
             // e.target points to the reader
             if  (e.target)
             {
                 const fileContents: any = e.target.result;
                 boardState = JSON.parse(fileContents);
+                appState.guiViewMode = "aggregate";
+                document.dispatchEvent(OutdatedGUI);
             }
         }
         reader.onerror = (e) =>
@@ -177,10 +179,7 @@ function RenderWelcome()
                 console.error(`Error occured while reading ${file.name}`, error);
             }
         }
-
         reader.readAsText(file);
-        appState.guiViewMode = "aggregate";
-        document.dispatchEvent(OutdatedGUI);
     });
     
     document.getElementsByTagName("body")[0].append(newBtn, loadBtnWrapper);
