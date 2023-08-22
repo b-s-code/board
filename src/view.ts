@@ -181,8 +181,18 @@ function RenderWelcome()
         }
         reader.readAsText(file);
     });
+
+    // Will be a grid container for the buttons.
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.id = "buttonsContainer";
+    buttonsContainer.append(newBtn, loadBtnWrapper);
+    buttonsContainer.style.display = "grid";
+
+    // Display the two buttons side by side.
+    buttonsContainer.style.gridTemplateColumns = "auto auto"; 
+    buttonsContainer.style.textAlign = "center"; 
     
-    document.getElementsByTagName("body")[0].append(newBtn, loadBtnWrapper);
+    document.getElementsByTagName("body")[0].append(buttonsContainer);
 }
 
 /*

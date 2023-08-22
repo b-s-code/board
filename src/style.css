@@ -1,4 +1,17 @@
+:root
+{
+    --fg-color: white;
+    --bg-color: #eeeeee;
+}
+
 body
 {
     font-family: monospace;
+    background-color: var(--bg-color);
+}
+
+div
+{
+    background-color: var(--fg-color);
+    height: 100%;
 }
