@@ -109,9 +109,9 @@ function Render()
 */
 function RenderWelcome()
 {
-    // TODO : add style
-
+    // Button for creating new board.
     var newBtn = document.createElement("div");
+    newBtn.style.cursor = "pointer";
     newBtn.append("New board");
     newBtn.addEventListener("click", (e) =>
     {
@@ -123,7 +123,9 @@ function RenderWelcome()
     // Wraps div representing load button and an
     // invisble file input control together.
     var loadBtnWrapper = document.createElement("div");
+    loadBtnWrapper.style.cursor = "pointer";
     
+    // Button for opening existing board.
     var loadBtn = document.createElement("div");
     var fileInput = document.createElement("input");
 
