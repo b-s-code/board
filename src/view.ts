@@ -89,11 +89,6 @@ function Render()
             RenderAggregate();
             break;
         case "focused":
-            // The aggregate view needs to be rendered first,
-            // to ensure the GUI background is up to date.
-            // This is only relevant because the aggregate view
-            // is partially visible from the focused view.
-            RenderAggregate();
             RenderFocus();
             break;
         case "download":
