@@ -4,22 +4,28 @@ import { fillerStr } from "./controller";
 /*
 * The non-empty template board that will be used when user
 * creates a new board.
+* The object is wrapped in a function as a simple
+* way of preventing mutation.
 */
-const FillerBoard: BoardState =
+function FillerBoardState(): BoardState
 {
+    const state: BoardState =
+    {
     cardsTitles    : [fillerStr],
     cardsNotes     : [fillerStr],
     cardsLabels    : [[fillerStr]],
     listsTitles    : [fillerStr, fillerStr],
     listsCards     : [[0], []],
     listsPositions : [0, 1]
+    };
+    return state;
 };
 
 /*
 * Holds state of the user's board.
 * Can be imported and exported as file.
 */
-var boardState: BoardState = FillerBoard;
+var boardState: BoardState = FillerBoardState();
 
 /*
 * Will not be imported or exported.
