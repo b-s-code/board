@@ -133,6 +133,8 @@ function RenderWelcome()
     // Dirty hack to solve previous issue where clickable area
     // was smaller than desired.
     // See https://stackoverflow.com/questions/21842274/cross-browser-custom-styling-for-file-upload-button/21842275#21842275
+    // One impact is that the input element (invisible to the user) can possibly be larger than the visible button div.
+    // If this impacts layout of other elements, this approach can be revisited.
     fileInput.style.fontSize = "100px";
     fileInput.style.filter = "alpha(opacity=0)";
     fileInput.style.cursor = "pointer";
