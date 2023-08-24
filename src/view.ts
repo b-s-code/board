@@ -205,30 +205,30 @@ function RenderAggregate()
 {
 // TODO
 
-/*
-* Renders a button which, when clicked, automatically intiates a
-* download to the user's  file system, of the user's board data,
-* serialized as a JSON text file.
-* A snapshot of the board data, taken at the time of this function
-* being called, is used.
-* This approach is taken on the assumption that any alternative user
-* action that would change the underlying board state would first
-* raise an outdate GUI event, thus re-rendering this button.
-*/
-function RenderDownloadBtn()
-{
-    const exportData = new Blob([JSON.stringify(boardState)], {type: 'application/json'});
-    const downloadURL = window.URL.createObjectURL(exportData);
-    const outputFileName: string = "myBoardData.json";
-    const dlBtnText: string = "Save (download board)";
-    const dlBtn = document.createElement("div");
-    const dlAnchor = document.createElement("a");
-    dlAnchor.download=outputFileName;
-    dlAnchor.href = downloadURL;
-    dlBtn.append(dlBtnText);
-    dlAnchor.appendChild(dlBtn);
-    document.getElementsByTagName("body")[0].appendChild(dlAnchor);
-}
+    /*
+    * Renders a button which, when clicked, automatically intiates a
+    * download to the user's  file system, of the user's board data,
+    * serialized as a JSON text file.
+    * A snapshot of the board data, taken at the time of this function
+    * being called, is used.
+    * This approach is taken on the assumption that any alternative user
+    * action that would change the underlying board state would first
+    * raise an outdate GUI event, thus re-rendering this button.
+    */
+    function RenderDownloadBtn()
+    {
+        const exportData = new Blob([JSON.stringify(boardState)], {type: 'application/json'});
+        const downloadURL = window.URL.createObjectURL(exportData);
+        const outputFileName: string = "myBoardData.json";
+        const dlBtnText: string = "Save (download board)";
+        const dlBtn = document.createElement("div");
+        const dlAnchor = document.createElement("a");
+        dlAnchor.download=outputFileName;
+        dlAnchor.href = downloadURL;
+        dlBtn.append(dlBtnText);
+        dlAnchor.appendChild(dlBtn);
+        document.getElementsByTagName("body")[0].appendChild(dlAnchor);
+    }
 
 RenderDownloadBtn();
 }
