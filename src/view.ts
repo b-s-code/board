@@ -38,7 +38,7 @@ var boardState: BoardState = EmptyBoard;
 
 /*
 * Will not be imported or exported.
-* Intended guiViewMode space is "welcome", "aggregate", "focused", "download".
+* Intended guiViewMode space is "welcome", "aggregate", "focused".
 */
 var appState = {guiViewMode: "", focusedCardId: 0};
 
@@ -90,9 +90,6 @@ function Render()
             break;
         case "focused":
             RenderFocus();
-            break;
-        case "download":
-            RenderDownload();
             break;
         default:
             throw "Invalid view mode in app state.";
@@ -206,7 +203,34 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-    // TODO
+// TODO
+
+/*
+* Renders a button which, when clicked, automatically intiates a
+* download to the user's  file system, of the user's board data,
+* serialized as a JSON text file.
+* A snapshot of the board data, taken at the time of this function
+* being called, is used.
+* This approach is taken on the assumption that any alternative user
+* action that would change the underlying board state would first
+* raise an outdate GUI event, thus re-rendering this button.
+*/
+function RenderDownloadBtn()
+{
+    const exportData = new Blob([JSON.stringify(boardState)], {type: 'application/json'});
+    const downloadURL = window.URL.createObjectURL(exportData);
+    const outputFileName: string = "myBoardData.json";
+    const dlBtnText: string = "Save (download board)";
+    const dlBtn = document.createElement("div");
+    const dlAnchor = document.createElement("a");
+    dlAnchor.download=outputFileName;
+    dlAnchor.href = downloadURL;
+    dlBtn.append(dlBtnText);
+    dlAnchor.appendChild(dlBtn);
+    document.getElementsByTagName("body")[0].appendChild(dlAnchor);
+}
+
+RenderDownloadBtn();
 }
 
 /*
@@ -216,15 +240,6 @@ function RenderAggregate()
 * changing notes, adding/deleting labels
 */
 function RenderFocus()
-{
-    // TODO
-}
-
-/*
-* Renders a view which contains a user control for downloading board state,
-* exported as a file.
-*/
-function RenderDownload()
 {
     // TODO
 }
@@ -246,14 +261,6 @@ function StripBody()
     } 
 }
 
-/*
-* Called when user clicks button to download their board data.
-* Serializes boardData to a JSON text file and initiates download.
-*/
-function ExportBoard(board: BoardState)
-{
-    // TODO
-}
 
 // Render needs to be prepared to respond to this event before
 // InitializeApp raises it.
