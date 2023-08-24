@@ -83,6 +83,7 @@ function Render()
 
 /*
 * Renders the welcome screen, where user can create new board or load file.
+* Assumes it has not been called since the browser was last refreshed.
 */
 function RenderWelcome()
 {
