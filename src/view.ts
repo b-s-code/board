@@ -2,24 +2,10 @@ import BoardState from "./model";
 import { fillerStr } from "./controller";
 
 /*
-* Don't need to have a class and constructor because this can be used
-* for default construction.
-*/
-const EmptyBoard: BoardState =
-{
-    cardsTitles    : [],
-    cardsNotes     : [],
-    cardsLabels    : [[]],
-    listsTitles    : [],
-    listsCards     : [[]],
-    listsPositions : []
-};
-
-/*
 * The non-empty template board that will be used when user
 * creates a new board.
 */
-const BlankCanvasBoard: BoardState =
+const FillerBoard: BoardState =
 {
     cardsTitles    : [fillerStr],
     cardsNotes     : [fillerStr],
@@ -32,9 +18,8 @@ const BlankCanvasBoard: BoardState =
 /*
 * Holds state of the user's board.
 * Can be imported and exported as file.
-* Can be auto-populated as a blank canvas for  new board.
 */
-var boardState: BoardState = EmptyBoard;
+var boardState: BoardState = FillerBoard;
 
 /*
 * Will not be imported or exported.
@@ -107,7 +92,6 @@ function RenderWelcome()
     newBtn.append("New board");
     newBtn.addEventListener("click", (e) =>
     {
-        boardState = BlankCanvasBoard;
         appState.guiViewMode = "aggregate";
         document.dispatchEvent(OutdatedGUI);
     });
