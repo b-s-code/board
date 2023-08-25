@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { fillerStr } from "./controller";
+import { RenameCard, fillerStr } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -194,7 +194,7 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-// TODO
+// TODO : implement functionality for aggregrate GUI.
 
     /*
     * Renders a button which, when clicked, automatically intiates a
@@ -251,9 +251,15 @@ function RenderFocus()
 
     const cardParts: Node[] = 
     [
-        MakeTitleDiv(boardState.cardsTitles[id]),
+        MakeCardTitleDiv(id),
+
+        // TODO : just pass id.
         MakeNoteDiv(boardState.cardsNotes[id]),
-        MakeLabelsDiv([...boardState.cardsLabels[id]])
+        
+        // TODO : just pass id.
+        MakeLabelsDiv([...boardState.cardsLabels[id]]),
+        
+        MakeCardBackButton()
     ];
 
     cardParts.forEach((cardPart) =>
@@ -266,13 +272,51 @@ function RenderFocus()
 // functions in controller, w.r.t. interativity of titles, notes and labels.
 
 /*
-* Return a div of displaying the title.
+* Takes id of a card.  Returns a div which
+* displays a card's title and provides user
+* controls for changing title.
 */
-function MakeTitleDiv(title: string)
+function MakeCardTitleDiv(id: number)
 {
-    // TODO : add interactivity
+    // TODO : Add style.
+
+    // Populate card title from current board state.
+    const title: string = boardState.cardsTitles[id];
     const result = document.createElement("H1");
     result.append(title);
+    
+    // Used to make title writable by the user.
+    result.id = "card_title_div";
+
+    // Add interactivity to title.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new title.
+        const toReplace = document.getElementById("card_title_div");
+        const editableArea = document.createElement("input");
+        editableArea.placeholder = title;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                // TODO : consider replacing with
+                // boardState.cardsTitles[id] = editableArea.value;
+                // and deleting all code related to RenameCard.
+                boardState = RenameCard(boardState, id, editableArea.value);
+                
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Preserve line break between title area and notes area,
+        // by inserting a spacer div.
+        const editableAreaWrapper = document.createElement("div");
+        editableAreaWrapper.appendChild(document.createElement("div"));
+        editableAreaWrapper.appendChild(editableArea);
+
+        // Swap title div for input control.
+        toReplace?.replaceWith(editableAreaWrapper);
+    });
     return result;
 }
 
@@ -307,6 +351,21 @@ function MakeLabelsDiv(labels: string[])
     })
 
     return result;
+}
+
+/*
+* Returns a button which returns user to aggregate view.
+*/
+function MakeCardBackButton()
+{
+    const btn = document.createElement("div");
+    btn.append("Back");
+    btn.addEventListener("click", () =>
+    {
+        appState.guiViewMode = "aggregate";
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
 }
 
 /*
