@@ -222,6 +222,21 @@ function RenderAggregate()
     }
 
 RenderDownloadBtn();
+
+
+// TODO : remove
+// Dummy button for testing focused view.
+const renderFocusBtn = document.createElement("div");
+renderFocusBtn.addEventListener("click", (() =>
+{
+    appState.guiViewMode = "focused";
+    document.dispatchEvent(OutdatedGUI);
+}));
+renderFocusBtn.append("Go to focused view.");
+document.getElementsByTagName("body")[0].appendChild(renderFocusBtn);
+
+
+
 }
 
 /*
@@ -232,7 +247,66 @@ RenderDownloadBtn();
 */
 function RenderFocus()
 {
-    // TODO
+    const id: number = appState.focusedCardId; 
+
+    const cardParts: Node[] = 
+    [
+        MakeTitleDiv(boardState.cardsTitles[id]),
+        MakeNoteDiv(boardState.cardsNotes[id]),
+        MakeLabelsDiv([...boardState.cardsLabels[id]])
+    ];
+
+    cardParts.forEach((cardPart) =>
+    {
+        document.getElementsByTagName("body")[0].appendChild(cardPart);
+    });
+}
+
+// TODO : think about relation between {MakeTitleDiv, MakeNoteDiv, MakeLabelsDiv} and
+// functions in controller, w.r.t. interativity of titles, notes and labels.
+
+/*
+* Return a div of displaying the title.
+*/
+function MakeTitleDiv(title: string)
+{
+    // TODO : add interactivity
+    const result = document.createElement("H1");
+    result.append(title);
+    return result;
+}
+
+/*
+* Return an editable text box showing a card's notes.
+*/
+function MakeNoteDiv(note: string)
+{
+    // TODO : add interactivity
+    const result = document.createElement("textarea");
+    result.placeholder = note;
+    return result;
+}
+
+/*
+* Return a div of labels, displayed in a row.
+*/
+function MakeLabelsDiv(labels: string[])
+{
+    // TODO : add interactivity (add/remove buttons)
+    const numLabels: number = labels.length;
+
+    const result = document.createElement("div");
+    result.style.display = "grid";
+    result.style.gridTemplateColumns = "auto ".repeat(labels.length);
+
+    labels.forEach((label) =>
+    {
+        const labelDiv = document.createElement("div");
+        labelDiv.append(label);
+        result.appendChild(labelDiv);
+    })
+
+    return result;
 }
 
 /*
