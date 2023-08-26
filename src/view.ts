@@ -266,9 +266,6 @@ function RenderFocus()
     });
 }
 
-// TODO : think about relation between {MakeTitleDiv, MakeNoteDiv, MakeLabelsDiv} and
-// functions in controller, w.r.t. interativity of titles, notes and labels.
-
 /*
 * Takes id of a card.  Returns a div which
 * displays a card's title and provides user
@@ -319,7 +316,9 @@ function MakeCardTitleDiv(id: number)
 }
 
 /*
-* Return an editable text box showing a card's notes.
+* Takes id of a card.  Returns a div which
+* displays a card's note and provides user
+* controls for changing note contents.
 */
 function MakeNoteDiv(id: number)
 {
@@ -345,7 +344,6 @@ function MakeNoteDiv(id: number)
             if (event.getModifierState("Control") && event.key === "Enter")
             {
                 boardState = ChangeCardNotes(boardState, id, editableArea.value);
-                
                 document.dispatchEvent(OutdatedGUI);
             }
         });
