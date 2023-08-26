@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { fillerStr } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -194,7 +194,7 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-// TODO
+// TODO : implement functionality for aggregrate GUI.
 
     /*
     * Renders a button which, when clicked, automatically intiates a
@@ -222,6 +222,21 @@ function RenderAggregate()
     }
 
 RenderDownloadBtn();
+
+
+// TODO : remove
+// Dummy button for testing focused view.
+const renderFocusBtn = document.createElement("div");
+renderFocusBtn.addEventListener("click", (() =>
+{
+    appState.guiViewMode = "focused";
+    document.dispatchEvent(OutdatedGUI);
+}));
+renderFocusBtn.append("Go to focused view.");
+document.getElementsByTagName("body")[0].appendChild(renderFocusBtn);
+
+
+
 }
 
 /*
@@ -232,7 +247,168 @@ RenderDownloadBtn();
 */
 function RenderFocus()
 {
-    // TODO
+    const id: number = appState.focusedCardId; 
+
+    const cardParts: Node[] = 
+    [
+        // TODO : Add style to each.
+        MakeCardTitleDiv(id),
+        MakeNoteDiv(id),
+        MakeLabelsDiv(id),
+        MakeCardBackButton()
+    ];
+
+    cardParts.forEach((cardPart) =>
+    {
+        document.getElementsByTagName("body")[0].appendChild(cardPart);
+    });
+}
+
+/*
+* Takes id of a card.  Returns a div which
+* displays a card's title and provides user
+* controls for changing title.
+*/
+function MakeCardTitleDiv(id: number)
+{
+    // Populate card title from current board state.
+    const title: string = boardState.cardsTitles[id];
+    const result = document.createElement("H1");
+    result.append(title);
+    
+    // Used to make title writable by the user.
+    result.id = "card_title_div";
+
+    // Add interactivity to title.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new title.
+        const toReplace = document.getElementById("card_title_div");
+        const editableArea = document.createElement("input");
+        editableArea.placeholder = title;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                boardState = RenameCard(boardState, id, editableArea.value);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Preserve line break between title area and notes area,
+        // by inserting a spacer div.
+        const editableAreaWrapper = document.createElement("div");
+        editableAreaWrapper.appendChild(document.createElement("div"));
+        editableAreaWrapper.appendChild(editableArea);
+
+        // Swap title div for input control.
+        toReplace?.replaceWith(editableAreaWrapper);
+    });
+    return result;
+}
+
+/*
+* Takes id of a card.  Returns a div which
+* displays a card's note and provides user
+* controls for changing note contents.
+*/
+function MakeNoteDiv(id: number)
+{
+    // Populate card note from current board state.
+    const note: string = boardState.cardsNotes[id];
+    const result = document.createElement("div");
+    result.append(note);
+    
+    // Used to make note writable by the user.
+    result.id = "card_note_div";
+
+    // Add interactivity to note.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new note.
+        const toReplace = document.getElementById("card_note_div");
+        const editableArea = document.createElement("textarea");
+        editableArea.placeholder = note;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                boardState = ChangeCardNotes(boardState, id, editableArea.value);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Preserve line break between notes area and labels
+        // by inserting a spacer div.
+        const editableAreaWrapper = document.createElement("div");
+        editableAreaWrapper.appendChild(document.createElement("div"));
+        editableAreaWrapper.appendChild(editableArea);
+
+        // Swap note div for input control.
+        toReplace?.replaceWith(editableAreaWrapper);
+    });
+    return result;
+}
+
+/*
+* Takes id of a card.  Returns a div which
+* displays a card's labels in a row and provides
+* user controls for changing labels.
+*/
+function MakeLabelsDiv(id: number)
+{
+    const labels: string[] = boardState.cardsLabels[id];
+    const result = document.createElement("div");
+    result.style.display = "grid";
+    result.style.gridTemplateColumns = "auto ".repeat(labels.length);
+    
+    // Used to make labels writable by the user.
+    result.id = "card_labels_div";
+    
+    labels.forEach((label) =>
+    {
+        const labelDiv = document.createElement("div");
+        labelDiv.append(label);
+        result.appendChild(labelDiv);
+    });
+
+    // Add interactivity to label list.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to modify labels.
+        const toReplace = document.getElementById("card_labels_div");
+        const editableArea = document.createElement("input");
+        editableArea.value = labels.join(", ");
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                const newLabels: string[] = editableArea.value
+                                            .split(",")
+                                            .map(s => s.trimStart());
+
+                boardState = ChangeCardLabels(boardState, id, newLabels);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+        toReplace?.replaceWith(editableArea);
+    });
+    return result;
+}
+
+/*
+* Returns a button which returns user to aggregate view.
+*/
+function MakeCardBackButton()
+{
+    const btn = document.createElement("div");
+    btn.append("Back");
+    btn.addEventListener("click", () =>
+    {
+        appState.guiViewMode = "aggregate";
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
 }
 
 /*
