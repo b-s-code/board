@@ -196,6 +196,10 @@ function RenderAggregate()
 {
 // TODO : implement functionality for aggregrate GUI.
 
+    // TODO : remove
+    // Just a temp card mockup.
+    document.getElementsByTagName("body")[0].appendChild(MakeCardDiv(0));
+
     /*
     * Renders a button which, when clicked, automatically intiates a
     * download to the user's  file system, of the user's board data,
@@ -221,22 +225,19 @@ function RenderAggregate()
         document.getElementsByTagName("body")[0].appendChild(dlAnchor);
     }
 
-RenderDownloadBtn();
-
-
-// TODO : remove
-// Dummy button for testing focused view.
-const renderFocusBtn = document.createElement("div");
-renderFocusBtn.addEventListener("click", (() =>
-{
-    appState.guiViewMode = "focused";
-    document.dispatchEvent(OutdatedGUI);
-}));
-renderFocusBtn.append("Go to focused view.");
-document.getElementsByTagName("body")[0].appendChild(renderFocusBtn);
-
-
-
+    RenderDownloadBtn();
+    
+    
+    // TODO : remove
+    // Dummy button for testing focused view.
+    const renderFocusBtn = document.createElement("div");
+    renderFocusBtn.addEventListener("click", (() =>
+    {
+        appState.guiViewMode = "focused";
+        document.dispatchEvent(OutdatedGUI);
+    }));
+    renderFocusBtn.append("Go to focused view.");
+    document.getElementsByTagName("body")[0].appendChild(renderFocusBtn);
 }
 
 /*
@@ -262,6 +263,71 @@ function RenderFocus()
     {
         document.getElementsByTagName("body")[0].appendChild(cardPart);
     });
+}
+
+/*
+* Takes id of a card.  Returns a div to add to the
+* aggregate view, displaying card's title and 
+* providing user controls for moving card.
+*/
+function MakeCardDiv(id: number)
+{
+    const container = document.createElement("div");
+    container.classList.add("cardContainer");
+    
+    // Basic structure of a card's representation
+    // in aggregate view is a 3x3 matrix.
+    const cells: number[] =
+    [
+        0, 1, 2,
+        3, 4, 5,
+        6, 7, 8
+    ];
+
+    /*
+    * Defines each cell for the 3x3.
+    */
+    function MakeCell(indexInto3x3: number)
+    {
+        const cell = document.createElement("div");
+        switch(indexInto3x3)
+        {
+            // TODO : add interactivity.
+
+            case 4:
+                cell.style.textAlign = "left";
+                cell.classList.add("cardCell");
+                cell.append(boardState.cardsTitles[id]);
+                break;
+            case 1:
+                cell.classList.add("arrow");
+                cell.append("^");
+                break;
+            case 3:
+                cell.classList.add("arrow");
+                cell.append("<");
+                break;
+            case 5:
+                cell.classList.add("arrow");
+                cell.append(">");
+                break;
+            case 7:
+                cell.classList.add("arrow");
+                cell.append("v");
+                break;
+        }
+        return cell;
+    }
+
+    // Have already defined what each cell will be,
+    // Can insert cells into container, now that 
+    // they've all been defined.
+    cells.forEach((i) =>
+    {
+        container.appendChild(MakeCell(i));
+    });
+
+    return container;
 }
 
 /*

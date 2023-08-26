@@ -1,5 +1,6 @@
 :root
 {
+    --accent-color: rgb(0, 255, 200);
     --fg-color: white;
     --bg-color: #eeeeee;
 }
@@ -14,4 +15,27 @@ div
 {
     background-color: var(--fg-color);
     height: 100%;
+}
+
+.arrow
+{
+    /* Indicate to user arrows are clickable. */
+    color: blue;
+    
+    /* Required for vertical centering */
+    display: grid;
+
+    background-color: var(--accent-color);
+    align-items: center;
+}
+
+.cardContainer
+{
+    display: grid;
+    text-align: center;
+    grid-template-rows: auto auto auto;
+
+    /* Want card title to be wider than arrows. */
+    grid-template-columns: 10% auto 10%;
+
 }
