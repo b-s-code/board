@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, fillerStr } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -251,12 +251,10 @@ function RenderFocus()
 
     const cardParts: Node[] = 
     [
+        // TODO : Add style to each.
         MakeCardTitleDiv(id),
         MakeNoteDiv(id),
-        
-        // TODO : just pass id.
-        MakeLabelsDiv([...boardState.cardsLabels[id]]),
-        
+        MakeLabelsDiv(id),
         MakeCardBackButton()
     ];
 
@@ -273,8 +271,6 @@ function RenderFocus()
 */
 function MakeCardTitleDiv(id: number)
 {
-    // TODO : Add style.
-
     // Populate card title from current board state.
     const title: string = boardState.cardsTitles[id];
     const result = document.createElement("H1");
@@ -322,8 +318,6 @@ function MakeCardTitleDiv(id: number)
 */
 function MakeNoteDiv(id: number)
 {
-    // TODO : Add style.
-
     // Populate card note from current board state.
     const note: string = boardState.cardsNotes[id];
     const result = document.createElement("div");
@@ -361,24 +355,48 @@ function MakeNoteDiv(id: number)
 }
 
 /*
-* Return a div of labels, displayed in a row.
+* Takes id of a card.  Returns a div which
+* displays a card's labels in a row and provides
+* user controls for changing labels.
 */
-function MakeLabelsDiv(labels: string[])
+function MakeLabelsDiv(id: number)
 {
-    // TODO : add interactivity (add/remove buttons)
-    const numLabels: number = labels.length;
-
+    const labels: string[] = boardState.cardsLabels[id];
     const result = document.createElement("div");
     result.style.display = "grid";
     result.style.gridTemplateColumns = "auto ".repeat(labels.length);
-
+    
+    // Used to make labels writable by the user.
+    result.id = "card_labels_div";
+    
     labels.forEach((label) =>
     {
         const labelDiv = document.createElement("div");
         labelDiv.append(label);
         result.appendChild(labelDiv);
-    })
+    });
 
+    // Add interactivity to label list.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to modify labels.
+        const toReplace = document.getElementById("card_labels_div");
+        const editableArea = document.createElement("input");
+        editableArea.value = labels.join(", ");
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                const newLabels: string[] = editableArea.value
+                                            .split(",")
+                                            .map(s => s.trimStart());
+
+                boardState = ChangeCardLabels(boardState, id, newLabels);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+        toReplace?.replaceWith(editableArea);
+    });
     return result;
 }
 
