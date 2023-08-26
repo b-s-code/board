@@ -290,11 +290,7 @@ function MakeCardTitleDiv(id: number)
         {
             if (event.getModifierState("Control") && event.key === "Enter")
             {
-                // TODO : consider replacing with
-                // boardState.cardsTitles[id] = editableArea.value;
-                // and deleting all code related to RenameCard.
                 boardState = RenameCard(boardState, id, editableArea.value);
-                
                 document.dispatchEvent(OutdatedGUI);
             }
         });
