@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, fillerStr } from "./controller";
+import { RenameCard, ChangeCardNotes, fillerStr } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -252,9 +252,7 @@ function RenderFocus()
     const cardParts: Node[] = 
     [
         MakeCardTitleDiv(id),
-
-        // TODO : just pass id.
-        MakeNoteDiv(boardState.cardsNotes[id]),
+        MakeNoteDiv(id),
         
         // TODO : just pass id.
         MakeLabelsDiv([...boardState.cardsLabels[id]]),
@@ -323,11 +321,44 @@ function MakeCardTitleDiv(id: number)
 /*
 * Return an editable text box showing a card's notes.
 */
-function MakeNoteDiv(note: string)
+function MakeNoteDiv(id: number)
 {
-    // TODO : add interactivity
-    const result = document.createElement("textarea");
-    result.placeholder = note;
+    // TODO : Add style.
+
+    // Populate card note from current board state.
+    const note: string = boardState.cardsNotes[id];
+    const result = document.createElement("div");
+    result.append(note);
+    
+    // Used to make note writable by the user.
+    result.id = "card_note_div";
+
+    // Add interactivity to note.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new note.
+        const toReplace = document.getElementById("card_note_div");
+        const editableArea = document.createElement("textarea");
+        editableArea.placeholder = note;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                boardState = ChangeCardNotes(boardState, id, editableArea.value);
+                
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Preserve line break between notes area and labels
+        // by inserting a spacer div.
+        const editableAreaWrapper = document.createElement("div");
+        editableAreaWrapper.appendChild(document.createElement("div"));
+        editableAreaWrapper.appendChild(editableArea);
+
+        // Swap note div for input control.
+        toReplace?.replaceWith(editableAreaWrapper);
+    });
     return result;
 }
 
