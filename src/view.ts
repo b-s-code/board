@@ -348,6 +348,34 @@ function MakeCardDiv(id: number)
 }
 
 /*
+* Takes id of a list.  Returns a div to add to the
+* aggregate view, displaying all child cards and 
+* providing user controls for moving, renaming list.
+*/
+function MakeListDiv(id: number)
+{
+    // TODO : implement
+
+    const container = document.createElement("div");
+    container.style.display = "grid";
+    // ...
+
+    // Basic structure of a list's representation
+    // in aggregate view is a column vector, with
+    // height equal to number of cards the list
+    // has, plus one row for displaying list title
+    // and controls.
+    // TODO : implement
+
+    // Have already defined what each row in the
+    // column vector will be, can now insert rows
+    // into container.
+    // TODO : implement
+
+    return container;
+}
+
+/*
 * Takes id of a card.  Returns a div which
 * displays a card's title and provides user
 * controls for changing title.
