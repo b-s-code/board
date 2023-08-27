@@ -226,18 +226,6 @@ function RenderAggregate()
     }
 
     RenderDownloadBtn();
-    
-    
-    // TODO : remove
-    // Dummy button for testing focused view.
-    const renderFocusBtn = document.createElement("div");
-    renderFocusBtn.addEventListener("click", (() =>
-    {
-        appState.guiViewMode = "focused";
-        document.dispatchEvent(OutdatedGUI);
-    }));
-    renderFocusBtn.append("Go to focused view.");
-    document.getElementsByTagName("body")[0].appendChild(renderFocusBtn);
 }
 
 /*
