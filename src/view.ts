@@ -242,6 +242,7 @@ function RenderFocus()
 
     const cardParts: Node[] = 
     [
+        // TODO : Add a control for deleting the card.
         // TODO : Add style to each.
         MakeCardTitleDiv(id),
         MakeNoteDiv(id),
