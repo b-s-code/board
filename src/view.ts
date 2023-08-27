@@ -196,6 +196,8 @@ function RenderAggregate()
 {
 // TODO : implement functionality for aggregrate GUI.
 
+    // TODO : implement lists in GUI.
+
     // TODO : remove
     // Just a temp card mockup.
     document.getElementsByTagName("body")[0].appendChild(MakeCardDiv(0));
