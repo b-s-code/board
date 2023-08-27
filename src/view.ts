@@ -234,7 +234,8 @@ function RenderAggregate()
 * Renders a view of one focused card.
 * Shows title, labels, notes.
 * Provides controls for renaming card,
-* changing notes, adding/deleting labels
+* changing notes, adding/deleting labels,
+* deleting the card.
 */
 function RenderFocus()
 {
@@ -268,8 +269,25 @@ function MakeCardDiv(id: number)
     const container = document.createElement("div");
     container.classList.add("cardContainer");
     
-    // Basic structure of a card's representation
-    // in aggregate view is a 3x3 matrix.
+    /*
+    * Basic structure of a card's representation
+    * in aggregate view is a 3x3 matrix:
+    * 
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |                 |  move up btn    |                  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |  move left btn  |  card title     |  move right btn  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |                 |  move down btn  |                  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    */
+
     const cells: number[] =
     [
         0, 1, 2,
@@ -357,16 +375,31 @@ function MakeListDiv(id: number)
 {
     // TODO : implement
 
+    /*
+    * Basic structure of a list's representation
+    * in aggregate view:
+    *
+    *        |--------------------------|
+    *        |  title | delete list btn |
+    *        |--------------------------|
+    *        |       card               |
+    *        |--------------------------|
+    *        |       card               |
+    *        |--------------------------|
+    *        |       card               |
+    *        |--------------------------|
+    *        |    add card btn          |
+    *        |--------------------------|
+    */
+    
     const container = document.createElement("div");
     container.style.display = "grid";
     // ...
 
-    // Basic structure of a list's representation
-    // in aggregate view is a column vector, with
-    // height equal to number of cards the list
-    // has, plus one row for displaying list title
-    // and controls.
+
     // TODO : implement
+
+        // TODO : Add a control for deleting the list.
 
     // Have already defined what each row in the
     // column vector will be, can now insert rows
