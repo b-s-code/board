@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -272,6 +272,8 @@ function RenderFocus()
 */
 function MakeCardDiv(id: number)
 {
+    // TODO : add style
+
     const container = document.createElement("div");
     container.classList.add("cardContainer");
     
@@ -287,33 +289,58 @@ function MakeCardDiv(id: number)
     /*
     * Defines each cell for the 3x3.
     */
-    function MakeCell(indexInto3x3: number)
+    function MakeCell(cardId: number, indexInto3x3: number)
     {
         const cell = document.createElement("div");
         switch(indexInto3x3)
         {
-            // TODO : add interactivity.
-
+            // Center cell represents the card itself.
             case 4:
                 cell.style.textAlign = "left";
                 cell.classList.add("cardCell");
                 cell.append(boardState.cardsTitles[id]);
+                cell.addEventListener("click", () =>
+                {
+                    appState.focusedCardId = cardId;
+                    appState.guiViewMode = "focused";
+                    document.dispatchEvent(OutdatedGUI);
+                });
                 break;
             case 1:
                 cell.classList.add("arrow");
                 cell.append("^");
+                cell.addEventListener("click", () =>
+                {
+                    boardState = MoveCard(boardState, id, "up");
+                    document.dispatchEvent(OutdatedGUI);
+                });
                 break;
             case 3:
                 cell.classList.add("arrow");
                 cell.append("<");
+                cell.addEventListener("click", () =>
+                {
+                    boardState = MoveCard(boardState, id, "left");
+                    document.dispatchEvent(OutdatedGUI);
+                });
                 break;
             case 5:
                 cell.classList.add("arrow");
                 cell.append(">");
+                cell.addEventListener("click", () =>
+                {
+                    boardState = MoveCard(boardState, id, "right");
+                    document.dispatchEvent(OutdatedGUI);
+                });
                 break;
             case 7:
                 cell.classList.add("arrow");
                 cell.append("v");
+                cell.addEventListener("click", () =>
+                {
+                    boardState = MoveCard(boardState, id, "down");
+                    document.dispatchEvent(OutdatedGUI);
+                });
                 break;
         }
         return cell;
@@ -324,7 +351,7 @@ function MakeCardDiv(id: number)
     // they've all been defined.
     cells.forEach((i) =>
     {
-        container.appendChild(MakeCell(i));
+        container.appendChild(MakeCell(id, i));
     });
 
     return container;
