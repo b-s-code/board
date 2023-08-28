@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard  } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -245,6 +245,7 @@ function RenderFocus()
         MakeCardTitleDiv(id),
         MakeNoteDiv(id),
         MakeLabelsDiv(id),
+        MakeCardDeleteButton(id),
         MakeCardBackButton()
     ];
 
@@ -487,6 +488,24 @@ function MakeCardBackButton()
     btn.append("Back");
     btn.addEventListener("click", () =>
     {
+        appState.guiViewMode = "aggregate";
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
+* Returns a button which deletes the focused card theen
+* returns user to aggregate view.
+*/
+function MakeCardDeleteButton(id: number)
+{
+    const btn = document.createElement("div");
+    btn.append("Delete card");
+    btn.addEventListener("click", () =>
+    {
+        boardState = DeleteCard(boardState, id);
+        appState.focusedCardId = 0;
         appState.guiViewMode = "aggregate";
         document.dispatchEvent(OutdatedGUI);
     });
