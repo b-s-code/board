@@ -196,11 +196,6 @@ function RenderAggregate()
 {
 // TODO : implement functionality for aggregrate GUI.
 
-    // TODO : implement lists in GUI.
-
-    // TODO : remove
-    // Just a temp card mockup.
-    document.getElementsByTagName("body")[0].appendChild(MakeCardDiv(0));
 
     /*
     * Renders a button which, when clicked, automatically intiates a
@@ -228,6 +223,32 @@ function RenderAggregate()
     }
 
     RenderDownloadBtn();
+    
+    // TODO : continue implementing lists in GUI.
+    const listsContainer = document.createElement("div");
+    const numLists: number = boardState.listsTitles.length;
+    
+    // Need an additional column for list-adding button.
+    const numColumns: number = numLists + 1;
+    
+    listsContainer.style.display = "grid";
+    listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
+    for (let i = 0; i < numColumns; i++)
+    {
+        if (i == numLists)
+        {
+            // TODO : make and append list-adding button here.
+            continue;
+        }
+        
+        const listDiv = MakeListDiv(i);
+        listDiv.style.backgroundColor = "red";
+        listDiv.style.margin = "5px";
+        listDiv.style.padding = "5px";
+        listsContainer.appendChild(listDiv);
+    }
+    document.getElementsByTagName("body")[0].appendChild(listsContainer);
+
 }
 
 /*
@@ -371,7 +392,7 @@ function MakeCardDiv(id: number)
 * aggregate view, displaying all child cards and 
 * providing user controls for moving, renaming list.
 */
-function MakeListDiv(id: number)
+function MakeListDiv(listId: number)
 {
     // TODO : implement
 
@@ -379,34 +400,46 @@ function MakeListDiv(id: number)
     * Basic structure of a list's representation
     * in aggregate view:
     *
-    *        |--------------------------|
-    *        |  title | delete list btn |
-    *        |--------------------------|
-    *        |       card               |
-    *        |--------------------------|
-    *        |       card               |
-    *        |--------------------------|
-    *        |       card               |
-    *        |--------------------------|
-    *        |    add card btn          |
-    *        |--------------------------|
+    *   |--------|--------------------------|--------|
+    *   |        |       move up btn        |        |
+    *   |--------|--------------------------|--------|
+    *   |        |  title | delete list btn |        |
+    *   |        |--------------------------|        |
+    *   |  move  |       card               |  move  |
+    *   |  left  |--------------------------|  right |
+    *   |  btn   |       card               |  btn   |
+    *   |        |--------------------------|        |
+    *   |        |       card               |        |
+    *   |        |--------------------------|        |
+    *   |        |      add card btn        |        |
+    *   |--------|--------------------------|--------|
+    *   |        |      move down btn       |        |
+    *   |--------|--------------------------|--------|
     */
-    
-    const container = document.createElement("div");
-    container.style.display = "grid";
-    // ...
+   
+    // TODO : construct left and right columns and metacontainer.
+
+    const middleColumnContainer = document.createElement("div");
+    middleColumnContainer.style.display = "grid";
+
+    // Construct middle column, top row.
+    const titleDiv = document.createElement("div");
+    titleDiv.append(boardState.listsTitles[listId]);
+    middleColumnContainer.appendChild(titleDiv);
+    // TODO : Add a control for deleting the list.
 
 
-    // TODO : implement
+    // Construct middle column, middle rows.
+    const listCardIds: number[] = boardState.listsCards[listId];
+    listCardIds.forEach((cardId) =>
+    {
+        middleColumnContainer.appendChild(MakeCardDiv(cardId));
+    });
 
-        // TODO : Add a control for deleting the list.
+    // Construct middle column, bottom rows.
+    // TODO : Add card-creating button.
 
-    // Have already defined what each row in the
-    // column vector will be, can now insert rows
-    // into container.
-    // TODO : implement
-
-    return container;
+    return middleColumnContainer;
 }
 
 /*
@@ -590,7 +623,6 @@ function StripBody()
         document.getElementsByTagName("body")[0].children[numScripts].remove();
     } 
 }
-
 
 // Render needs to be prepared to respond to this event before
 // InitializeApp raises it.
