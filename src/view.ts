@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard  } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard, DeleteList  } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -338,7 +338,7 @@ function MakeCardDiv(id: number)
                 break;
             case 1:
                 cell.classList.add("arrow");
-                cell.append("^");
+                cell.append("🠝");
                 cell.addEventListener("click", () =>
                 {
                     boardState = MoveCard(boardState, id, "up");
@@ -347,7 +347,7 @@ function MakeCardDiv(id: number)
                 break;
             case 3:
                 cell.classList.add("arrow");
-                cell.append("<");
+                cell.append("🠜");
                 cell.addEventListener("click", () =>
                 {
                     boardState = MoveCard(boardState, id, "left");
@@ -356,7 +356,7 @@ function MakeCardDiv(id: number)
                 break;
             case 5:
                 cell.classList.add("arrow");
-                cell.append(">");
+                cell.append("🠞");
                 cell.addEventListener("click", () =>
                 {
                     boardState = MoveCard(boardState, id, "right");
@@ -365,7 +365,7 @@ function MakeCardDiv(id: number)
                 break;
             case 7:
                 cell.classList.add("arrow");
-                cell.append("v");
+                cell.append("🠟");
                 cell.addEventListener("click", () =>
                 {
                     boardState = MoveCard(boardState, id, "down");
@@ -419,11 +419,18 @@ function MakeListDiv(listId: number)
     middleColumnContainer.style.display = "grid";
 
     // Construct middle column, top row.
+    const topRow = document.createElement("div");
+    topRow.style.display = "grid";
+    
+    // Want delete button to be narrow than title div.
+    topRow.style.gridTemplateColumns = "3fr 1fr";
+
     const titleDiv = document.createElement("div");
     titleDiv.append(boardState.listsTitles[listId]);
-    middleColumnContainer.appendChild(titleDiv);
-    // TODO : Add a control for deleting the list.
-
+    topRow.appendChild(titleDiv);
+    const deleteBtn = MakeListDeleteButton(listId);
+    topRow.appendChild(deleteBtn);
+    middleColumnContainer.appendChild(topRow);
 
     // Construct middle column, middle rows.
     const listCardIds: number[] = boardState.listsCards[listId];
@@ -577,12 +584,41 @@ function MakeLabelsDiv(id: number)
 function MakeAddCardToListBtn(listId: number)
 {
     const btn = document.createElement("div");
-    btn.append("+");
+    btn.append("✚");
     btn.style.background = "yellow";
     btn.style.textAlign = "center";
+    
+    // Don't want button text against edge of button.
+    btn.style.display = "flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";    
+    
     btn.addEventListener("click", () =>
     {
         boardState = AddCard(boardState, listId);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
+* Returns a button which deletes the given list.
+* Doesn't change GUI view mode.
+*/
+function MakeListDeleteButton(id: number)
+{
+    const btn = document.createElement("div");
+    btn.append("✗")
+
+    // Don't want button text against edge of button.
+    btn.style.display = "flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";    
+
+    btn.style.background = "#ff5555";
+    btn.addEventListener("click", () =>
+    {
+        boardState = DeleteList(boardState, id);
         document.dispatchEvent(OutdatedGUI);
     });
     return btn;
