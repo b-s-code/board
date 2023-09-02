@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard  } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard  } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -437,7 +437,7 @@ function MakeListDiv(listId: number)
     });
 
     // Construct middle column, bottom rows.
-    // TODO : Add card-creating button.
+    middleColumnContainer.appendChild(MakeAddCardToListBtn(listId));
 
     return middleColumnContainer;
 }
@@ -572,6 +572,24 @@ function MakeLabelsDiv(id: number)
         toReplace?.replaceWith(editableArea);
     });
     return result;
+}
+
+/*
+* Returns a button which adds a new default card to given list.
+* Doesn't change GUI view mode.
+*/
+function MakeAddCardToListBtn(listId: number)
+{
+    const btn = document.createElement("div");
+    btn.append("+");
+    btn.style.background = "yellow";
+    btn.style.textAlign = "center";
+    btn.addEventListener("click", () =>
+    {
+        boardState = AddCard(boardState, listId);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
 }
 
 /*
