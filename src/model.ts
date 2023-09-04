@@ -31,11 +31,7 @@ export default interface BoardState
     // created/deleted/updated here as cards are
     // added/removed/moved between lists) per list.
     listsCards     : number[][],
-    // Currently treated (at least in some places) as
-    // listPositions[position] = listId
-    // TODO : instead consider
-    // listPositions[listId] = position
-    // to be consistent with listsTitles, listsCards,
-    // and common sense.
+    // listPositions[i] evaluates to the position index
+    // of list with list id i.
     listsPositions : number[]
 };

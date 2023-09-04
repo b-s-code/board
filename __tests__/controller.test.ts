@@ -170,9 +170,53 @@ describe('List movement', () =>
   test('Move list left', () => 
   {
     const expectedOutput: BoardState = SampleBoardState();
+
+    /*
+    *   __Before__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 1
+    *       list id 2 : position 2
+    *       list id 3 : position 3
+    *   ]
+    *
+    *   __After__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 1
+    *       list id 2 : position 3
+    *       list id 3 : position 2
+    *   ]
+    */
     expectedOutput.listsPositions = [0 ,1, 3, 2];
     const actualOutput: BoardState = MoveList(SampleBoardState(), 3, 'left');
     expect(actualOutput).toEqual(expectedOutput);
+    
+    const expectedOutput2: BoardState = SampleBoardState();
+
+    // Case where list positions aren't mapped to by ids
+    // equal to themselves.
+    
+    /*
+    *   __Before__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 1
+    *       list id 2 : position 3
+    *       list id 3 : position 2
+    *   ]
+    *
+    *   __After__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 2
+    *       list id 2 : position 3
+    *       list id 3 : position 1
+    *   ]
+    */
+    expectedOutput.listsPositions = [0 ,2, 3, 1];
+    const actualOutput2: BoardState = MoveList(SampleBoardState(), 3, 'left');
+    expect(actualOutput2).toEqual(expectedOutput);
   });
   
   test('Move list right', () => 
