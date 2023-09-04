@@ -237,9 +237,7 @@ function RenderAggregate()
     // Will sort list ids by their intended GUI position,
     // left to right.
     const listIds: number[] = boardState.listsTitles.map((elt, i) => i);
-    // TODO : check if need to reverse the subtraction.
     listIds.sort((a: number, b: number) => boardState.listsPositions[a] - boardState.listsPositions[b]);
-
 
     for (let i = 0; i < numColumns; i++)
     {
@@ -420,14 +418,14 @@ function MakeListDiv(listId: number)
     *   |--------|--------------------------|--------|
     */
    
-    // TODO : construct metacontainer.
+    // Construct metacontainer.
     const topLevelContainer = document.createElement("div");
     topLevelContainer.style.display= "grid";
+    
     // Want side columns to be narrow than center column.
     topLevelContainer.style.gridTemplateColumns = "1fr 6fr 1fr";
 
-    // TODO : construct left and right columns, including interactivity.
-    // ...
+    // Construct left and right columns, including interactivity.
     const leftColumn = document.createElement("div");
     const rightColumn = document.createElement("div");
     leftColumn.append("🠜");
@@ -450,7 +448,7 @@ function MakeListDiv(listId: number)
     const topRow = document.createElement("div");
     topRow.style.display = "grid";
     
-    // Want delete button to be narrow than title div.
+    // Want delete button to be narrower than title div.
     topRow.style.gridTemplateColumns = "3fr 1fr";
 
     const titleDiv = document.createElement("div");
@@ -470,6 +468,7 @@ function MakeListDiv(listId: number)
     // Construct middle column, bottom rows.
     middleColumnContainer.appendChild(MakeAddCardToListBtn(listId));
     
+    // Put it all together.
     topLevelContainer.appendChild(leftColumn);
     topLevelContainer.appendChild(middleColumnContainer);
     topLevelContainer.appendChild(rightColumn);
