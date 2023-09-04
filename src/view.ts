@@ -1,5 +1,5 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard, DeleteList  } from "./controller";
+import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard, DeleteList, MoveList  } from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -233,6 +233,8 @@ function RenderAggregate()
     
     listsContainer.style.display = "grid";
     listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
+
+    const positions: number[] = [...boardState.listsPositions];
     for (let i = 0; i < numColumns; i++)
     {
         if (i == numLists)
@@ -240,8 +242,7 @@ function RenderAggregate()
             // TODO : make and append list-adding button here.
             continue;
         }
-        
-        const listDiv = MakeListDiv(i);
+        const listDiv = MakeListDiv(positions[i]);
         listDiv.style.backgroundColor = "red";
         listDiv.style.margin = "5px";
         listDiv.style.padding = "5px";
@@ -413,7 +414,28 @@ function MakeListDiv(listId: number)
     *   |--------|--------------------------|--------|
     */
    
-    // TODO : construct left and right columns and metacontainer.
+    // TODO : construct metacontainer.
+    const topLevelContainer = document.createElement("div");
+    topLevelContainer.style.display= "grid";
+    // Want side columns to be narrow than center column.
+    topLevelContainer.style.gridTemplateColumns = "1fr 6fr 1fr";
+
+    // TODO : construct left and right columns, including interactivity.
+    // ...
+    const leftColumn = document.createElement("div");
+    const rightColumn = document.createElement("div");
+    leftColumn.append("🠜");
+    rightColumn.append("🠞");
+    leftColumn.addEventListener("click", () =>
+    {
+        boardState = MoveList(boardState, listId, "left");
+        document.dispatchEvent(OutdatedGUI);
+    });
+    rightColumn.addEventListener("click", () =>
+    {
+        boardState = MoveList(boardState, listId, "right");
+        document.dispatchEvent(OutdatedGUI);
+    });
 
     const middleColumnContainer = document.createElement("div");
     middleColumnContainer.style.display = "grid";
@@ -441,8 +463,12 @@ function MakeListDiv(listId: number)
 
     // Construct middle column, bottom rows.
     middleColumnContainer.appendChild(MakeAddCardToListBtn(listId));
+    
+    topLevelContainer.appendChild(leftColumn);
+    topLevelContainer.appendChild(middleColumnContainer);
+    topLevelContainer.appendChild(rightColumn);
 
-    return middleColumnContainer;
+    return topLevelContainer;
 }
 
 /*
