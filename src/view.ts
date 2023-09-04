@@ -234,7 +234,13 @@ function RenderAggregate()
     listsContainer.style.display = "grid";
     listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
 
-    const positions: number[] = [...boardState.listsPositions];
+    // Will sort list ids by their intended GUI position,
+    // left to right.
+    const listIds: number[] = boardState.listsTitles.map((elt, i) => i);
+    // TODO : check if need to reverse the subtraction.
+    listIds.sort((a: number, b: number) => boardState.listsPositions[a] - boardState.listsPositions[b]);
+
+
     for (let i = 0; i < numColumns; i++)
     {
         if (i == numLists)
@@ -242,7 +248,7 @@ function RenderAggregate()
             // TODO : make and append list-adding button here.
             continue;
         }
-        const listDiv = MakeListDiv(positions[i]);
+        const listDiv = MakeListDiv(listIds[i]);
         listDiv.style.backgroundColor = "red";
         listDiv.style.margin = "5px";
         listDiv.style.padding = "5px";
