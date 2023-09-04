@@ -1,5 +1,17 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard, AddCard, DeleteList, MoveList  } from "./controller";
+import
+{ 
+    RenameCard, 
+    ChangeCardNotes, 
+    ChangeCardLabels, 
+    fillerStr, 
+    MoveCard, 
+    DeleteCard, 
+    AddCard, 
+    DeleteList,
+    MoveList
+} from "./controller";
+
 
 /*
 * The non-empty template board that will be used when user
@@ -209,7 +221,8 @@ function RenderAggregate()
     */
     function RenderDownloadBtn()
     {
-        const exportData = new Blob([JSON.stringify(boardState)], {type: 'application/json'});
+        const exportData = new Blob([JSON.stringify(boardState)],
+                                    {type: 'application/json'});
         const downloadURL = window.URL.createObjectURL(exportData);
         const outputFileName: string = "myBoardData.json";
         const dlBtnText: string = "Save (download board)";
@@ -237,7 +250,10 @@ function RenderAggregate()
     // Will sort list ids by their intended GUI position,
     // left to right.
     const listIds: number[] = boardState.listsTitles.map((elt, i) => i);
-    listIds.sort((a: number, b: number) => boardState.listsPositions[a] - boardState.listsPositions[b]);
+    listIds.sort((a: number, b: number) =>
+    {
+        return boardState.listsPositions[a] - boardState.listsPositions[b]
+    });
 
     for (let i = 0; i < numColumns; i++)
     {
