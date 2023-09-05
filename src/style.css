@@ -15,6 +15,7 @@ div
 {
     background-color: var(--fg-color);
     height: 100%;
+    box-sizing: border-box;
 }
 
 .arrow
@@ -24,9 +25,11 @@ div
     
     /* Required for vertical centering */
     display: grid;
-
-    background-color: var(--accent-color);
     align-items: center;
+
+    text-align: center;
+
+    border: solid blue 1px;
 }
 
 .cardContainer
@@ -37,5 +40,33 @@ div
 
     /* Want card title to be wider than arrows. */
     grid-template-columns: 10% auto 10%;
+}
 
+.addCardButton
+{
+    /* Indicate to user this div is special. */
+    color: green;
+    
+    text-align: center;
+    border : solid green 1px;
+    box-sizing: border-box;
+    
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+.addListButton
+{
+    /* Indicate to user this div is special. */
+    color: green;
+    
+    text-align: center;
+    border : solid green 1px;
+    
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;    
 }

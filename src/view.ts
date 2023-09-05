@@ -9,7 +9,8 @@ import
     DeleteCard, 
     AddCard, 
     DeleteList,
-    MoveList
+    MoveList,
+    AddList
 } from "./controller";
 
 
@@ -259,7 +260,10 @@ function RenderAggregate()
     {
         if (i == numLists)
         {
-            // TODO : make and append list-adding button here.
+            // The last item to display in the list container
+            // is not a list itself, but a button for adding
+            // a new list to the board.
+            listsContainer.append(MakeAddListBtn()); 
             continue;
         }
         const listDiv = MakeListDiv(listIds[i]);
@@ -446,6 +450,8 @@ function MakeListDiv(listId: number)
     const rightColumn = document.createElement("div");
     leftColumn.append("🠜");
     rightColumn.append("🠞");
+    leftColumn.classList.add("arrow");
+    rightColumn.classList.add("arrow");
     leftColumn.addEventListener("click", () =>
     {
         boardState = MoveList(boardState, listId, "left");
@@ -632,17 +638,29 @@ function MakeAddCardToListBtn(listId: number)
 {
     const btn = document.createElement("div");
     btn.append("✚");
-    btn.style.background = "yellow";
-    btn.style.textAlign = "center";
-    
-    // Don't want button text against edge of button.
-    btn.style.display = "flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";    
-    
+    btn.classList.add("addCardButton");
     btn.addEventListener("click", () =>
     {
         boardState = AddCard(boardState, listId);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
+* Returns a button which, when clicked, creates a new
+* default list, adding it to the board.
+* Doesn't change GUI view mode.
+*/
+function MakeAddListBtn()
+{
+    const btn = document.createElement("div");
+    btn.append("✚");
+    btn.classList.add("addListButton");
+    
+    btn.addEventListener("click", () =>
+    {
+        boardState = AddList(boardState);
         document.dispatchEvent(OutdatedGUI);
     });
     return btn;
