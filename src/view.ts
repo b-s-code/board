@@ -273,7 +273,6 @@ function MakeListsContainer()
         }
         const listDiv = MakeListDiv(listIds[i]);
         listDiv.style.backgroundColor = "red";
-        listDiv.style.margin = "5px";
         listDiv.style.padding = "5px";
         listsContainer.appendChild(listDiv);
     }
