@@ -170,10 +170,47 @@ describe('List movement', () =>
   test('Move list left', () => 
   {
     const expectedOutput: BoardState = SampleBoardState();
+
+    /*
+    *   __Before__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 1
+    *       list id 2 : position 2
+    *       list id 3 : position 3
+    *   ]
+    *
+    *   __After__ moving rightmost list left by one position.
+    *   [
+    *       list id 0 : position 0
+    *       list id 1 : position 1
+    *       list id 2 : position 3
+    *       list id 3 : position 2
+    *   ]
+    */
     expectedOutput.listsPositions = [0 ,1, 3, 2];
     const actualOutput: BoardState = MoveList(SampleBoardState(), 3, 'left');
     expect(actualOutput).toEqual(expectedOutput);
-  });
+    
+    // Case where list positions aren't mapped to by ids
+    // equal to themselves.
+    const inputBoard2: BoardState = SampleBoardState();
+    inputBoard2.listsPositions = [1, 3, 0, 2]
+    const actualOutput2: BoardState = MoveList(inputBoard2, 1, 'left');
+    
+    const expectedOutput2: BoardState = SampleBoardState();
+    expectedOutput2.listsPositions = [1, 2, 0, 3];
+    expect(actualOutput2).toEqual(expectedOutput2);
+
+    // Case added based on steps to reproduce bug. 
+    const inputBoard3: BoardState = SampleBoardState();
+    inputBoard3.listsPositions = [1, 0, 2, 3]
+    const actualOutput3: BoardState = MoveList(inputBoard3, 0, 'left');
+    
+    const expectedOutput3: BoardState = SampleBoardState();
+    expectedOutput3.listsPositions = [0, 1, 2, 3];
+    expect(actualOutput3).toEqual(expectedOutput3);
+});
   
   test('Move list right', () => 
   {
@@ -181,6 +218,25 @@ describe('List movement', () =>
     expectedOutput.listsPositions = [0 ,1, 3, 2];
     const actualOutput: BoardState = MoveList(SampleBoardState(), 2, 'right');
     expect(actualOutput).toEqual(expectedOutput);
+    
+    // Case where list positions aren't mapped to by ids
+    // equal to themselves.
+    const inputBoard: BoardState = SampleBoardState();
+    inputBoard.listsPositions = [1, 3, 0, 2]
+    const actualOutput2: BoardState = MoveList(inputBoard, 2, 'right');
+    
+    const expectedOutput2: BoardState = SampleBoardState();
+    expectedOutput2.listsPositions = [0, 3, 1, 2];
+    expect(actualOutput2).toEqual(expectedOutput2);
+
+    // Case added based on steps to reproduce bug. 
+    const inputBoard3: BoardState = SampleBoardState();
+    inputBoard3.listsPositions = [1, 0, 2, 3]
+    const actualOutput3: BoardState = MoveList(inputBoard3, 1, 'right');
+    
+    const expectedOutput3: BoardState = SampleBoardState();
+    expectedOutput3.listsPositions = [0, 1, 2, 3];
+    expect(actualOutput3).toEqual(expectedOutput3);
   });
   
   test('No mutation', () => 

@@ -148,15 +148,13 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
     const origPos: number = board.listsPositions[listId];
 
     // Don't modify board state if rightmost list is being moved right.
-    const rightmost: number = Math.max(...board.listsPositions);
-    if (dir === "right" && origPos === rightmost)
+    if (dir === "right" && origPos === board.listsTitles.length - 1)
     {
         return resultBoard;
     }
     
     // Don't modify board state if leftmost list is being moved left.
-    const leftmost: number = Math.min(...board.listsPositions);
-    if (dir === "left" && origPos === leftmost)
+    if (dir === "left" && origPos === 0)
     {
         return resultBoard;
     }
@@ -167,23 +165,31 @@ export function MoveList(board: BoardState, listId: number, dir: string): BoardS
         case "left":
             {
                 // Prepare for swap.
-                const otherSwappeeOrigPos: number = origPos - 1;  
-                const otherSwappeeId: number = board.listsPositions.indexOf(otherSwappeeOrigPos);
-                
+                const otherSwappeePosition: number = origPos - 1;
+                const otherSwappeeListId: number = board.listsPositions
+                                                   .filter(listId =>
+                                                    {
+                                                        return board.listsPositions[listId] === otherSwappeePosition;
+                                                    })[0];
+
                 // Execute swap.
-                resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
-                resultBoard.listsPositions[otherSwappeeId] = origPos;
+                resultBoard.listsPositions[listId] = otherSwappeePosition;
+                resultBoard.listsPositions[otherSwappeeListId] = origPos;
             }
             break;
         case "right":
             {
                 // Prepare for swap.
-                const otherSwappeeOrigPos: number = origPos + 1;  
-                const otherSwappeeId: number = board.listsPositions.indexOf(otherSwappeeOrigPos);
-                
+                const otherSwappeePosition: number = origPos + 1;
+                const otherSwappeeListId: number = board.listsPositions
+                                                   .filter(listId =>
+                                                    {
+                                                        return board.listsPositions[listId] === otherSwappeePosition;
+                                                    })[0];
+
                 // Execute swap.
-                resultBoard.listsPositions[listId] = otherSwappeeOrigPos;
-                resultBoard.listsPositions[otherSwappeeId] = origPos;
+                resultBoard.listsPositions[listId] = otherSwappeePosition;
+                resultBoard.listsPositions[otherSwappeeListId] = origPos;
             }
             break;
     }

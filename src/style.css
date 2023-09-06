@@ -15,6 +15,7 @@ div
 {
     background-color: var(--fg-color);
     height: 100%;
+    box-sizing: border-box;
 }
 
 .arrow
@@ -24,9 +25,11 @@ div
     
     /* Required for vertical centering */
     display: grid;
-
-    background-color: var(--accent-color);
     align-items: center;
+
+    text-align: center;
+
+    border: solid blue 1px;
 }
 
 .cardContainer
@@ -37,5 +40,95 @@ div
 
     /* Want card title to be wider than arrows. */
     grid-template-columns: 10% auto 10%;
+}
 
+.addCardButton
+{
+    /* Indicate to user this div is special. */
+    color: green;
+    
+    text-align: center;
+    border : solid green 1px;
+    
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    
+    /* Width, height and x-position should match the
+       divs which house cards' titles. */
+    width: 80%;
+    height: 50px;
+    margin: auto;
+}
+
+.addListButton
+{
+    /* Indicate to user this div is special. */
+    color: green;
+    
+    text-align: center;
+    border : solid green 1px;
+    
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 50px;
+    margin: 5px;
+}
+
+.deleteButton
+{
+    /* Indicate to user this div is special. */
+    color: red;
+    
+    text-align: center;
+    border : solid red 1px;
+
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+
+    /* Actual value not so important.  Just best that 
+       delete buttons all have consistent height. */
+    height: 50px;
+}
+
+.cardCell
+{
+    /* Actual value not so important.  Just best that 
+       cards all have consistent height. */
+    height: 50px;
+
+    /* Want some blank space around card title 
+       for ease of reading */
+    padding: 5px;
+}
+
+
+.listTopLevelContainer
+{
+    display: grid;
+    height: fit-content;
+    column-gap: 5px;
+
+    /* Want side columns to be narrow than center column. */
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
+.listMiddleColumnContainer
+{
+    display: grid;
+    row-gap: 5px;
+}
+
+.listTopRow
+{
+    display: grid;
+    
+    /* Want delete button to be narrower than title div. */
+    grid-template-columns: 3fr 1fr;
 }

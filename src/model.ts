@@ -31,5 +31,7 @@ export default interface BoardState
     // created/deleted/updated here as cards are
     // added/removed/moved between lists) per list.
     listsCards     : number[][],
+    // listPositions[i] evaluates to the position index
+    // of list with list id i.
     listsPositions : number[]
 };

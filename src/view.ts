@@ -1,5 +1,18 @@
 import BoardState from "./model";
-import { RenameCard, ChangeCardNotes, ChangeCardLabels, fillerStr, MoveCard, DeleteCard  } from "./controller";
+import
+{ 
+    RenameCard, 
+    ChangeCardNotes, 
+    ChangeCardLabels, 
+    fillerStr, 
+    MoveCard, 
+    DeleteCard, 
+    AddCard, 
+    DeleteList,
+    MoveList,
+    AddList,
+    RenameList
+} from "./controller";
 
 /*
 * The non-empty template board that will be used when user
@@ -178,7 +191,7 @@ function RenderWelcome()
     buttonsContainer.style.gridTemplateColumns = "auto auto"; 
     buttonsContainer.style.textAlign = "center"; 
     
-    document.getElementsByTagName("body")[0].append(buttonsContainer);
+    document.body.append(buttonsContainer);
 }
 
 /*
@@ -194,12 +207,6 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-// TODO : implement functionality for aggregrate GUI.
-
-    // TODO : remove
-    // Just a temp card mockup.
-    document.getElementsByTagName("body")[0].appendChild(MakeCardDiv(0));
-
     /*
     * Renders a button which, when clicked, automatically intiates a
     * download to the user's  file system, of the user's board data,
@@ -212,7 +219,8 @@ function RenderAggregate()
     */
     function RenderDownloadBtn()
     {
-        const exportData = new Blob([JSON.stringify(boardState)], {type: 'application/json'});
+        const exportData = new Blob([JSON.stringify(boardState)],
+                                    {type: 'application/json'});
         const downloadURL = window.URL.createObjectURL(exportData);
         const outputFileName: string = "myBoardData.json";
         const dlBtnText: string = "Save (download board)";
@@ -222,17 +230,61 @@ function RenderAggregate()
         dlAnchor.href = downloadURL;
         dlBtn.append(dlBtnText);
         dlAnchor.appendChild(dlBtn);
-        document.getElementsByTagName("body")[0].appendChild(dlAnchor);
+        document.body.appendChild(dlAnchor);
     }
 
     RenderDownloadBtn();
+    
+    // Render all lists.
+    document.body.appendChild(MakeListsContainer());
+}
+
+/*
+* Returns all lists, and thus all cards. 
+*/
+function MakeListsContainer()
+{
+    const listsContainer = document.createElement("div");
+    const numLists: number = boardState.listsTitles.length;
+    
+    // Need an additional column for list-adding button.
+    const numColumns: number = numLists + 1;
+    
+    listsContainer.style.display = "grid";
+    listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
+
+    // Will sort list ids by their intended GUI position,
+    // left to right.
+    const listIds: number[] = boardState.listsTitles.map((elt, i) => i);
+    listIds.sort((a: number, b: number) =>
+    {
+        return boardState.listsPositions[a] - boardState.listsPositions[b]
+    });
+
+    for (let i = 0; i < numColumns; i++)
+    {
+        if (i == numLists)
+        {
+            // The last item to display in the list container
+            // is not a list itself, but a button for adding
+            // a new list to the board.
+            listsContainer.append(MakeAddListBtn()); 
+            continue;
+        }
+        const listDiv = MakeListDiv(listIds[i]);
+        listDiv.style.backgroundColor = "red";
+        listDiv.style.padding = "5px";
+        listsContainer.appendChild(listDiv);
+    }
+    return listsContainer;
 }
 
 /*
 * Renders a view of one focused card.
 * Shows title, labels, notes.
 * Provides controls for renaming card,
-* changing notes, adding/deleting labels
+* changing notes, adding/deleting labels,
+* deleting the card.
 */
 function RenderFocus()
 {
@@ -240,7 +292,6 @@ function RenderFocus()
 
     const cardParts: Node[] = 
     [
-        // TODO : Add a control for deleting the card.
         // TODO : Add style to each.
         MakeCardTitleDiv(id),
         MakeNoteDiv(id),
@@ -251,7 +302,7 @@ function RenderFocus()
 
     cardParts.forEach((cardPart) =>
     {
-        document.getElementsByTagName("body")[0].appendChild(cardPart);
+        document.body.appendChild(cardPart);
     });
 }
 
@@ -267,8 +318,25 @@ function MakeCardDiv(id: number)
     const container = document.createElement("div");
     container.classList.add("cardContainer");
     
-    // Basic structure of a card's representation
-    // in aggregate view is a 3x3 matrix.
+    /*
+    * Basic structure of a card's representation
+    * in aggregate view is a 3x3 matrix:
+    * 
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |                 |  move up btn    |                  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |  move left btn  |  card title     |  move right btn  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    *  |                 |                 |                  |
+    *  |                 |  move down btn  |                  |
+    *  |                 |                 |                  |
+    *  |-----------------|-----------------|------------------|
+    */
+
     const cells: number[] =
     [
         0, 1, 2,
@@ -296,41 +364,29 @@ function MakeCardDiv(id: number)
                     document.dispatchEvent(OutdatedGUI);
                 });
                 break;
+                
+            // Cells with buttons for moving card.
             case 1:
-                cell.classList.add("arrow");
-                cell.append("^");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "up");
-                    document.dispatchEvent(OutdatedGUI);
-                });
-                break;
             case 3:
-                cell.classList.add("arrow");
-                cell.append("<");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "left");
-                    document.dispatchEvent(OutdatedGUI);
-                });
-                break;
             case 5:
+            case 7:
+                // Parallel arrays.
+                const arrowCellIds: number[] = [1, 3, 5, 7];
+                var arrows: string[] = ['🢁','🢀','🢂','🢃'];
+                const directions: string[] = ["up", "left", "right", "down"];
+                
+                // Construct cell from data in parallel arrays.
                 cell.classList.add("arrow");
-                cell.append(">");
+                cell.append(arrows[arrowCellIds.indexOf(indexInto3x3)]);
                 cell.addEventListener("click", () =>
                 {
-                    boardState = MoveCard(boardState, id, "right");
+                    boardState = MoveCard(boardState, id, directions[arrowCellIds.indexOf(indexInto3x3)]);
                     document.dispatchEvent(OutdatedGUI);
                 });
                 break;
-            case 7:
-                cell.classList.add("arrow");
-                cell.append("v");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "down");
-                    document.dispatchEvent(OutdatedGUI);
-                });
+
+            // Cells with buttons for moving card.
+            default:
                 break;
         }
         return cell;
@@ -345,6 +401,83 @@ function MakeCardDiv(id: number)
     });
 
     return container;
+}
+
+/*
+* Takes id of a list.  Returns a div to add to the
+* aggregate view, displaying all child cards and 
+* providing user controls for moving, renaming list.
+*/
+function MakeListDiv(listId: number)
+{
+    /*
+    * Basic structure of a list's representation
+    * in aggregate view:
+    *
+    *   |--------|--------------------------|--------|
+    *   |        |  title | delete list btn |        |
+    *   |        |--------------------------|        |
+    *   |  move  |       card               |  move  |
+    *   |  left  |--------------------------|  right |
+    *   |  btn   |       card               |  btn   |
+    *   |        |--------------------------|        |
+    *   |        |       card               |        |
+    *   |        |--------------------------|        |
+    *   |        |      add card btn        |        |
+    *   |--------|--------------------------|--------|
+    */
+   
+    // Construct metacontainer.
+    const topLevelContainer = document.createElement("div");
+    topLevelContainer.classList.add("listTopLevelContainer");
+
+    // Construct left and right columns, including interactivity.
+    const leftColumn = document.createElement("div");
+    const rightColumn = document.createElement("div");
+    leftColumn.append("🢀");
+    rightColumn.append("🢂");
+    leftColumn.classList.add("arrow");
+    rightColumn.classList.add("arrow");
+    leftColumn.addEventListener("click", () =>
+    {
+        boardState = MoveList(boardState, listId, "left");
+        document.dispatchEvent(OutdatedGUI);
+    });
+    rightColumn.addEventListener("click", () =>
+    {
+        boardState = MoveList(boardState, listId, "right");
+        document.dispatchEvent(OutdatedGUI);
+    });
+
+    const middleColumnContainer = document.createElement("div");
+    middleColumnContainer.classList.add("listMiddleColumnContainer");
+
+    // Construct middle column, top row.
+    const topRow = document.createElement("div");
+    topRow.classList.add("listTopRow");
+
+    const titleDiv = MakeListTitleDiv(listId);
+    topRow.appendChild(titleDiv);
+    const deleteBtn = MakeListDeleteButton(listId);
+    topRow.appendChild(deleteBtn);
+    middleColumnContainer.appendChild(topRow);
+
+    // Construct middle column, middle rows.
+    const listCardIds: number[] = boardState.listsCards[listId];
+    listCardIds.forEach((cardId) =>
+    {
+        middleColumnContainer.appendChild(MakeCardDiv(cardId));
+    });
+
+    // Construct middle column, bottom rows.
+    middleColumnContainer.appendChild(MakeAddCardToListBtn(listId));
+    
+    // Put it all together.
+    topLevelContainer.appendChild(leftColumn);
+    topLevelContainer.appendChild(middleColumnContainer);
+    topLevelContainer.appendChild(rightColumn);
+
+    return topLevelContainer;
 }
 
 /*
@@ -368,7 +501,7 @@ function MakeCardTitleDiv(id: number)
         // Make input area for user to set new title.
         const toReplace = document.getElementById("card_title_div");
         const editableArea = document.createElement("input");
-        editableArea.placeholder = title;
+        editableArea.value = title;
         editableArea.addEventListener("keypress", (event) =>
         {
             if (event.getModifierState("Control") && event.key === "Enter")
@@ -386,6 +519,46 @@ function MakeCardTitleDiv(id: number)
 
         // Swap title div for input control.
         toReplace?.replaceWith(editableAreaWrapper);
+    });
+    return result;
+}
+
+/*
+* Takes id of a list.  Returns a div which
+* displays the list's title and provides user
+* controls for changing title.
+*/
+function MakeListTitleDiv(id: number)
+{
+    // Populate list title from current board state.
+    const title: string = boardState.listsTitles[id];
+    const result = document.createElement("H1");
+    result.append(title);
+    
+    // Used to make title writable by the user.
+    // There will usually be more than one list title div
+    // displayed to the user at a time.
+    const htmlEltId: string = "list_title_div_" + id.toString();
+    result.id = htmlEltId;
+
+    // Add interactivity to title.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new title.
+        const toReplace = document.getElementById(htmlEltId);
+        const editableArea = document.createElement("input");
+        editableArea.value = title;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                boardState = RenameList(boardState, id, editableArea.value);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Swap title div for input control.
+        toReplace?.replaceWith(editableArea);
     });
     return result;
 }
@@ -480,6 +653,58 @@ function MakeLabelsDiv(id: number)
 }
 
 /*
+* Returns a button which adds a new default card to given list.
+* Doesn't change GUI view mode.
+*/
+function MakeAddCardToListBtn(listId: number)
+{
+    const btn = document.createElement("div");
+    btn.append("✚");
+    btn.classList.add("addCardButton");
+    btn.addEventListener("click", () =>
+    {
+        boardState = AddCard(boardState, listId);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
+* Returns a button which, when clicked, creates a new
+* default list, adding it to the board.
+* Doesn't change GUI view mode.
+*/
+function MakeAddListBtn()
+{
+    const btn = document.createElement("div");
+    btn.append("✚");
+    btn.classList.add("addListButton");
+    btn.addEventListener("click", () =>
+    {
+        boardState = AddList(boardState);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
+* Returns a button which deletes the given list.
+* Doesn't change GUI view mode.
+*/
+function MakeListDeleteButton(id: number)
+{
+    const btn = document.createElement("div");
+    btn.append("⨯")
+    btn.classList.add("deleteButton");
+    btn.addEventListener("click", () =>
+    {
+        boardState = DeleteList(boardState, id);
+        document.dispatchEvent(OutdatedGUI);
+    });
+    return btn;
+}
+
+/*
 * Returns a button which returns user to aggregate view.
 */
 function MakeCardBackButton()
@@ -523,12 +748,11 @@ function StripBody()
     // number of <script> tags in the HTML changes.
     const numScripts = document.getElementsByTagName("script").length;
     
-    while (document.getElementsByTagName("body")[0].children.length > numScripts)
+    while (document.body.children.length > numScripts)
     {
-        document.getElementsByTagName("body")[0].children[numScripts].remove();
+        document.body.children[numScripts].remove();
     } 
 }
-
 
 // Render needs to be prepared to respond to this event before
 // InitializeApp raises it.
