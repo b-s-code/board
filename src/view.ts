@@ -14,7 +14,6 @@ import
     RenameList
 } from "./controller";
 
-
 /*
 * The non-empty template board that will be used when user
 * creates a new board.
