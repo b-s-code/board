@@ -84,3 +84,30 @@ div
     align-items: center;
     justify-content: center;    
 }
+
+.cardCell
+{
+    /* Actual value not so important.  Just best that 
+       cards all have consistent height. */
+    height: 50px;
+
+    /* Want some blank space around card title 
+       for ease of reading */
+    padding: 5px;
+}
+
+.deleteButton
+{
+    /* Actual value not so important.  Just best that 
+       delete buttons all have consistent height. */
+    height: 50px;
+}
+
+.addCardButton
+{
+    /* Width, height and x-position should match the
+       divs which house cards' titles. */
+    width: 80%;
+    height: 50px;
+    margin: auto;
+}
