@@ -68,7 +68,10 @@ div
     /* Don't want button text against edge of button. */
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
+
+    height: 50px;
+    margin: 5px;
 }
 
 .deleteButton
