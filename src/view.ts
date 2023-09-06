@@ -191,7 +191,7 @@ function RenderWelcome()
     buttonsContainer.style.gridTemplateColumns = "auto auto"; 
     buttonsContainer.style.textAlign = "center"; 
     
-    document.getElementsByTagName("body")[0].append(buttonsContainer);
+    document.body.append(buttonsContainer);
 }
 
 /*
@@ -230,13 +230,13 @@ function RenderAggregate()
         dlAnchor.href = downloadURL;
         dlBtn.append(dlBtnText);
         dlAnchor.appendChild(dlBtn);
-        document.getElementsByTagName("body")[0].appendChild(dlAnchor);
+        document.body.appendChild(dlAnchor);
     }
 
     RenderDownloadBtn();
     
     // Render all lists.
-    document.getElementsByTagName("body")[0].appendChild(MakeListsContainer());
+    document.body.appendChild(MakeListsContainer());
 }
 
 /*
@@ -302,7 +302,7 @@ function RenderFocus()
 
     cardParts.forEach((cardPart) =>
     {
-        document.getElementsByTagName("body")[0].appendChild(cardPart);
+        document.body.appendChild(cardPart);
     });
 }
 
@@ -748,9 +748,9 @@ function StripBody()
     // number of <script> tags in the HTML changes.
     const numScripts = document.getElementsByTagName("script").length;
     
-    while (document.getElementsByTagName("body")[0].children.length > numScripts)
+    while (document.body.children.length > numScripts)
     {
-        document.getElementsByTagName("body")[0].children[numScripts].remove();
+        document.body.children[numScripts].remove();
     } 
 }
 

@@ -49,12 +49,17 @@ div
     
     text-align: center;
     border : solid green 1px;
-    box-sizing: border-box;
     
     /* Don't want button text against edge of button. */
     display: flex;
     align-items: center;
     justify-content: center;    
+    
+    /* Width, height and x-position should match the
+       divs which house cards' titles. */
+    width: 80%;
+    height: 50px;
+    margin: auto;
 }
 
 .addListButton
@@ -86,6 +91,10 @@ div
     display: flex;
     align-items: center;
     justify-content: center;    
+
+    /* Actual value not so important.  Just best that 
+       delete buttons all have consistent height. */
+    height: 50px;
 }
 
 .cardCell
@@ -99,21 +108,6 @@ div
     padding: 5px;
 }
 
-.deleteButton
-{
-    /* Actual value not so important.  Just best that 
-       delete buttons all have consistent height. */
-    height: 50px;
-}
-
-.addCardButton
-{
-    /* Width, height and x-position should match the
-       divs which house cards' titles. */
-    width: 80%;
-    height: 50px;
-    margin: auto;
-}
 
 .listTopLevelContainer
 {
