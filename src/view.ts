@@ -361,41 +361,29 @@ function MakeCardDiv(id: number)
                     document.dispatchEvent(OutdatedGUI);
                 });
                 break;
+                
+            // Cells with buttons for moving card.
             case 1:
-                cell.classList.add("arrow");
-                cell.append("🠝");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "up");
-                    document.dispatchEvent(OutdatedGUI);
-                });
-                break;
             case 3:
-                cell.classList.add("arrow");
-                cell.append("🠜");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "left");
-                    document.dispatchEvent(OutdatedGUI);
-                });
-                break;
             case 5:
+            case 7:
+                // Parallel arrays.
+                const arrowCellIds: number[] = [1, 3, 5, 7];
+                var arrows: string[] = ['🢁','🢀','🢂','🢃'];
+                const directions: string[] = ["up", "left", "right", "down"];
+                
+                // Construct cell from data in parallel arrays.
                 cell.classList.add("arrow");
-                cell.append("🠞");
+                cell.append(arrows[arrowCellIds.indexOf(indexInto3x3)]);
                 cell.addEventListener("click", () =>
                 {
-                    boardState = MoveCard(boardState, id, "right");
+                    boardState = MoveCard(boardState, id, directions[arrowCellIds.indexOf(indexInto3x3)]);
                     document.dispatchEvent(OutdatedGUI);
                 });
                 break;
-            case 7:
-                cell.classList.add("arrow");
-                cell.append("🠟");
-                cell.addEventListener("click", () =>
-                {
-                    boardState = MoveCard(boardState, id, "down");
-                    document.dispatchEvent(OutdatedGUI);
-                });
+
+            // Cells with buttons for moving card.
+            default:
                 break;
         }
         return cell;
@@ -448,8 +436,8 @@ function MakeListDiv(listId: number)
     // Construct left and right columns, including interactivity.
     const leftColumn = document.createElement("div");
     const rightColumn = document.createElement("div");
-    leftColumn.append("🠜");
-    rightColumn.append("🠞");
+    leftColumn.append("🢀");
+    rightColumn.append("🢂");
     leftColumn.classList.add("arrow");
     rightColumn.classList.add("arrow");
     leftColumn.addEventListener("click", () =>
