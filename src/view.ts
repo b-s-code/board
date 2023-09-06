@@ -429,11 +429,7 @@ function MakeListDiv(listId: number)
    
     // Construct metacontainer.
     const topLevelContainer = document.createElement("div");
-    topLevelContainer.style.display= "grid";
-    topLevelContainer.style.height= "fit-content";
-    
-    // Want side columns to be narrow than center column.
-    topLevelContainer.style.gridTemplateColumns = "1fr 6fr 1fr";
+    topLevelContainer.classList.add("listTopLevelContainer");
 
     // Construct left and right columns, including interactivity.
     const leftColumn = document.createElement("div");
@@ -454,14 +450,11 @@ function MakeListDiv(listId: number)
     });
 
     const middleColumnContainer = document.createElement("div");
-    middleColumnContainer.style.display = "grid";
+    middleColumnContainer.classList.add("listMiddleColumnContainer");
 
     // Construct middle column, top row.
     const topRow = document.createElement("div");
-    topRow.style.display = "grid";
-    
-    // Want delete button to be narrower than title div.
-    topRow.style.gridTemplateColumns = "3fr 1fr";
+    topRow.classList.add("listTopRow");
 
     const titleDiv = MakeListTitleDiv(listId);
     topRow.appendChild(titleDiv);

@@ -111,3 +111,27 @@ div
     height: 50px;
     margin: auto;
 }
+
+.listTopLevelContainer
+{
+    display: grid;
+    height: fit-content;
+    column-gap: 5px;
+
+    /* Want side columns to be narrow than center column. */
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
+.listMiddleColumnContainer
+{
+    display: grid;
+    row-gap: 5px;
+}
+
+.listTopRow
+{
+    display: grid;
+    
+    /* Want delete button to be narrower than title div. */
+    grid-template-columns: 3fr 1fr;
+}
