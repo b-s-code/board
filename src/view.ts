@@ -207,9 +207,6 @@ function RenderWelcome()
 */
 function RenderAggregate()
 {
-// TODO : implement functionality for aggregrate GUI.
-
-
     /*
     * Renders a button which, when clicked, automatically intiates a
     * download to the user's  file system, of the user's board data,
@@ -238,7 +235,15 @@ function RenderAggregate()
 
     RenderDownloadBtn();
     
-    // TODO : continue implementing lists in GUI.
+    // Render all lists.
+    document.getElementsByTagName("body")[0].appendChild(MakeListsContainer());
+}
+
+/*
+* Returns all lists, and thus all cards. 
+*/
+function MakeListsContainer()
+{
     const listsContainer = document.createElement("div");
     const numLists: number = boardState.listsTitles.length;
     
@@ -272,8 +277,7 @@ function RenderAggregate()
         listDiv.style.padding = "5px";
         listsContainer.appendChild(listDiv);
     }
-    document.getElementsByTagName("body")[0].appendChild(listsContainer);
-
+    return listsContainer;
 }
 
 /*
