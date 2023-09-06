@@ -10,7 +10,8 @@ import
     AddCard, 
     DeleteList,
     MoveList,
-    AddList
+    AddList,
+    RenameList
 } from "./controller";
 
 
@@ -465,8 +466,7 @@ function MakeListDiv(listId: number)
     // Want delete button to be narrower than title div.
     topRow.style.gridTemplateColumns = "3fr 1fr";
 
-    const titleDiv = document.createElement("div");
-    titleDiv.append(boardState.listsTitles[listId]);
+    const titleDiv = MakeListTitleDiv(listId);
     topRow.appendChild(titleDiv);
     const deleteBtn = MakeListDeleteButton(listId);
     topRow.appendChild(deleteBtn);
@@ -511,7 +511,7 @@ function MakeCardTitleDiv(id: number)
         // Make input area for user to set new title.
         const toReplace = document.getElementById("card_title_div");
         const editableArea = document.createElement("input");
-        editableArea.placeholder = title;
+        editableArea.value = title;
         editableArea.addEventListener("keypress", (event) =>
         {
             if (event.getModifierState("Control") && event.key === "Enter")
@@ -529,6 +529,46 @@ function MakeCardTitleDiv(id: number)
 
         // Swap title div for input control.
         toReplace?.replaceWith(editableAreaWrapper);
+    });
+    return result;
+}
+
+/*
+* Takes id of a list.  Returns a div which
+* displays the list's title and provides user
+* controls for changing title.
+*/
+function MakeListTitleDiv(id: number)
+{
+    // Populate list title from current board state.
+    const title: string = boardState.listsTitles[id];
+    const result = document.createElement("H1");
+    result.append(title);
+    
+    // Used to make title writable by the user.
+    // There will usually be more than one list title div
+    // displayed to the user at a time.
+    const htmlEltId: string = "list_title_div_" + id.toString();
+    result.id = htmlEltId;
+
+    // Add interactivity to title.
+    result.addEventListener("click", () =>
+    {
+        // Make input area for user to set new title.
+        const toReplace = document.getElementById(htmlEltId);
+        const editableArea = document.createElement("input");
+        editableArea.value = title;
+        editableArea.addEventListener("keypress", (event) =>
+        {
+            if (event.getModifierState("Control") && event.key === "Enter")
+            {
+                boardState = RenameList(boardState, id, editableArea.value);
+                document.dispatchEvent(OutdatedGUI);
+            }
+        });
+       
+        // Swap title div for input control.
+        toReplace?.replaceWith(editableArea);
     });
     return result;
 }
