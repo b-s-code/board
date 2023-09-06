@@ -410,8 +410,6 @@ function MakeCardDiv(id: number)
 */
 function MakeListDiv(listId: number)
 {
-    // TODO : implement
-
     /*
     * Basic structure of a list's representation
     * in aggregate view:
@@ -432,6 +430,7 @@ function MakeListDiv(listId: number)
     // Construct metacontainer.
     const topLevelContainer = document.createElement("div");
     topLevelContainer.style.display= "grid";
+    topLevelContainer.style.height= "fit-content";
     
     // Want side columns to be narrow than center column.
     topLevelContainer.style.gridTemplateColumns = "1fr 6fr 1fr";
