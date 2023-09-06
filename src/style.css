@@ -70,3 +70,17 @@ div
     align-items: center;
     justify-content: center;    
 }
+
+.deleteButton
+{
+    /* Indicate to user this div is special. */
+    color: red;
+    
+    text-align: center;
+    border : solid red 1px;
+
+    /* Don't want button text against edge of button. */
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}

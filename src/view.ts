@@ -689,7 +689,6 @@ function MakeAddListBtn()
     const btn = document.createElement("div");
     btn.append("✚");
     btn.classList.add("addListButton");
-    
     btn.addEventListener("click", () =>
     {
         boardState = AddList(boardState);
@@ -705,14 +704,8 @@ function MakeAddListBtn()
 function MakeListDeleteButton(id: number)
 {
     const btn = document.createElement("div");
-    btn.append("✗")
-
-    // Don't want button text against edge of button.
-    btn.style.display = "flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";    
-
-    btn.style.background = "#ff5555";
+    btn.append("⨯")
+    btn.classList.add("deleteButton");
     btn.addEventListener("click", () =>
     {
         boardState = DeleteList(boardState, id);
