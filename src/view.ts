@@ -108,7 +108,7 @@ function RenderWelcome()
 {
     // Button for creating new board.
     var newBtn = document.createElement("div");
-    newBtn.style.cursor = "pointer";
+    newBtn.classList.add("welcomeButton");
     newBtn.append("New board");
     newBtn.addEventListener("click", (e) =>
     {
@@ -116,27 +116,22 @@ function RenderWelcome()
         document.dispatchEvent(OutdatedGUI);
     });
 
-    // Wraps div representing load button and an
-    // invisble file input control together.
-    var loadBtnWrapper = document.createElement("div");
-    loadBtnWrapper.style.cursor = "pointer";
-    
-    // Button for opening existing board.
+    // Button for opening existing board, and an
+    // invisble file input control.  These work together.
     var loadBtn = document.createElement("div");
+    loadBtn.classList.add("welcomeButton");
     var fileInput = document.createElement("input");
-
-    loadBtn.append("Load Board");
     fileInput.type = "file";
     
     // By default, clickable area is the size of the 
     // small input element.  Instead we want the clickable 
-    // area to correspond to the large (div) button.
+    // area to correspond to the large div.
     fileInput.style.display = "none";
-    loadBtnWrapper.addEventListener("click", () => 
+    loadBtn.addEventListener("click", () => 
     {
         fileInput.click();
     });
-    loadBtnWrapper.append(loadBtn, fileInput);
+    loadBtn.append(document.createTextNode("Load board"), fileInput);
 
     fileInput.addEventListener("change", (e) =>
     {
@@ -177,13 +172,8 @@ function RenderWelcome()
     // Will be a grid container for the buttons.
     const buttonsContainer = document.createElement("div");
     buttonsContainer.id = "buttonsContainer";
-    buttonsContainer.append(newBtn, loadBtnWrapper);
-    buttonsContainer.style.display = "grid";
+    buttonsContainer.append(newBtn, loadBtn);
 
-    // Display the two buttons side by side.
-    buttonsContainer.style.gridTemplateColumns = "auto auto"; 
-    buttonsContainer.style.textAlign = "center"; 
-    
     document.body.append(buttonsContainer);
 }
 

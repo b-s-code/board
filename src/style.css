@@ -191,3 +191,30 @@ div
        auto-scale to fit contents.  Allow some room. */
     height: 50vh;
 }
+
+#buttonsContainer
+{
+    background-color: var(--bg-color);
+    height: 80vh;
+    column-gap: 10px;
+    display: grid;
+
+    /* Display the two buttons side by side. */
+    grid-template-columns: auto auto; 
+}
+
+.welcomeButton
+{
+    /* Indicate to user buttons are clickable. */
+    color: blue;
+    cursor: pointer;
+    
+    /* Required for vertical centering. */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+    border: solid blue 1px;
+    padding: 10px;
+}
+
