@@ -593,32 +593,23 @@ function MakeNoteDiv(id: number)
 {
     // Populate card note from current board state.
     const note: string = boardState.cardsNotes[id];
-    const result = document.createElement("textarea");
-    result.append(note);
+    const textArea = document.createElement("textarea");
+    textArea.append(note);
     
     // Used to make note writable by the user.
-    result.id = "card_note_div";
+    textArea.id = "card_note_div";
 
     // Add interactivity to note.
-    result.addEventListener("click", () =>
+    textArea.addEventListener("keypress", (event) =>
     {
-        // Make input area for user to set new note.
-        const toReplace = document.getElementById("card_note_div");
-        const editableArea = document.createElement("textarea");
-        editableArea.value = note;
-        editableArea.addEventListener("keypress", (event) =>
+        if (event.getModifierState("Control") && event.key === "Enter")
         {
-            if (event.getModifierState("Control") && event.key === "Enter")
-            {
-                boardState = ChangeCardNotes(boardState, id, editableArea.value);
-                document.dispatchEvent(OutdatedGUI);
-            }
-        });
-       
-        // Swap note div for input control.
-        toReplace?.replaceWith(editableArea);
+            boardState = ChangeCardNotes(boardState, id, textArea.value);
+            document.dispatchEvent(OutdatedGUI);
+        }
     });
-    return result;
+    
+    return textArea;
 }
 
 /*
