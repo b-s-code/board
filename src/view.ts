@@ -595,9 +595,6 @@ function MakeNoteDiv(id: number)
     const note: string = boardState.cardsNotes[id];
     const textArea = document.createElement("textarea");
     textArea.append(note);
-    
-    // Used to make note writable by the user.
-    textArea.id = "card_note_div";
 
     // Add interactivity to note.
     textArea.addEventListener("keypress", (event) =>
