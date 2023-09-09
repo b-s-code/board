@@ -32,7 +32,7 @@ div
     border: solid blue 1px;
 }
 
-.cardContainer
+.cardContainerAggregate
 {
     display: grid;
     text-align: center;
@@ -131,4 +131,32 @@ div
     
     /* Want delete button to be narrower than title div. */
     grid-template-columns: 3fr 1fr;
+}
+
+.cardTopRowFocused
+{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.cardContainerFocused
+{
+    display: grid;
+    margin: 50px;
+    padding: 10px;
+    border: solid black 1px;
+}
+
+.cardBackButton
+{
+    /* Indicate to user arrows are clickable. */
+    color: blue;
+    
+    /* Required for vertical centering */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+
+    border: solid blue 1px;
 }

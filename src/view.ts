@@ -290,20 +290,49 @@ function RenderFocus()
 {
     const id: number = appState.focusedCardId; 
 
-    const cardParts: Node[] = 
+    /*
+    * Basic structure of a card's representation
+    * in focused view:
+    * 
+    *  |----------------|--------------|
+    *  |  title         |  delete btn  |  } top row container
+    *  |----------------|--------------|
+    *  |                               |
+    *  |  notes                        |
+    *  |                               |
+    *  |-------------------------------|
+    *  |  labels                       |
+    *  |-------------------------------|
+    *  |  back btn                     |
+    *  |-------------------------------|
+    *  
+    *   \__________  _________________/
+    *              \/ 
+    *            container
+    */
+    const container = document.createElement("div");
+    const topRow = document.createElement("div");
+    container.classList.add("cardContainerFocused");
+    topRow.classList.add("cardTopRowFocused");
+    
+    // Construct top row.
+    const titleDiv = MakeCardTitleDiv(id);
+    const deleteBtn = MakeCardDeleteButton(id);
+    [titleDiv, deleteBtn].forEach((elt) => topRow.appendChild(elt));
+
+    const parts: Node[] = 
     [
-        // TODO : Add style to each.
-        MakeCardTitleDiv(id),
+        topRow,
         MakeNoteDiv(id),
         MakeLabelsDiv(id),
-        MakeCardDeleteButton(id),
         MakeCardBackButton()
     ];
-
-    cardParts.forEach((cardPart) =>
+    parts.forEach((cardPart) =>
     {
-        document.body.appendChild(cardPart);
+        container.appendChild(cardPart);
     });
+    
+    document.body.appendChild(container);
 }
 
 /*
@@ -313,10 +342,8 @@ function RenderFocus()
 */
 function MakeCardDiv(id: number)
 {
-    // TODO : add style
-
     const container = document.createElement("div");
-    container.classList.add("cardContainer");
+    container.classList.add("cardContainerAggregate");
     
     /*
     * Basic structure of a card's representation
@@ -510,15 +537,9 @@ function MakeCardTitleDiv(id: number)
                 document.dispatchEvent(OutdatedGUI);
             }
         });
-       
-        // Preserve line break between title area and notes area,
-        // by inserting a spacer div.
-        const editableAreaWrapper = document.createElement("div");
-        editableAreaWrapper.appendChild(document.createElement("div"));
-        editableAreaWrapper.appendChild(editableArea);
 
         // Swap title div for input control.
-        toReplace?.replaceWith(editableAreaWrapper);
+        toReplace?.replaceWith(editableArea);
     });
     return result;
 }
@@ -572,7 +593,7 @@ function MakeNoteDiv(id: number)
 {
     // Populate card note from current board state.
     const note: string = boardState.cardsNotes[id];
-    const result = document.createElement("div");
+    const result = document.createElement("textarea");
     result.append(note);
     
     // Used to make note writable by the user.
@@ -584,7 +605,7 @@ function MakeNoteDiv(id: number)
         // Make input area for user to set new note.
         const toReplace = document.getElementById("card_note_div");
         const editableArea = document.createElement("textarea");
-        editableArea.placeholder = note;
+        editableArea.value = note;
         editableArea.addEventListener("keypress", (event) =>
         {
             if (event.getModifierState("Control") && event.key === "Enter")
@@ -594,14 +615,8 @@ function MakeNoteDiv(id: number)
             }
         });
        
-        // Preserve line break between notes area and labels
-        // by inserting a spacer div.
-        const editableAreaWrapper = document.createElement("div");
-        editableAreaWrapper.appendChild(document.createElement("div"));
-        editableAreaWrapper.appendChild(editableArea);
-
         // Swap note div for input control.
-        toReplace?.replaceWith(editableAreaWrapper);
+        toReplace?.replaceWith(editableArea);
     });
     return result;
 }
@@ -710,7 +725,10 @@ function MakeListDeleteButton(id: number)
 function MakeCardBackButton()
 {
     const btn = document.createElement("div");
-    btn.append("Back");
+    btn.classList.add("cardBackButton");
+    const btnLabel = document.createElement("h1");
+    btnLabel.append("↵");
+    btn.appendChild(btnLabel);
     btn.addEventListener("click", () =>
     {
         appState.guiViewMode = "aggregate";
@@ -726,7 +744,8 @@ function MakeCardBackButton()
 function MakeCardDeleteButton(id: number)
 {
     const btn = document.createElement("div");
-    btn.append("Delete card");
+    btn.append("⨯")
+    btn.classList.add("deleteButton");
     btn.addEventListener("click", () =>
     {
         boardState = DeleteCard(boardState, id);
