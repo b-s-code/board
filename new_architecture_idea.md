@@ -1,61 +1,27 @@
-# WHY DO THINGS THIS WAY?
+# Design
 
-Current approach has a poorly thought out paradigm of when and how state/view should be updated.
-Makes it less than joyous to work with.
+It's a task board with basic features.  What are the defining constraints?
 
-## DATA MODEL
+1. It must be possible to serve the application locally.
 
-```pseudocode
-struct BoardStateModel
-{
-    /* CARDS */
-    // Do not have a reference to the list they belong to.
-    // Instead can loop over listsCards to find owning list of card of interest.
-    // Index into these parallel arrays is used when anything needs a reference to a card.
-    string[]        cardsTitles  
-    string[]        cardsNotes
-    (string[])[]    cardsLabels  
+2. The server must have __zero__ knowledge of the users' data.  This is the primary point of difference from other popular, feature-rich browser based task board applications I have used.
 
-    /* LISTS */
-    // Index into these parallel arrays is used when anything needs a reference to a list.
-    string[]        listTitles
-    (uint[])[]      listsCards          // Tracks the card-list relation.  Order of cardIds within an arr elt specifies top-to-bottom order in GUI.
-    uint[]          listsPositions      // From LHS.  Parallel to listIds.
-}
-```
+3. The application must provide a persistence mechanism.
 
-```typescript
-interface BoardState
-{
-    cardsTitles : string[],
-    cardsNotes : string[],
-    cardsLables : string[][],
-    listsTitles : string[],
-    listsCards : number[][],
-    listsPositions : number[]
-}
-```
+Thees criteria are met by avoiding sending users' application data to the server altogether, and giving users responsibility for loading and saving their data, as text files, on their local machine.
 
-```pseudocode
-struct AppStateModel
-{
-    /* GUI */
-    string          guiViewMode         // "welcome", "aggregate", "focused", or "download data".  "welcome" view should have load/new buttons.
-    uint            focusedCardId
-}
-```
+The application is constructed as a state machine which works on two collections of parallel arrays and uses some global view state.  That's all it needs to be.
 
+## Data model
 
-## WHAT SHOULD THE CODE LOOK LIKE?
+There are two global state objects.
 
-### Data
+1. Application state: represents the state of the view.  Is pretty minimal.  Does not persist between sessions.
+2. Board state: gets imported/exported as a file containing a serialized JSON object.  This must be done manually by the user.
 
-Two global state objects:
+The board state is modelled as two collections of parallel arrays.  One collection for cards.  One collection for lists.  See `model.ts` for details.
 
-1. Application state.  Created at start of session, discarded at the end.
-2. Board state.  Loaded/saved as file, read/written to at runtime.
-
-### Functions
+## General flow
 
 Basic flow is:
 
@@ -63,29 +29,19 @@ Basic flow is:
 2. The following occur in a loop:
 
     - User perfoms an action.
+
     - Action triggers an event.
-    - Event handler calls a pure function, passing board state and required data to make user's requested change.
+
+    - Event handler calls a pure function, which takes in board state and required data, in order to return a board state with user's requested change.
+
     - Event handler assigns the return value of the pure function to the global board state.
-    - Board state, but not necessarily GUI now represents what user wants.
+
+    - Board state now represents what user wants, but the GUI may not.
+
     - Event handler makes any necessary changes to application state, raises an outdated GUI event then returns.
+
     - Outdated GUI event handler calls appropriate render function.
-    - Render function deletes a bunch of stuff from the DOM, reads from app state and board state, draws everything and sets up event handlers to respond to user's next action.
 
-So what code to write?
+    - Render function deletes most stuff from the DOM, reads from app state and board state, draws everything and sets up event handlers to respond to the set of actions that are possible for the user to take next.
 
-We'll have a rendering function for each guiViewMode.
-Each should be void, take no params, only read from (never write to) application and board states, and should affect the DOM.
-Each is responsible for creating event handlers for all and only possible user actions that may be taken for that rendered view.
-Any modification of board and application state should be left to event handlers, and they'll accomplish the board state modification by calling pure functions and assigning the return value to global board state.  They can modify application state themselves though.
-
-Also need functions for:
-
-- loading board state from file
-- exporting board state to file and initiating download
-- constructing a default board state
-
-Other thoughts...
-
-The initialization function will have to:
-
-- call either the board state constructing function or the board state loading function, depending on user choice
+3. User quits by just closing the browser tab, saving their data first if desired.
