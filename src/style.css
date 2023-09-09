@@ -145,11 +145,12 @@ div
     margin: 50px;
     padding: 10px;
     border: solid black 1px;
+    row-gap: 10px;
 }
 
 .cardBackButton
 {
-    /* Indicate to user arrows are clickable. */
+    /* Indicate to user button is clickable. */
     color: blue;
     
     /* Required for vertical centering */
@@ -159,4 +160,27 @@ div
     text-align: center;
 
     border: solid blue 1px;
+}
+
+.labelDiv
+{
+    /* Indicate to user label is clickable. */
+    color: blue;
+    
+    /* Required for vertical centering */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+
+    border: solid blue 1px;
+    
+    padding: 10px;
+    height: fit-content;
+}
+
+.labelContainer
+{
+    display: grid;
+    column-gap: 10px;
 }

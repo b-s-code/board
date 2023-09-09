@@ -630,7 +630,9 @@ function MakeLabelsDiv(id: number)
 {
     const labels: string[] = boardState.cardsLabels[id];
     const result = document.createElement("div");
-    result.style.display = "grid";
+    result.classList.add("labelContainer");
+    
+    // Not sure this logic can be farmed out to the stylesheet...
     result.style.gridTemplateColumns = "auto ".repeat(labels.length);
     
     // Used to make labels writable by the user.
@@ -639,6 +641,7 @@ function MakeLabelsDiv(id: number)
     labels.forEach((label) =>
     {
         const labelDiv = document.createElement("div");
+        labelDiv.classList.add("labelDiv");
         labelDiv.append(label);
         result.appendChild(labelDiv);
     });
