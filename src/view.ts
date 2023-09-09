@@ -126,23 +126,16 @@ function RenderWelcome()
     var fileInput = document.createElement("input");
 
     loadBtn.append("Load Board");
-    fileInput.type = "file"
-    fileInput.style.position = "absolute";
-    fileInput.style.top = "0";
-    fileInput.style.right = "0";
-    fileInput.style.opacity = "0";
-    // Dirty hack to solve previous issue where clickable area
-    // was smaller than desired.
-    // See https://stackoverflow.com/questions/21842274/cross-browser-custom-styling-for-file-upload-button/21842275#21842275
-    // One impact is that the input element (invisible to the user) can possibly be larger than the visible button div.
-    // If this impacts layout of other elements, this approach can be revisited.
-    fileInput.style.fontSize = "100px";
-    fileInput.style.filter = "alpha(opacity=0)";
-    fileInput.style.cursor = "pointer";
-    loadBtnWrapper.style.position = "relative";
-    loadBtnWrapper.style.overflow = "hidden";
-    loadBtnWrapper.style.float = "left";
-    loadBtnWrapper.style.clear = "left";
+    fileInput.type = "file";
+    
+    // By default, clickable area is the size of the 
+    // small input element.  Instead we want the clickable 
+    // area to correspond to the large (div) button.
+    fileInput.style.display = "none";
+    loadBtnWrapper.addEventListener("click", () => 
+    {
+        fileInput.click();
+    });
     loadBtnWrapper.append(loadBtn, fileInput);
 
     fileInput.addEventListener("change", (e) =>
