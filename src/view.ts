@@ -595,6 +595,7 @@ function MakeNoteDiv(id: number)
     const note: string = boardState.cardsNotes[id];
     const textArea = document.createElement("textarea");
     textArea.append(note);
+    textArea.classList.add("note");
 
     // Add interactivity to note.
     textArea.addEventListener("keypress", (event) =>
