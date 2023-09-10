@@ -191,16 +191,12 @@ function RenderWelcome()
 function RenderAggregate()
 {
     /*
-    * Renders a button which, when clicked, automatically intiates a
-    * download to the user's  file system, of the user's board data,
-    * serialized as a JSON text file.
-    * A snapshot of the board data, taken at the time of this function
-    * being called, is used.
-    * This approach is taken on the assumption that any alternative user
-    * action that would change the underlying board state would first
-    * raise an outdate GUI event, thus re-rendering this button.
+    * Helper function.
+    * Returns a button which, when clicked, automatically intiates a
+    * download to the user's file system, of the user's current board
+    * data, serialized as a JSON text file.
     */
-    function RenderDownloadBtn()
+    function MakeDownloadBtn()
     {
         const exportData = new Blob([JSON.stringify(boardState)],
                                     {type: 'application/json'});
@@ -213,13 +209,23 @@ function RenderAggregate()
         dlAnchor.href = downloadURL;
         dlBtn.append(dlBtnText);
         dlAnchor.appendChild(dlBtn);
-        document.body.appendChild(dlAnchor);
+        return dlAnchor;
     }
 
-    RenderDownloadBtn();
-    
-    // Render all lists.
+
+    // Construct bottom bar, which contains app title and
+    // a download button, for the user's data.
+    const bottomBar = document.createElement("div");
+    bottomBar.classList.add("aggregateBottomBar");
+    const lhsDiv = document.createElement("div");
+    const title = document.createElement("h1");
+    title.append("B . O . A . R . D");
+    lhsDiv.append(title);
+    bottomBar.append(lhsDiv, MakeDownloadBtn());
+
+    // Now ready to actually render stuff.
     document.body.appendChild(MakeListsContainer());
+    document.body.appendChild(bottomBar);
 }
 
 /*
