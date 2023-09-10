@@ -250,7 +250,7 @@ function MakeListsContainer()
     // Need an additional column for list-adding button.
     const numColumns: number = numLists + 1;
     
-    listsContainer.style.display = "grid";
+    listsContainer.classList.add("listsContainer");
     listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
 
     // Will sort list ids by their intended GUI position,
@@ -272,8 +272,6 @@ function MakeListsContainer()
             continue;
         }
         const listDiv = MakeListDiv(listIds[i]);
-        listDiv.style.backgroundColor = "red";
-        listDiv.style.padding = "5px";
         listsContainer.appendChild(listDiv);
     }
     return listsContainer;
@@ -516,7 +514,7 @@ function MakeCardTitleDiv(id: number)
 {
     // Populate card title from current board state.
     const title: string = boardState.cardsTitles[id];
-    const result = document.createElement("H1");
+    const result = document.createElement("h3");
     result.append(title);
     
     // Used to make title writable by the user.
@@ -553,7 +551,7 @@ function MakeListTitleDiv(id: number)
 {
     // Populate list title from current board state.
     const title: string = boardState.listsTitles[id];
-    const result = document.createElement("H1");
+    const result = document.createElement("h3");
     result.append(title);
     
     // Used to make title writable by the user.
@@ -718,7 +716,7 @@ function MakeCardBackButton()
 {
     const btn = document.createElement("div");
     btn.classList.add("cardBackButton");
-    const btnLabel = document.createElement("h1");
+    const btnLabel = document.createElement("h3");
     btnLabel.append("↵");
     btn.appendChild(btnLabel);
     btn.addEventListener("click", () =>
