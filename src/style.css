@@ -232,7 +232,29 @@ div
     left: 0;
     display: grid;
     grid-template-columns: 4fr 1fr;
-    height: 50px;
+    height: 60px;
     width: 100%;
-    border: solid black 1px;
+    border-top: solid black 1px;
+}
+
+.appTitleDiv
+{
+    margin: 5px 0px 0px 10px;
+}
+
+.downloadButton
+{
+    height: 40px;
+    margin: 10px;
+    
+    /* Indicate to user button is clickable. */
+    color: blue;
+    
+    /* Required for vertical centering. */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+
+    border: solid blue 1px;
 }

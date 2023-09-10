@@ -198,29 +198,40 @@ function RenderAggregate()
     */
     function MakeDownloadBtn()
     {
+        // Set up to make data downloadable.
         const exportData = new Blob([JSON.stringify(boardState)],
                                     {type: 'application/json'});
         const downloadURL = window.URL.createObjectURL(exportData);
         const outputFileName: string = "myBoardData.json";
-        const dlBtnText: string = "Save (download board)";
-        const dlBtn = document.createElement("div");
+        
+        // Create a hidden <a> element, which links to
+        // the downloadable data.
         const dlAnchor = document.createElement("a");
         dlAnchor.download=outputFileName;
         dlAnchor.href = downloadURL;
-        dlBtn.append(dlBtnText);
-        dlAnchor.appendChild(dlBtn);
-        return dlAnchor;
-    }
+        dlAnchor.style.display = "none";
 
+        // Create a visible div which the user clicks
+        // to initiate a download, instead of having
+        // them click the <a> element itself.
+        const dlBtn = document.createElement("div");
+        dlBtn.classList.add("downloadButton");
+        dlBtn.append("Save (download board)");
+        dlBtn.appendChild(dlAnchor);
+        dlBtn.addEventListener("click", () => {dlAnchor.click();});
+
+        return dlBtn;
+    }
 
     // Construct bottom bar, which contains app title and
     // a download button, for the user's data.
     const bottomBar = document.createElement("div");
     bottomBar.classList.add("aggregateBottomBar");
     const lhsDiv = document.createElement("div");
-    const title = document.createElement("h1");
+    const title = document.createElement("h3");
     title.append("B . O . A . R . D");
     lhsDiv.append(title);
+    lhsDiv.classList.add("appTitleDiv");
     bottomBar.append(lhsDiv, MakeDownloadBtn());
 
     // Now ready to actually render stuff.
