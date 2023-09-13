@@ -18,6 +18,11 @@ div
     box-sizing: border-box;
 }
 
+.clickable
+{
+    cursor: pointer;
+}
+
 .arrow
 {
     /* Invisible until hovered over. */
@@ -295,7 +300,6 @@ div
     /* Indicate to user buttons are clickable. */
     color: blue;
     border: solid blue 1px;
-    cursor: pointer;
     
     /* Required for vertical centering. */
     display: grid;

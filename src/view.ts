@@ -108,7 +108,8 @@ function RenderWelcome()
 {
     // Button for creating new board.
     var newBtn = document.createElement("div");
-    newBtn.classList.add("welcomeButton");
+    newBtn.classList.add("welcomeButton", "clickable");
+
     newBtn.append("New board");
     newBtn.addEventListener("click", (e) =>
     {
@@ -119,7 +120,7 @@ function RenderWelcome()
     // Button for opening existing board, and an
     // invisble file input control.  These work together.
     var loadBtn = document.createElement("div");
-    loadBtn.classList.add("welcomeButton");
+    loadBtn.classList.add("welcomeButton", "clickable");
     var fileInput = document.createElement("input");
     fileInput.type = "file";
     
@@ -215,7 +216,7 @@ function RenderAggregate()
         // to initiate a download, instead of having
         // them click the <a> element itself.
         const dlBtn = document.createElement("div");
-        dlBtn.classList.add("downloadButton");
+        dlBtn.classList.add("downloadButton", "clickable");
         dlBtn.append("Save (download board)");
         dlBtn.appendChild(dlAnchor);
         dlBtn.addEventListener("click", () => {dlAnchor.click();});
@@ -380,7 +381,7 @@ function MakeCardDiv(id: number)
             // Center cell represents the card itself.
             case 4:
                 cell.style.textAlign = "left";
-                cell.classList.add("cardCell");
+                cell.classList.add("cardCell", "clickable");
                 cell.append(boardState.cardsTitles[id]);
                 cell.addEventListener("click", () =>
                 {
@@ -401,7 +402,7 @@ function MakeCardDiv(id: number)
                 const directions: string[] = ["up", "left", "right", "down"];
                 
                 // Construct cell from data in parallel arrays.
-                cell.classList.add("arrow");
+                cell.classList.add("arrow", "clickable");
                 cell.append(arrows[arrowCellIds.indexOf(indexInto3x3)]);
                 cell.addEventListener("click", () =>
                 {
@@ -461,8 +462,8 @@ function MakeListDiv(listId: number)
     const rightColumn = document.createElement("div");
     leftColumn.append("🢀");
     rightColumn.append("🢂");
-    leftColumn.classList.add("arrow");
-    rightColumn.classList.add("arrow");
+    leftColumn.classList.add("arrow", "clickable");
+    rightColumn.classList.add("arrow", "clickable");
     leftColumn.addEventListener("click", () =>
     {
         boardState = MoveList(boardState, listId, "left");
@@ -628,7 +629,7 @@ function MakeLabelsDiv(id: number)
     labels.forEach((label) =>
     {
         const labelDiv = document.createElement("div");
-        labelDiv.classList.add("labelDiv");
+        labelDiv.classList.add("labelDiv", "clickable");
         labelDiv.append(label);
         result.appendChild(labelDiv);
     });
@@ -665,7 +666,7 @@ function MakeAddCardToListBtn(listId: number)
 {
     const btn = document.createElement("div");
     btn.append("✚");
-    btn.classList.add("addCardButton");
+    btn.classList.add("addCardButton", "clickable");
     btn.addEventListener("click", () =>
     {
         boardState = AddCard(boardState, listId);
@@ -683,7 +684,7 @@ function MakeAddListBtn()
 {
     const btn = document.createElement("div");
     btn.append("✚");
-    btn.classList.add("addListButton");
+    btn.classList.add("addListButton", "clickable");
     btn.addEventListener("click", () =>
     {
         boardState = AddList(boardState);
@@ -700,7 +701,7 @@ function MakeListDeleteButton(id: number)
 {
     const btn = document.createElement("div");
     btn.append("⨯")
-    btn.classList.add("deleteButton");
+    btn.classList.add("deleteButton", "clickable");
     btn.addEventListener("click", () =>
     {
         boardState = DeleteList(boardState, id);
@@ -715,7 +716,7 @@ function MakeListDeleteButton(id: number)
 function MakeCardBackButton()
 {
     const btn = document.createElement("div");
-    btn.classList.add("cardBackButton");
+    btn.classList.add("cardBackButton", "clickable");
     const btnLabel = document.createElement("h3");
     btnLabel.append("↵");
     btn.appendChild(btnLabel);
@@ -735,7 +736,7 @@ function MakeCardDeleteButton(id: number)
 {
     const btn = document.createElement("div");
     btn.append("⨯")
-    btn.classList.add("deleteButton");
+    btn.classList.add("deleteButton", "clickable");
     btn.addEventListener("click", () =>
     {
         boardState = DeleteCard(boardState, id);
