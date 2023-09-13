@@ -2,6 +2,8 @@
 
 A task board that puts you in control of your data.
 
+![app demo gif](docs/board_demo_13092023.gif)
+
 ## Usage
 
 The functionality of Board is very basic.
@@ -34,7 +36,7 @@ That's it.
 
 ### Design documentation
 
-See [design.md](design.md).
+See [design.md](docs/design.md).
 
 ### Setting up dev environment
 
