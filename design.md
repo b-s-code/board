@@ -14,10 +14,11 @@ The application is constructed as a state machine which works on two collections
 
 ## Data model
 
-There are two global state objects.
+The global state is comprised of two objects.
 
 1. Application state: represents the state of the view.  Is pretty minimal.  Does not persist between sessions.
-2. Board state: gets imported/exported as a file containing a serialized JSON object.  This must be done manually by the user.
+
+2. Board state: is far richer than the application state. Gets imported/exported as a file containing a serialized JSON object.  This must be done manually by the user.
 
 The board state is modelled as two collections of parallel arrays.  One collection for cards.  One collection for lists.  See `model.ts` for details.
 
@@ -26,7 +27,8 @@ The board state is modelled as two collections of parallel arrays.  One collecti
 Basic flow is:
 
 1. App gets initialized.
-2. The following occur in a loop:
+
+2. Main loop runs:
 
     - User perfoms an action.
 
