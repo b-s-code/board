@@ -389,6 +389,37 @@ function MakeCardDiv(id: number)
                     appState.guiViewMode = "focused";
                     document.dispatchEvent(OutdatedGUI);
                 });
+
+                // Make arrows show up, as if they were hovered
+                // upon, when the center cell is hovered upon.
+                cell.addEventListener("mouseover", () =>
+                {
+                    if (cell.parentElement)
+                    {
+                        const siblings = cell.parentElement.children;
+                        for (let i: number = 0; i < siblings.length; i++)
+                        {
+                            if (siblings.item(i)?.classList.contains("arrow"))
+                            {
+                                siblings.item(i)?.classList.add("hoveredArrow");
+                            }
+                        }
+                    }
+                });
+                cell.addEventListener("mouseout", () =>
+                {
+                    if (cell.parentElement)
+                    {
+                        const siblings = cell.parentElement.children;
+                        for (let i: number = 0; i < siblings.length; i++)
+                        {
+                            // Appears unproblematic to call this on the corner
+                            // cells, which don't belong to this class to begin with.
+                            siblings.item(i)?.classList.remove("hoveredArrow");
+                        }
+                    }
+                });
+
                 break;
                 
             // Cells with buttons for moving card.

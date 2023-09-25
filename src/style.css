@@ -50,6 +50,19 @@ div
     border: solid blue 1px;
 }
 
+.hoveredArrow
+{
+    /* Indicate to user arrows are clickable. */
+    color: blue;
+    
+    /* Required for vertical centering. */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+    border: solid blue 1px;
+}
+
 .cardContainerAggregate
 {
     display: grid;
