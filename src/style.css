@@ -16,6 +16,7 @@ div
     background-color: var(--fg-color);
     height: 100%;
     box-sizing: border-box;
+    border-radius: 3px;
 }
 
 .clickable
