@@ -528,13 +528,10 @@ function MakeCardTitleDiv(id: number)
         const toReplace = document.getElementById("card_title_div");
         const editableArea = document.createElement("input");
         editableArea.value = title;
-        editableArea.addEventListener("keypress", (event) =>
+        editableArea.addEventListener("focusout", (event) =>
         {
-            if (event.getModifierState("Control") && event.key === "Enter")
-            {
-                boardState = RenameCard(boardState, id, editableArea.value);
-                document.dispatchEvent(OutdatedGUI);
-            }
+            boardState = RenameCard(boardState, id, editableArea.value);
+            document.dispatchEvent(OutdatedGUI);
         });
 
         // Swap title div for input control.
@@ -568,13 +565,10 @@ function MakeListTitleDiv(id: number)
         const toReplace = document.getElementById(htmlEltId);
         const editableArea = document.createElement("input");
         editableArea.value = title;
-        editableArea.addEventListener("keypress", (event) =>
+        editableArea.addEventListener("focusout", (event) =>
         {
-            if (event.getModifierState("Control") && event.key === "Enter")
-            {
-                boardState = RenameList(boardState, id, editableArea.value);
-                document.dispatchEvent(OutdatedGUI);
-            }
+            boardState = RenameList(boardState, id, editableArea.value);
+            document.dispatchEvent(OutdatedGUI);
         });
        
         // Swap title div for input control.
@@ -597,13 +591,10 @@ function MakeNoteDiv(id: number)
     textArea.classList.add("note");
 
     // Add interactivity to note.
-    textArea.addEventListener("keypress", (event) =>
+    textArea.addEventListener("focusout", (event) =>
     {
-        if (event.getModifierState("Control") && event.key === "Enter")
-        {
-            boardState = ChangeCardNotes(boardState, id, textArea.value);
-            document.dispatchEvent(OutdatedGUI);
-        }
+        boardState = ChangeCardNotes(boardState, id, textArea.value);
+        document.dispatchEvent(OutdatedGUI);
     });
     
     return textArea;
@@ -641,17 +632,14 @@ function MakeLabelsDiv(id: number)
         const toReplace = document.getElementById("card_labels_div");
         const editableArea = document.createElement("input");
         editableArea.value = labels.join(", ");
-        editableArea.addEventListener("keypress", (event) =>
+        editableArea.addEventListener("focusout", (event) =>
         {
-            if (event.getModifierState("Control") && event.key === "Enter")
-            {
-                const newLabels: string[] = editableArea.value
-                                            .split(",")
-                                            .map(s => s.trimStart());
+            const newLabels: string[] = editableArea.value
+                                        .split(",")
+                                        .map(s => s.trimStart());
 
-                boardState = ChangeCardLabels(boardState, id, newLabels);
-                document.dispatchEvent(OutdatedGUI);
-            }
+            boardState = ChangeCardLabels(boardState, id, newLabels);
+            document.dispatchEvent(OutdatedGUI);
         });
         toReplace?.replaceWith(editableArea);
     });
