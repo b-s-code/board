@@ -252,7 +252,7 @@ function MakeListsContainer()
     const numColumns: number = numLists + 1;
     
     listsContainer.classList.add("listsContainer");
-    listsContainer.style.gridTemplateColumns = "auto ".repeat(numColumns);
+    listsContainer.style.gridTemplateColumns = "1fr ".repeat(numColumns);
 
     // Will sort list ids by their intended GUI position,
     // left to right.
