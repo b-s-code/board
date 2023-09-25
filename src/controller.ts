@@ -226,17 +226,10 @@ export function AddList(board: BoardState): BoardState
 {
     const resultBoard: BoardState = cloneDeep(board);
 
-    const newCardId: number = resultBoard.cardsTitles.length;
-    const newListId: number = resultBoard.listsTitles.length;
     const newListPos: number = resultBoard.listsPositions.length;
     
-    // New list should come with a filler card.
-    resultBoard.cardsTitles.push(fillerStr);
-    resultBoard.cardsNotes.push(fillerStr);
-    resultBoard.cardsLabels.push([fillerStr]);
-    
     resultBoard.listsTitles.push(fillerStr);
-    resultBoard.listsCards.push([newCardId]);
+    resultBoard.listsCards.push([]);
     resultBoard.listsPositions.push(newListPos);
     
     return resultBoard;

@@ -332,15 +332,9 @@ describe('List creation/destruction', () =>
 
     // Contingent on value of sample board state.
     const nextListId: number = 4;
-    const nextCardId: number = 9;
-
-    // New list should come with a filler card.
-    expectedOutput.cardsTitles.push(fillerStr);
-    expectedOutput.cardsNotes.push(fillerStr);
-    expectedOutput.cardsLabels.push([fillerStr]);
 
     expectedOutput.listsTitles.push(fillerStr);
-    expectedOutput.listsCards.push([nextCardId]);
+    expectedOutput.listsCards.push([]);
     expectedOutput.listsPositions.push(nextListId);
     
     const actualOutput = AddList(SampleBoardState());

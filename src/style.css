@@ -16,6 +16,7 @@ div
     background-color: var(--fg-color);
     height: 100%;
     box-sizing: border-box;
+    border-radius: 3px;
 }
 
 .clickable
@@ -37,6 +38,19 @@ div
 }
 
 .arrow:hover
+{
+    /* Indicate to user arrows are clickable. */
+    color: blue;
+    
+    /* Required for vertical centering. */
+    display: grid;
+    align-items: center;
+
+    text-align: center;
+    border: solid blue 1px;
+}
+
+.hoveredArrow
 {
     /* Indicate to user arrows are clickable. */
     color: blue;
